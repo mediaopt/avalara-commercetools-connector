@@ -31,3 +31,17 @@ export const createApiRoot = ((root?: ByProjectKeyRequestBuilder) => () => {
 export const getProject = async () => {
   return await createApiRoot().get().execute();
 };
+
+// Get custom object container as a js dictionary
+export const getData = async (container: string) => {
+  const data = (
+    await createApiRoot()
+      .customObjects()
+      .withContainer({ container: container })
+      .get()
+      .execute()
+  )?.body?.results;
+  return data
+    .map((x) => ({ [x.key]: x.value }))
+    .reduce((acc, curr) => Object.assign(acc, curr), {});
+};
