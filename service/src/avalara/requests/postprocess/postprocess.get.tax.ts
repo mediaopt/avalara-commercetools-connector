@@ -22,13 +22,13 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
       lineItemId: item.id,
       externalTaxAmount: {
         totalGross: {
-          currencyCode: 'USD',
+          currencyCode: cart?.totalPrice?.currencyCode,
           centAmount: item?.totalPrice?.centAmount + taxCentAmount,
         },
         taxRate: {
           name: 'avaTaxRate',
-          amount: taxRate,
-          country: 'US',
+          amount: taxCentAmount? taxRate : 0,
+          country: cart?.country,
         },
       },
     });
@@ -45,12 +45,12 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
     externalTaxAmount: {
       totalGross: {
         centAmount: shipPrice + shipTaxCentAmount,
-        currencyCode: 'USD',
+        currencyCode: cart?.totalPrice?.currencyCode,
       },
       taxRate: {
         name: 'avaTaxRate',
-        amount: taxRate,
-        country: 'US',
+        amount: shipTaxCentAmount? taxRate : 0,
+        country: cart?.country,
       },
     },
   });
@@ -58,7 +58,7 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
   actions.push({
     action: 'setCartTotalTax',
     externalTotalGross: {
-      currencyCode: 'USD',
+      currencyCode: cart?.totalPrice?.currencyCode,
       centAmount: cart?.totalPrice?.centAmount + totalTax,
     },
   });

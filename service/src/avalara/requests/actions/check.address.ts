@@ -1,8 +1,9 @@
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
+import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 
 export async function checkAddress(
   creds: { [key: string]: string },
-  address: any,
+  address: AddressInfo,
   config: any
 ) {
   const client = new AvaTaxClient(config).withSecurity(creds);

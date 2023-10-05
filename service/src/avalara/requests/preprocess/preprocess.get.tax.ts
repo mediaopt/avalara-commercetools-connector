@@ -1,9 +1,9 @@
 import { Cart, LineItem } from '@commercetools/platform-sdk';
-import { getData } from '../../../client/create.client';
+import { getCustomerEntityCode, getData } from '../../../client/create.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
-import { lineItem } from '../../utils/line-items';
-import { shippingAddress } from '../../utils/shipping-address';
-import { shipItem } from '../../utils/shipping-info';
+import { lineItem } from '../../utils/line.items';
+import { shippingAddress } from '../../utils/shipping.address';
+import { shipItem } from '../../utils/shipping.info';
 
 // initialize and specify the tax document model of Avalara
 export async function processCart(
@@ -16,11 +16,9 @@ export async function processCart(
 
   const shipTo = shippingAddress(cart?.shippingAddress!);
 
-  const lines: any = [...cart?.lineItems];
+  const shippingInfo = await shipItem(cart?.shippingInfo!);
 
-  const shippingInfo = shipItem(cart?.shippingInfo!);
-
-  lines.map((x: LineItem) => lineItem(x));
+  const lines = await Promise.all(cart?.lineItems.map(async (x: LineItem) => await lineItem(x)));
 
   lines.push(shippingInfo);
 
@@ -30,14 +28,16 @@ export async function processCart(
   //taxDocument.discount = totalDiscount;
   taxDocument.companyCode = companyCode;
   taxDocument.type = 0;
-  taxDocument.currencyCode = 'USD'; //???
+  taxDocument.currencyCode = cart?.totalPrice?.currencyCode;
   taxDocument.customerCode = cart?.customerId || '';
   taxDocument.addresses = {
     shipFrom: shipFrom,
     shipTo: shipTo,
   };
-  //taxDocument.entityUseCode = context?.customerExemption;
+  taxDocument.entityUseCode = await getCustomerEntityCode(cart?.customerId || "");
   taxDocument.lines = lines;
+
+  console.log(taxDocument)
 
   return taxDocument;
 }
