@@ -5,7 +5,7 @@ import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 
 // Import routes
-import ServiceRoutes from './routes/service.route';
+import ServiceRoutes from './routes/service.router';
 
 // Import logger
 import { logger } from './utils/logger.utils';
