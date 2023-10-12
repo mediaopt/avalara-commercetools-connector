@@ -12,53 +12,53 @@ import { Request, Response } from 'express';
 export async function cartUpdate(req: Request, res: Response) {
   logger.info('Cart update extension executed');
   // Get credentials and configuration
-  const settings = await getData('avalara-commercetools-connector').then(res => res.settings)
+  const settings = await getData('avalara-commercetools-connector').then(
+    (res) => res.settings
+  );
 
   const creds = {
-    username: settings.accountNumber, 
-    password: settings.licenseKey
-  }
+    username: settings.accountNumber,
+    password: settings.licenseKey,
+  };
+
   const originAddress = {
-    line1: settings.line1, 
-    line2: settings.line2, 
-    line3: settings.line3, 
-    city: settings.city, 
-    postalCode: settings.postalCode, 
-    region: settings.region, 
-    country: settings.country
-  }
-  const avataxConfig = avaTaxConfig(settings.env? 'production' : 'sandbox', http);
+    line1: settings.line1,
+    line2: settings.line2,
+    line3: settings.line3,
+    city: settings.city,
+    postalCode: settings.postalCode,
+    region: settings.region,
+    country: settings.country,
+  };
+
+  const avataxConfig = avaTaxConfig(
+    settings.env ? 'production' : 'sandbox',
+    http
+  );
 
   const cart: Cart = req.body?.resource?.obj;
 
-  //compute cart only if shipping address is activated
+  const taxCalculationAllowed = settings.taxCalculation.includes(
+    cart?.shippingAddress?.country
+  );
 
-  const country = () => {
-    if (cart?.shippingAddress?.country === 'US') {
-      return 'usa'
-    } else if (cart?.shippingAddress?.country === 'CA') {
-      return 'canada'
-    } else {
-      return 'wrongCountry'
-    }
-  }
-
-  const taxCalculationAllowed = settings.taxCalculation.includes(country())
-
-  if ( taxCalculationAllowed 
-    && cart?.shippingAddress 
-    && cart?.lineItems 
-    && cart?.shippingInfo) {
-
+  if (
+    taxCalculationAllowed &&
+    cart?.shippingAddress &&
+    cart?.lineItems &&
+    cart?.shippingInfo
+  ) {
     // Validate address if address validation is activated
-    
-      if (settings.addressValidation) {
+
+    if (settings.addressValidation) {
       const validationInfo = await checkAddress(
         creds,
-        shippingAddress(cart?.shippingAddress!),
+        shippingAddress(cart?.shippingAddress),
         avataxConfig
       );
+
       const valid = validationInfo?.valid;
+
       if (!valid) {
         return res.status(400).json({
           errors: [
@@ -88,6 +88,6 @@ export async function cartUpdate(req: Request, res: Response) {
         });
       });
   } else {
-    res.status(200).json()
+    res.status(200).json();
   }
 }

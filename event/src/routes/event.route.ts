@@ -9,42 +9,52 @@ import { voidTransaction } from '../avalara/requests/actions/void.transaction';
 
 const eventRouter: Router = Router();
 
-eventRouter.post('/', async (req, res) => {
+eventRouter.post('/', async (req) => {
   logger.info('Event message received');
   try {
-    const settings = await getData('avalara-commercetools-connector').then(res => res.settings);
+    const settings = await getData('avalara-commercetools-connector').then(
+      (res) => res.settings
+    );
 
     if (!settings.disableDocRec) {
-
       const creds = {
-        username: settings.accountNumber, 
-        password: settings.licenseKey
-      }
+        username: settings.accountNumber,
+        password: settings.licenseKey,
+      };
       const originAddress = {
-        line1: settings.line1, 
-        line2: settings.line2, 
-        line3: settings.line3, 
-        city: settings.city, 
-        postalCode: settings.postalCode, 
-        region: settings.region, 
-        country: settings.country
-      }
-      const avataxConfig = avaTaxConfig(settings.env? 'production' : 'sandbox', http);
+        line1: settings.line1,
+        line2: settings.line2,
+        line3: settings.line3,
+        city: settings.city,
+        postalCode: settings.postalCode,
+        region: settings.region,
+        country: settings.country,
+      };
+      const avataxConfig = avaTaxConfig(
+        settings.env ? 'production' : 'sandbox',
+        http
+      );
 
-      if (req.body.type = "OrderCreated") {
-        // commit 
+      if (req.body.type === 'OrderCreated') {
+        // commit
         const order: Order = req.body.order;
-        return await commitTransaction(order, creds, originAddress, avataxConfig)
-        .then(() => {
-          // setting custom field to committed?
-        })
-        .catch((e) => {
-          logger.error(e);
-        });
-    
-      } else if (req.body.type = "OrderStateChanged" 
-        && req.body.orderState === "Cancelled") {
-        // void 
+        return await commitTransaction(
+          order,
+          creds,
+          originAddress,
+          avataxConfig
+        )
+          .then(() => {
+            // setting custom field to committed?
+          })
+          .catch((e) => {
+            logger.error(e);
+          });
+      } else if (
+        req.body.type === 'OrderStateChanged' &&
+        req.body.orderState === 'Cancelled'
+      ) {
+        // void
         const orderId: string = req.body.resource.id;
         return await voidTransaction(orderId, creds, avataxConfig)
           .then(() => {
@@ -53,15 +63,11 @@ eventRouter.post('/', async (req, res) => {
           .catch((e) => {
             logger.error(e);
           });
-    
       }
-
     }
-
   } catch (e) {
-    logger.error(e)
+    logger.error(e);
   }
-
 });
 
 export default eventRouter;

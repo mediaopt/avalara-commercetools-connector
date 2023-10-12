@@ -16,7 +16,9 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
     const item = cart?.lineItems[i];
 
     const taxCentAmount = lines[i]?.tax * 100;
+
     totalTax += taxCentAmount;
+
     actions.push({
       action: 'setLineItemTaxAmount',
       lineItemId: item.id,

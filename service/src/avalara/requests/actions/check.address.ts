@@ -15,6 +15,7 @@ export async function checkAddress(
   const messages: any = addressValidation?.messages;
 
   let error = false;
+
   messages ? (error = messages[0].severity === 'Error') : false;
 
   if (!error) {

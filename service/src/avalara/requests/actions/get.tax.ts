@@ -11,7 +11,11 @@ export async function getTax(
 ) {
   const client = new AvaTaxClient(config).withSecurity(creds);
 
-  const taxDocument = await processCart(cart, creds?.companyCode, originAddress);
+  const taxDocument = await processCart(
+    cart,
+    creds?.companyCode,
+    originAddress
+  );
 
   const taxResponse = await client.createTransaction({ model: taxDocument });
 

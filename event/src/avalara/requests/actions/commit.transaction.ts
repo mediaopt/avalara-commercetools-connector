@@ -11,7 +11,11 @@ export async function commitTransaction(
 ) {
   const client = new AvaTaxClient(config).withSecurity(creds);
 
-  const taxDocument = await processOrder(order, creds?.companyCode, originAddress);
+  const taxDocument = await processOrder(
+    order,
+    creds?.companyCode,
+    originAddress
+  );
 
   const taxResponse = await client.createTransaction({ model: taxDocument });
 
