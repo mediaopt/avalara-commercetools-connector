@@ -4,21 +4,25 @@ import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel
 import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
+import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
   order: Order,
-  companyCode: string
+  companyCode: string, 
+  originAddress: AddressInfo
 ): Promise<CreateTransactionModel> {
   const taxDocument = new CreateTransactionModel();
 
-  const shipFrom = await getData('avalaraOriginAddress');
+  const shipFrom = originAddress;
 
   const shipTo = shippingAddress(order?.shippingAddress!);
 
   const shippingInfo = await shipItem(order?.shippingInfo!);
 
-  const lines = await Promise.all(order?.lineItems.map(async (x: LineItem) => await lineItem(x)));
+  const lines = await Promise.all(
+    order?.lineItems.map(async (x: LineItem) => await lineItem(x))
+  );
 
   lines.push(shippingInfo);
 
@@ -33,10 +37,10 @@ export async function processOrder(
     shipFrom: shipFrom,
     shipTo: shipTo,
   };
-  taxDocument.entityUseCode = await getCustomerEntityCode(order?.customerId || "");
+  taxDocument.entityUseCode = await getCustomerEntityCode(
+    order?.customerId || ''
+  );
   taxDocument.lines = lines;
-
-  console.log(taxDocument)
 
   return taxDocument;
 }

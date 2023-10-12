@@ -27,7 +27,7 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
         },
         taxRate: {
           name: 'avaTaxRate',
-          amount: taxCentAmount? taxRate : 0,
+          amount: taxCentAmount ? taxRate : 0,
           country: cart?.country,
         },
       },
@@ -49,7 +49,7 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
       },
       taxRate: {
         name: 'avaTaxRate',
-        amount: shipTaxCentAmount? taxRate : 0,
+        amount: shipTaxCentAmount ? taxRate : 0,
         country: cart?.country,
       },
     },

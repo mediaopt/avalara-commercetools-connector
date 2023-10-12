@@ -2,9 +2,9 @@
 
 export function avaTaxConfig(env: string, httpClient: any) {
   return {
-    appName: 'CommercetoolsbyMediaopt',
-    appVersion: 'a0o5a000008TO2qAAG',
-    machineName: 'v1',
+    appName: 'CommercetoolsConnector',
+    appVersion: 'v1',
+    machineName: 'vbl',
     environment: env,
     timeout: 5000,
     customHttpAgent: new httpClient.Agent({ keepAlive: true }),

@@ -46,55 +46,29 @@ export const getData = async (container: string) => {
     .reduce((acc, curr) => Object.assign(acc, curr), {});
 };
 
-
 export const getShipTaxCode = async (id: string) => {
   return (
-    await createApiRoot()
-      .shippingMethods()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
-
+    await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
+  )?.body?.custom?.fields?.avataxCode;
+};
 
 export const getDiscountTaxCode = async (id: string) => {
   return (
-    await createApiRoot()
-      .cartDiscounts()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
+    await createApiRoot().cartDiscounts().withId({ ID: id }).get().execute()
+  )?.body?.custom?.fields?.avataxCode;
+};
 
 export const getCustomerEntityCode = async (id: string) => {
-  return (
-    await createApiRoot()
-      .customers()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
+  return (await createApiRoot().customers().withId({ ID: id }).get().execute())
+    ?.body?.custom?.fields?.avataxCode;
+};
 
 export const getCategoryTaxCode = async (id: string) => {
-  return (
-    await createApiRoot()
-      .categories()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
-
+  return (await createApiRoot().categories().withId({ ID: id }).get().execute())
+    ?.body?.custom?.fields?.avataxCode;
+};
 
 export const getCategoriesOfProduct = async (id: string) => {
-  return (
-    await createApiRoot()
-      .products()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.masterData?.current?.categories
-}
+  return (await createApiRoot().products().withId({ ID: id }).get().execute())
+    ?.body?.masterData?.current?.categories;
+};

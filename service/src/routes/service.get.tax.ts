@@ -10,15 +10,49 @@ import { shippingAddress } from '../avalara/utils/shipping.address';
 import { Request, Response } from 'express';
 
 export async function cartUpdate(req: Request, res: Response) {
-    logger.info('Cart update extension executed');
-    // Get credentials and configuration
-    const creds = await getData('avalaraCreds');
-    const ctConfig = await getData('avalaraConfiguration');
-    const avataxConfig = avaTaxConfig(ctConfig.env, http);
-    const cart: Cart = req.body?.resource?.obj;
-    console.log(cart)
+  logger.info('Cart update extension executed');
+  // Get credentials and configuration
+  const settings = await getData('avalara-commercetools-connector').then(res => res.settings)
+
+  const creds = {
+    username: settings.accountNumber, 
+    password: settings.licenseKey
+  }
+  const originAddress = {
+    line1: settings.line1, 
+    line2: settings.line2, 
+    line3: settings.line3, 
+    city: settings.city, 
+    postalCode: settings.postalCode, 
+    region: settings.region, 
+    country: settings.country
+  }
+  const avataxConfig = avaTaxConfig(settings.env? 'production' : 'sandbox', http);
+
+  const cart: Cart = req.body?.resource?.obj;
+
+  //compute cart only if shipping address is activated
+
+  const country = () => {
+    if (cart?.shippingAddress?.country === 'US') {
+      return 'usa'
+    } else if (cart?.shippingAddress?.country === 'CA') {
+      return 'canada'
+    } else {
+      return 'wrongCountry'
+    }
+  }
+
+  const taxCalculationAllowed = settings.taxCalculation.includes(country())
+
+  if ( taxCalculationAllowed 
+    && cart?.shippingAddress 
+    && cart?.lineItems 
+    && cart?.shippingInfo) {
+
     // Validate address if address validation is activated
-    if (ctConfig.addressValidation) {
+    
+      if (settings.addressValidation) {
       const validationInfo = await checkAddress(
         creds,
         shippingAddress(cart?.shippingAddress!),
@@ -37,19 +71,23 @@ export async function cartUpdate(req: Request, res: Response) {
       }
     }
     // If address was valid or address validation was desctivated calculate tax
-    return await getTax(cart, creds, avataxConfig)
+    return await getTax(cart, creds, originAddress, avataxConfig)
       .then((response) => {
         res.status(200).send(postProcessing(cart, response));
       })
       .catch((e) => {
-        console.log(e);
-        res.status(500).json({
+        logger.error(e);
+        res.status(400).json({
           errors: [
             {
               code: 'General',
-              message: 'Internal server error, please check your address or try again later',
+              message:
+                'Internal server error, please check your address or try again later',
             },
           ],
         });
-    });
+      });
+  } else {
+    res.status(200).json()
   }
+}
