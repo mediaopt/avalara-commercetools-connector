@@ -1,4 +1,4 @@
-import { Cart, LineItem } from '@commercetools/platform-sdk';
+import { LineItem, Order } from '@commercetools/platform-sdk';
 import { getCustomerEntityCode, getData } from '../../../client/create.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
@@ -7,8 +7,8 @@ import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 
 // initialize and specify the tax document model of Avalara
-export async function processCart(
-  cart: Cart,
+export async function processOrder(
+  order: Order,
   companyCode: string, 
   originAddress: AddressInfo
 ): Promise<CreateTransactionModel> {
@@ -16,30 +16,29 @@ export async function processCart(
 
   const shipFrom = originAddress;
 
-  const shipTo = shippingAddress(cart?.shippingAddress!);
+  const shipTo = shippingAddress(order?.shippingAddress!);
 
-  const shippingInfo = await shipItem(cart?.shippingInfo!);
+  const shippingInfo = await shipItem(order?.shippingInfo!);
 
   const lines = await Promise.all(
-    cart?.lineItems.map(async (x: LineItem) => await lineItem(x))
+    order?.lineItems.map(async (x: LineItem) => await lineItem(x))
   );
 
   lines.push(shippingInfo);
 
   taxDocument.date = new Date();
-  taxDocument.code = '0';
-  taxDocument.commit = false;
-  //taxDocument.discount = totalDiscount;
+  taxDocument.code = order.id;
+  taxDocument.commit = true;
   taxDocument.companyCode = companyCode;
-  taxDocument.type = 0;
-  taxDocument.currencyCode = cart?.totalPrice?.currencyCode;
-  taxDocument.customerCode = cart?.customerId || '';
+  taxDocument.type = 1;
+  taxDocument.currencyCode = order?.totalPrice?.currencyCode;
+  taxDocument.customerCode = order?.customerId || '';
   taxDocument.addresses = {
     shipFrom: shipFrom,
     shipTo: shipTo,
   };
   taxDocument.entityUseCode = await getCustomerEntityCode(
-    cart?.customerId || ''
+    order?.customerId || ''
   );
   taxDocument.lines = lines;
 

@@ -2,6 +2,7 @@
   "extends": "@tsconfig/node16/tsconfig.json",
   "exclude": ["node_modules", "**/*.spec.ts"],
   "compilerOptions": {
+    "moduleResolution": "Node16",
     "resolveJsonModule": true,
     "outDir": "./build",
     "rootDir": "./src",

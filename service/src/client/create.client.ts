@@ -31,8 +31,6 @@ export const createApiRoot = ((root?: ByProjectKeyRequestBuilder) => () => {
 export const getProject = async () => {
   return await createApiRoot().get().execute();
 };
-<<<<<<< HEAD
-=======
 
 // Get custom object container as a js dictionary
 export const getData = async (container: string) => {
@@ -48,56 +46,29 @@ export const getData = async (container: string) => {
     .reduce((acc, curr) => Object.assign(acc, curr), {});
 };
 
-
 export const getShipTaxCode = async (id: string) => {
   return (
-    await createApiRoot()
-      .shippingMethods()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
-
+    await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
+  )?.body?.custom?.fields?.avataxCode;
+};
 
 export const getDiscountTaxCode = async (id: string) => {
   return (
-    await createApiRoot()
-      .cartDiscounts()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
+    await createApiRoot().cartDiscounts().withId({ ID: id }).get().execute()
+  )?.body?.custom?.fields?.avataxCode;
+};
 
 export const getCustomerEntityCode = async (id: string) => {
-  return (
-    await createApiRoot()
-      .customers()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
+  return (await createApiRoot().customers().withId({ ID: id }).get().execute())
+    ?.body?.custom?.fields?.avataxCode;
+};
 
 export const getCategoryTaxCode = async (id: string) => {
-  return (
-    await createApiRoot()
-      .categories()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.custom?.fields?.avataxCode
-}
-
+  return (await createApiRoot().categories().withId({ ID: id }).get().execute())
+    ?.body?.custom?.fields?.avataxCode;
+};
 
 export const getCategoriesOfProduct = async (id: string) => {
-  return (
-    await createApiRoot()
-      .products()
-      .withId({ ID: id})
-      .get()
-      .execute()
-  )?.body?.masterData?.current?.categories
-}
->>>>>>> b1e29ed (#34924, #34978, #34979 tax codes, commit and void)
+  return (await createApiRoot().products().withId({ ID: id }).get().execute())
+    ?.body?.masterData?.current?.categories;
+};

@@ -10,22 +10,16 @@ if there is a simple amount off discount, it is applied directly to the item
 prices, so no need to forward it to Avalara */
 
 async function itemTaxCode(item: LineItem) {
+  const id = item?.productId;
+  const categories = await getCategoriesOfProduct(id);
+  const taxCodes = await Promise.all(
+    categories.map(async (x) => await getCategoryTaxCode(x.id))
+  );
+  const categoryTaxCode = taxCodes.find((el) => el !== undefined);
   const productTaxCode = item?.variant?.attributes?.filter(
     (attr) => attr.name === 'ava-tax-code'
   )[0]?.value;
-  if (!productTaxCode) {
-    const id = item?.productId;
-    const categories = await getCategoriesOfProduct(id);
-    const taxCodes = await Promise.all(
-      categories.map(async (x) => await getCategoryTaxCode(x.id))
-    );
-    const categoryTaxCode = taxCodes.find((el) => el !== undefined);
-
-    return categoryTaxCode || '';
-
-  }
-  
-  return productTaxCode;
+  return productTaxCode || categoryTaxCode || '';
 }
 
 export async function lineItem(item: LineItem) {
