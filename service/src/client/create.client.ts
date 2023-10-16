@@ -68,7 +68,36 @@ export const getCategoryTaxCode = async (id: string) => {
     ?.body?.custom?.fields?.avataxCode;
 };
 
+export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
+  const cs = cats.map((x) => `id=${x}`);
+
+  return (
+    await createApiRoot().categories().get({ queryArgs: { cs } }).execute()
+  )?.body?.results.map((x) => ({
+    id: x.id,
+    avataxCode: x.custom?.fields?.avataxCode,
+  }));
+};
+
 export const getCategoriesOfProduct = async (id: string) => {
   return (await createApiRoot().products().withId({ ID: id }).get().execute())
     ?.body?.masterData?.current?.categories;
+};
+
+export const getBulkProductCategories = async (
+  keys: Array<string | undefined>
+) => {
+  const ps = keys.map((x) => `key=${x}`);
+  const data = (
+    await createApiRoot()
+      .productProjections()
+      .search()
+      .get({ queryArgs: { ps } })
+      .execute()
+  )?.body?.results;
+  const result: any = data.map((x: any) => ({
+    productKey: x.key,
+    categories: x.categories.map((x: any) => x.id),
+  }));
+  return result;
 };

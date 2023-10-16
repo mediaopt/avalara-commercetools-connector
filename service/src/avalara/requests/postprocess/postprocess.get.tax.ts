@@ -12,10 +12,9 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
 
   const lines: any = taxResponse?.lines;
 
-  for (const i in cart?.lineItems) {
-    const item = cart?.lineItems[i];
-
-    const taxCentAmount = lines[i]?.tax * 100;
+  for (const item of cart?.lineItems || []) {
+    const taxCentAmount =
+      lines.find((x: any) => x.itemCode === item?.productKey)?.tax * 100;
 
     totalTax += taxCentAmount;
 
@@ -36,7 +35,8 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
     });
   }
 
-  const shipTaxCentAmount = lines[lines.length - 1]?.tax * 100;
+  const shipTaxCentAmount =
+    lines.find((x: any) => x.itemCode === 'Shipping')?.tax * 100;
 
   const shipPrice = cart?.shippingInfo?.price?.centAmount || 0;
   totalTax += shipTaxCentAmount;
