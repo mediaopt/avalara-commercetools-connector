@@ -4,6 +4,8 @@ dotenv.config();
 import { createApiRoot } from '../client/create.client';
 import { assertError, assertString } from '../utils/assert.utils';
 import {
+  createAvalaraEntityUseCodeFields,
+  createAvalaraTaxCodeFields,
   //createCustomCartDiscountType,
   createCartUpdateExtension,
 } from './actions';
@@ -17,6 +19,8 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
 
   const apiRoot = createApiRoot();
   await createCartUpdateExtension(apiRoot, applicationUrl);
+  await createAvalaraEntityUseCodeFields(apiRoot);
+  await createAvalaraTaxCodeFields(apiRoot);
   //await createCustomCartDiscountType(apiRoot);
 }
 

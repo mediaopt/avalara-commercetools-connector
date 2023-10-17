@@ -2,14 +2,13 @@ import { Cart, LineItem } from '@commercetools/platform-sdk';
 import {
   getBulkCategoryTaxCode,
   getBulkProductCategories,
-  getCustomerEntityCode,
+  getCustomerEntityUseCode,
 } from '../../../client/create.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
-import { logger } from '../../../utils/logger.utils';
 
 async function getCategoryTaxCodes(items: Array<LineItem>) {
   const itemsWithoutTaxCodes = items
@@ -20,9 +19,7 @@ async function getCategoryTaxCodes(items: Array<LineItem>) {
     )
     ?.map((x) => x.productKey);
 
-  const categoryData = await getBulkProductCategories(
-    itemsWithoutTaxCodes
-  ).catch((e) => logger.error(e));
+  const categoryData = await getBulkProductCategories(itemsWithoutTaxCodes);
 
   const listOfCategories: any = [
     ...new Set(
@@ -37,7 +34,7 @@ async function getCategoryTaxCodes(items: Array<LineItem>) {
   return categoryData.map((x: any) => ({
     productKey: x.productKey,
     taxCode: x.categories
-      .map((x: any) => catTaxCodes.find((y) => y.id === x)?.avataxCode)
+      .map((x: any) => catTaxCodes.find((y) => y.id === x)?.avalaraTaxCode)
       .find((x: any) => x !== undefined),
   }));
 }
@@ -86,7 +83,7 @@ export async function processCart(
       shipTo: shipTo,
     };
 
-    taxDocument.entityUseCode = await getCustomerEntityCode(
+    taxDocument.entityUseCode = await getCustomerEntityUseCode(
       cart?.customerId || ''
     );
     taxDocument.lines = lines;

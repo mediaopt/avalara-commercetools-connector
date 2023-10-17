@@ -2,12 +2,12 @@ import { logger } from '../utils/logger.utils';
 import { getTax } from '../avalara/requests/actions/get.tax';
 import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
 import { getData } from '../client/create.client';
-import { avaTaxConfig } from '../avalara/utils/avatax.config';
 import * as http from 'node:https';
 import { checkAddress } from '../avalara/requests/actions/check.address';
 import { Cart } from '@commercetools/platform-sdk';
 import { shippingAddress } from '../avalara/utils/shipping.address';
 import { Request, Response } from 'express';
+import { setUpAvaTax } from '../utils/avatax.utils';
 
 export async function cartUpdate(req: Request, res: Response) {
   try {
@@ -17,25 +17,7 @@ export async function cartUpdate(req: Request, res: Response) {
       (res) => res.settings
     );
 
-    const creds = {
-      username: settings.accountNumber,
-      password: settings.licenseKey,
-    };
-
-    const originAddress = {
-      line1: settings.line1,
-      line2: settings.line2,
-      line3: settings.line3,
-      city: settings.city,
-      postalCode: settings.postalCode,
-      region: settings.region,
-      country: settings.country,
-    };
-
-    const avataxConfig = avaTaxConfig(
-      settings.env ? 'production' : 'sandbox',
-      http
-    );
+    const { creds, originAddress, avataxConfig } = setUpAvaTax(settings, http);
 
     const cart: Cart = req.body?.resource?.obj;
 
