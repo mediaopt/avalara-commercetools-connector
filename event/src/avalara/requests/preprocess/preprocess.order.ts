@@ -9,7 +9,6 @@ import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
-import { logger } from '../../../utils/logger.utils';
 
 async function getCategoryTaxCodes(items: Array<LineItem>) {
   const itemsWithoutTaxCodes = items
@@ -20,9 +19,7 @@ async function getCategoryTaxCodes(items: Array<LineItem>) {
     )
     ?.map((x) => x.productKey);
 
-  const categoryData = await getBulkProductCategories(
-    itemsWithoutTaxCodes
-  ).catch((e) => logger.error(e));
+  const categoryData = await getBulkProductCategories(itemsWithoutTaxCodes);
 
   const listOfCategories: any = [
     ...new Set(
