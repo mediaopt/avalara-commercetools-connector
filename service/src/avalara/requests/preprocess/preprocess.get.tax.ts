@@ -2,7 +2,7 @@ import { Cart, LineItem } from '@commercetools/platform-sdk';
 import {
   getBulkCategoryTaxCode,
   getBulkProductCategories,
-  getCustomerEntityCode,
+  getCustomerEntityUseCode,
 } from '../../../client/create.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
@@ -34,7 +34,7 @@ async function getCategoryTaxCodes(items: Array<LineItem>) {
   return categoryData.map((x: any) => ({
     productKey: x.productKey,
     taxCode: x.categories
-      .map((x: any) => catTaxCodes.find((y) => y.id === x)?.avataxCode)
+      .map((x: any) => catTaxCodes.find((y) => y.id === x)?.avalaraTaxCode)
       .find((x: any) => x !== undefined),
   }));
 }
@@ -83,7 +83,7 @@ export async function processCart(
       shipTo: shipTo,
     };
 
-    taxDocument.entityUseCode = await getCustomerEntityCode(
+    taxDocument.entityUseCode = await getCustomerEntityUseCode(
       cart?.customerId || ''
     );
     taxDocument.lines = lines;

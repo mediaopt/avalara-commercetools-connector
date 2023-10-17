@@ -49,23 +49,23 @@ export const getData = async (container: string) => {
 export const getShipTaxCode = async (id: string) => {
   return (
     await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
-  )?.body?.custom?.fields?.avataxCode;
+  )?.body?.custom?.fields?.avalaraTaxCode;
 };
 
 export const getDiscountTaxCode = async (id: string) => {
   return (
     await createApiRoot().cartDiscounts().withId({ ID: id }).get().execute()
-  )?.body?.custom?.fields?.avataxCode;
+  )?.body?.custom?.fields?.avalaraTaxCode;
 };
 
-export const getCustomerEntityCode = async (id: string) => {
+export const getCustomerEntityUseCode = async (id: string) => {
   return (await createApiRoot().customers().withId({ ID: id }).get().execute())
-    ?.body?.custom?.fields?.avataxCode;
+    ?.body?.custom?.fields?.avalaraEntityUseCode;
 };
 
 export const getCategoryTaxCode = async (id: string) => {
   return (await createApiRoot().categories().withId({ ID: id }).get().execute())
-    ?.body?.custom?.fields?.avataxCode;
+    ?.body?.custom?.fields?.avalaraTaxCode;
 };
 
 export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
@@ -75,7 +75,7 @@ export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
     await createApiRoot().categories().get({ queryArgs: { cs } }).execute()
   )?.body?.results.map((x) => ({
     id: x.id,
-    avataxCode: x.custom?.fields?.avataxCode,
+    avalaraTaxCode: x.custom?.fields?.avalaraTaxCode,
   }));
 };
 
