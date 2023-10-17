@@ -1,10 +1,46 @@
 import { Cart, LineItem } from '@commercetools/platform-sdk';
-import { getCustomerEntityCode } from '../../../client/create.client';
+import {
+  getBulkCategoryTaxCode,
+  getBulkProductCategories,
+  getCustomerEntityCode,
+} from '../../../client/create.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
+import { logger } from '../../../utils/logger.utils';
+
+async function getCategoryTaxCodes(items: Array<LineItem>) {
+  const itemsWithoutTaxCodes = items
+    .filter(
+      (x) =>
+        x?.variant?.attributes?.filter((attr) => attr.name === 'avatax-code')[0]
+          ?.value === undefined
+    )
+    ?.map((x) => x.productKey);
+
+  const categoryData = await getBulkProductCategories(
+    itemsWithoutTaxCodes
+  ).catch((e) => logger.error(e));
+
+  const listOfCategories: any = [
+    ...new Set(
+      categoryData
+        .map((x: any) => x.categories)
+        .reduce((acc: any, curr: any) => curr.concat(acc), [])
+    ),
+  ];
+
+  const catTaxCodes = await getBulkCategoryTaxCode(listOfCategories);
+
+  return categoryData.map((x: any) => ({
+    productKey: x.productKey,
+    taxCode: x.categories
+      .map((x: any) => catTaxCodes.find((y) => y.id === x)?.avataxCode)
+      .find((x: any) => x !== undefined),
+  }));
+}
 
 // initialize and specify the tax document model of Avalara
 export async function processCart(
@@ -21,8 +57,12 @@ export async function processCart(
 
     const shippingInfo = await shipItem(cart?.shippingInfo);
 
+    const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems);
+
     const lines = await Promise.all(
-      cart?.lineItems.map(async (x: LineItem) => await lineItem(x))
+      cart?.lineItems.map(
+        async (x: LineItem) => await lineItem(x, itemCategoryTaxCodes)
+      )
     );
 
     lines.push(shippingInfo);

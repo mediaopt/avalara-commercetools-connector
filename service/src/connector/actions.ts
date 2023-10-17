@@ -51,6 +51,37 @@ export async function createCartUpdateExtension(
       },
     })
     .execute();
+
+  await apiRoot
+    .types()
+    .post({
+      body: {
+        key: 'avatax',
+        name: {
+          en: 'Additional field to store Avatax codes',
+        },
+        resourceTypeIds: [
+          'category',
+          'shipping-method',
+          'customer',
+          'cart-discount',
+        ],
+        fieldDefinitions: [
+          {
+            name: 'avataxCode',
+            label: {
+              en: 'Avatax Entity Use/Tax code',
+            },
+            required: false,
+            type: {
+              name: 'String',
+            },
+            inputHint: 'SingleLine',
+          },
+        ],
+      },
+    })
+    .execute();
 }
 
 export async function deleteCartUpdateExtension(
@@ -73,6 +104,16 @@ export async function deleteCartUpdateExtension(
     await apiRoot
       .extensions()
       .withKey({ key: CART_UPDATE_EXTENSION_KEY })
+      .delete({
+        queryArgs: {
+          version: extension.version,
+        },
+      })
+      .execute();
+
+    await apiRoot
+      .types()
+      .withKey({ key: 'avatax' })
       .delete({
         queryArgs: {
           version: extension.version,
