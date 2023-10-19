@@ -14,7 +14,7 @@ import { errorMiddleware } from './middleware/error.middleware';
 // Read env variables
 readConfiguration();
 
-const PORT = 8081;
+const PORT = 8080;
 
 // Create the express app
 const app: Express = express();
