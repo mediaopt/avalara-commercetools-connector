@@ -8,16 +8,48 @@ import { Cart } from '@commercetools/platform-sdk';
 import { shippingAddress } from '../avalara/utils/shipping.address';
 import { Request, Response } from 'express';
 import { setUpAvaTax } from '../utils/avatax.utils';
+import { testConnection } from '../avalara/requests/actions/test.connection';
+
 
 export async function cartUpdate(req: Request, res: Response) {
   try {
-    logger.info('Cart update extension executed');
     // Get credentials and configuration
     const settings = await getData('avalara-commercetools-connector').then(
       (res) => res.settings
     );
 
-    const { creds, originAddress, avataxConfig } = setUpAvaTax(settings, http);
+    if (req.body?.testConnection) {
+      logger.info('Test connection call')
+      const authenticated = await testConnection(req.body);
+      const payload: any = {
+        authenticated: authenticated
+      }
+      if (req.body?.id) {
+        payload.id = req.body?.id
+      }
+      return res.status(200).send(payload)
+
+    } else if (req.body?.checkAddress) {
+      logger.info('Check address call')
+      const validationInfo = await checkAddress(
+        req.body
+      );
+
+      const payload: any = {
+        valid: validationInfo?.valid, 
+      }
+      if (req.body?.id) {
+        payload.id = req.body?.id
+      }
+      if (!validationInfo?.valid) {
+        payload.message = validationInfo?.errorMessage
+        return res.status(200).send(payload)  
+      }
+      payload.address = validationInfo?.address
+      return res.status(200).send(payload)  
+    }
+
+    const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
     const cart: Cart = req.body?.resource?.obj;
 
@@ -35,14 +67,17 @@ export async function cartUpdate(req: Request, res: Response) {
 
       if (settings.addressValidation) {
         const validationInfo = await checkAddress(
-          creds,
-          shippingAddress(cart?.shippingAddress),
-          avataxConfig
+          {
+            creds: creds,
+            address: shippingAddress(cart?.shippingAddress),
+            config: avataxConfig
+          }
         );
 
         const valid = validationInfo?.valid;
 
         if (!valid) {
+          logger.info('Invalid address');
           return res.status(400).json({
             errors: [
               {
@@ -56,15 +91,17 @@ export async function cartUpdate(req: Request, res: Response) {
       // If address was valid or address validation was desctivated calculate tax
       return await getTax(cart, creds, originAddress, avataxConfig).then(
         (response) => {
+          logger.info('Cart update tax extension executed');
           res.status(200).send(postProcessing(cart, response));
         }
       );
     } else {
-      res.status(200).json();
+      logger.info('Cart update tax extension was not executed');
+      return res.status(200).json();
     }
   } catch (e) {
     logger.error(e);
-    res.status(400).json({
+    return res.status(400).json({
       errors: [
         {
           code: 'General',

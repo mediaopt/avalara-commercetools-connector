@@ -3,6 +3,7 @@ dotenv.config();
 
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 // Import routes
 import ServiceRoutes from './routes/service.router';
@@ -25,6 +26,8 @@ app.disable('x-powered-by');
 // Define configurations
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors());
 
 // Define routes
 app.use('/service', ServiceRoutes);

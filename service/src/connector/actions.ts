@@ -218,7 +218,7 @@ export async function createCartUpdateExtension(
         triggers: [
           {
             resourceTypeId: 'cart',
-            actions: ['Update'],
+            actions: ['Create', 'Update'],
           },
         ],
       },
