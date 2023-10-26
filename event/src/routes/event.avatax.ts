@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import * as http from 'node:https';
 import { logger } from '../utils/logger.utils';
 import { Order } from '@commercetools/platform-sdk';
@@ -7,7 +7,7 @@ import { commitTransaction } from '../avalara/requests/actions/commit.transactio
 import { voidTransaction } from '../avalara/requests/actions/void.transaction';
 import { setUpAvaTax } from '../utils/avatax.utils';
 
-export async function avataxTransactionOperations(req: Request) {
+export async function avataxTransactionOperations(req: Request, res: Response) {
   try {
     logger.info('Event message received');
     const settings = await getData('avalara-commercetools-connector').then(
@@ -15,7 +15,7 @@ export async function avataxTransactionOperations(req: Request) {
     );
 
     if (settings.disableDocRec) {
-      return;
+      return res.status(200).send();
     }
     const { creds, originAddress, avataxConfig } = setUpAvaTax(settings, http);
 
@@ -24,10 +24,11 @@ export async function avataxTransactionOperations(req: Request) {
       const order: Order = req.body.order;
       return await commitTransaction(order, creds, originAddress, avataxConfig)
         .then(() => {
-          // setting custom field to committed?
+          res.status(200).send();
         })
         .catch((e) => {
           logger.error(e);
+          res.status(400).send();
         });
     } else if (
       req.body.type === 'OrderStateChanged' &&
@@ -37,13 +38,15 @@ export async function avataxTransactionOperations(req: Request) {
       const orderId: string = req.body.resource.id;
       return await voidTransaction(orderId, creds, avataxConfig)
         .then(() => {
-          // setting custom field to voided?
+          res.status(200).send();
         })
         .catch((e) => {
           logger.error(e);
+          res.status(400).send();
         });
     }
   } catch (e) {
     logger.error(e);
+    res.status(400).send();
   }
 }
