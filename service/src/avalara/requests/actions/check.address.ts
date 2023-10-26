@@ -1,14 +1,10 @@
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
-import { AddressInfo } from 'avatax/lib/models/AddressInfo';
+import { avaTaxConfig } from '../../utils/avatax.config';
 
-export async function checkAddress(
-  data: {
-    creds: { [key: string]: string },
-  address: AddressInfo,
-  config: any
-  }
-) {
-  const client = new AvaTaxClient(data?.config).withSecurity(data?.creds);
+export async function checkAddress(data: any) {
+  const client = new AvaTaxClient(
+    data?.config ?? avaTaxConfig(data?.env)
+  ).withSecurity(data?.creds);
 
   const addressValidation = await client.resolveAddress(data?.address);
 

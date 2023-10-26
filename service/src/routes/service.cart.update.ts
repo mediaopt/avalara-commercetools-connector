@@ -2,7 +2,6 @@ import { logger } from '../utils/logger.utils';
 import { getTax } from '../avalara/requests/actions/get.tax';
 import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
 import { getData } from '../client/create.client';
-import * as http from 'node:https';
 import { checkAddress } from '../avalara/requests/actions/check.address';
 import { Cart } from '@commercetools/platform-sdk';
 import { shippingAddress } from '../avalara/utils/shipping.address';
@@ -10,45 +9,45 @@ import { Request, Response } from 'express';
 import { setUpAvaTax } from '../utils/avatax.utils';
 import { testConnection } from '../avalara/requests/actions/test.connection';
 
+async function isTestConnection(data: any) {
+  if (data?.testConnection) {
+    logger.info('Test connection call');
+    return {
+      authenticated: await testConnection(data),
+    };
+  }
+}
+
+async function isCheckAddress(data: any) {
+  if (data?.checkAddress) {
+    logger.info('Check address call');
+    const validationInfo = await checkAddress(data);
+    const payload: any = {
+      valid: validationInfo?.valid,
+    };
+    if (!validationInfo?.valid) {
+      payload.message = validationInfo?.errorMessage;
+    } else {
+      payload.address = validationInfo?.address;
+    }
+    return payload;
+  }
+}
 
 export async function cartUpdate(req: Request, res: Response) {
   try {
-    // Get credentials and configuration
+    const connectionTestCall = await isTestConnection(req.body);
+    const addressCheckCall = await isCheckAddress(req.body);
+
+    if (connectionTestCall) {
+      return res.status(200).send(connectionTestCall);
+    } else if (addressCheckCall) {
+      return res.status(200).send(addressCheckCall);
+    }
+
     const settings = await getData('avalara-commercetools-connector').then(
       (res) => res.settings
     );
-
-    if (req.body?.testConnection) {
-      logger.info('Test connection call')
-      const authenticated = await testConnection(req.body);
-      const payload: any = {
-        authenticated: authenticated
-      }
-      if (req.body?.id) {
-        payload.id = req.body?.id
-      }
-      return res.status(200).send(payload)
-
-    } else if (req.body?.checkAddress) {
-      logger.info('Check address call')
-      const validationInfo = await checkAddress(
-        req.body
-      );
-
-      const payload: any = {
-        valid: validationInfo?.valid, 
-      }
-      if (req.body?.id) {
-        payload.id = req.body?.id
-      }
-      if (!validationInfo?.valid) {
-        payload.message = validationInfo?.errorMessage
-        return res.status(200).send(payload)  
-      }
-      payload.address = validationInfo?.address
-      return res.status(200).send(payload)  
-    }
-
     const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
     const cart: Cart = req.body?.resource?.obj;
@@ -63,16 +62,12 @@ export async function cartUpdate(req: Request, res: Response) {
       cart?.lineItems &&
       cart?.shippingInfo
     ) {
-      // Validate address if address validation is activated
-
       if (settings.addressValidation) {
-        const validationInfo = await checkAddress(
-          {
-            creds: creds,
-            address: shippingAddress(cart?.shippingAddress),
-            config: avataxConfig
-          }
-        );
+        const validationInfo = await checkAddress({
+          creds: creds,
+          address: shippingAddress(cart?.shippingAddress),
+          config: avataxConfig,
+        });
 
         const valid = validationInfo?.valid;
 
