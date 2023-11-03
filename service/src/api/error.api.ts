@@ -1,24 +1,24 @@
 import { UpdateAction } from '@commercetools/sdk-client-v2';
 import { Response } from 'express';
-import { ResponseInterfaceSuccess } from '../interfaces/response.interface';
+import { ResponseInterfaceError } from '../interfaces/response.interface';
 
 /**
  * Send a success response to the client
  *
  * @param {Response} response Express response
  * @param {number} statusCode The status code of the operation
- * @param {Array<UpdateAction>} updateActions The update actions that were made in the process
+ * @param {Array<unknown>} errors The update actions that were made in the process
  * @returns Success response with 200 status code and the update actions array
  */
-export const apiSuccess = (
+export const apiError = (
   statusCode: number,
-  updateActions: Array<UpdateAction> | undefined,
+  errors: Array<unknown>,
   response: Response
 ) => {
-  const responseBody = {} as ResponseInterfaceSuccess;
+  const responseBody = {} as ResponseInterfaceError;
 
-  if (updateActions) {
-    responseBody.actions = updateActions;
+  if (errors) {
+    responseBody.errors = errors;
   }
 
   response.status(statusCode).json({

@@ -1,59 +1,83 @@
 import { UpdateAction } from '@commercetools/sdk-client-v2';
-
-import { createApiRoot } from '../client/create.client';
+import { createApiRoot, getData } from '../client/create.client';
 import CustomError from '../errors/custom.error';
 import { Resource } from '../interfaces/resource.interface';
+import { setUpAvaTax } from '../utils/avatax.utils';
+import { Cart } from '@commercetools/platform-sdk';
+import { logger } from '../utils/logger.utils';
+import { getTax } from '../avalara/requests/actions/get.tax';
+import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
+import { checkAddress } from '../avalara/requests/actions/check.address';
+import { shippingAddress } from '../avalara/utils/shipping.address';
 
-/**
- * Handle the create action
- *
- * @param {Resource} resource The resource from the request body
- * @returns {object}
- */
-const create = async (resource: Resource) => {
-  let productId = undefined;
-
+export async function createUpdate(resource: Resource) {
   try {
-    const updateActions: Array<UpdateAction> = [];
+    const settings = await getData('avalara-commercetools-connector').then(
+      (res) => res.settings
+    );
+    const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
-    // Deserialize the resource to a CartDraft
     const cartDraft = JSON.parse(JSON.stringify(resource));
+    const cart: Cart = cartDraft?.obj
 
-    if (cartDraft.obj.lineItems.length !== 0) {
-      productId = cartDraft.obj.lineItems[0].productId;
-    }
+    const taxCalculationAllowed: boolean = settings.taxCalculation.includes(
+      cart?.shippingAddress?.country
+    );
 
-    // Fetch the product with the ID
-    if (productId) {
-      await createApiRoot()
-        .products()
-        .withId({ ID: productId })
-        .get()
-        .execute();
+    if (
+      taxCalculationAllowed &&
+      cart?.shippingAddress &&
+      cart?.lineItems.length !== 0 &&
+      cart?.shippingInfo
+    ) {
+      if (settings.addressValidation) {
+        const validationInfo = await checkAddress({
+          creds: creds,
+          address: shippingAddress(cart?.shippingAddress),
+          config: avataxConfig,
+        });
 
-      // Work with the product
-    }
+        const valid = validationInfo?.valid;
 
-    // Create the UpdateActions Object to return it to the client
-    const updateAction: UpdateAction = {
-      action: 'recalculate',
-      updateProductData: false,
-    };
-
-    updateActions.push(updateAction);
-
-    return { statusCode: 200, actions: updateActions };
-  } catch (error) {
-    // Retry or handle the error
-    // Create an error object
-    if (error instanceof Error) {
-      throw new CustomError(
-        400,
-        `Internal server error on CartController: ${error.stack}`
+        if (!valid) {
+          logger.info('Invalid address');
+          return {
+            statusCode: 400,
+            errors: [
+              {
+                code: 'InvalidInput',
+                message: validationInfo?.errorMessage || '',
+              },
+            ],
+          };
+        }
+      }
+      // If address was valid or address validation was desctivated calculate tax
+      const updateActions: Array<UpdateAction> | void = await getTax(cart, creds, originAddress, avataxConfig).then(
+        (response) => {
+          return postProcessing(cart, response);
+        }
       );
+      return { statusCode: 200, actions: updateActions}
+    } else {
+      logger.info('Cart update tax extension was not executed');
+      return { statusCode: 200 }
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      return { statusCode: 400,
+        errors: [
+          {
+            code: 'General',
+            message: error.message,
+          },
+        ],
+      };
+    } else {
+      throw new CustomError(400, 'Internal Server Error')
     }
   }
-};
+}
 
 // Controller for update actions
 // const update = (resource: Resource) => {};
@@ -68,11 +92,12 @@ const create = async (resource: Resource) => {
 export const cartController = async (action: string, resource: Resource) => {
   switch (action) {
     case 'Create': {
-      const data = create(resource);
+      const data = await createUpdate(resource);
       return data;
     }
     case 'Update':
-      break;
+      const data = await createUpdate(resource);
+      return data;
 
     default:
       throw new CustomError(

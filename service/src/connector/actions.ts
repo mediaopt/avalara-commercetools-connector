@@ -5,12 +5,12 @@ import {
   TypeDraft,
 } from '@commercetools/platform-sdk';
 
-const CART_UPDATE_EXTENSION_KEY =
+export const CART_UPDATE_EXTENSION_KEY =
   'avalara-commercetools-connector-cartUpdateExtension';
 
-const AVALARA_TAX_CODES_KEY = 'avalara-tax-codes';
+export const AVALARA_TAX_CODES_KEY = 'avalara-tax-codes';
 
-const AVALARA_ENTITY_USE_CODES_KEY = 'avalara-entity-use-codes';
+export const AVALARA_ENTITY_USE_CODES_KEY = 'avalara-entity-use-codes';
 
 //const CART_DISCOUNT_TYPE_KEY = 'myconnector-cartDiscountType';
 

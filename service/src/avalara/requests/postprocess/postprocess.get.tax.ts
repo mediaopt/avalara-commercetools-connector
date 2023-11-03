@@ -1,7 +1,7 @@
-import { Cart } from '@commercetools/platform-sdk';
+import { Cart, UpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 
-export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
+export function postProcessing(cart: Cart, taxResponse: TransactionModel): Array<UpdateAction> {
   const actions = [];
 
   const taxRate = taxResponse?.summary
@@ -65,7 +65,5 @@ export function postProcessing(cart: Cart, taxResponse: TransactionModel) {
     },
   });
 
-  return {
-    actions: actions,
-  };
+  return actions;
 }

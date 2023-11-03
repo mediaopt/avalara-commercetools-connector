@@ -8,6 +8,5 @@ coverage
 .vscode
 build/
 .env
-service.test.connection.spec.ts
 service.update.cart.spec.ts
-service.validate.address.spec.ts
+carts.ts
