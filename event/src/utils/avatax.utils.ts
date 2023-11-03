@@ -1,6 +1,6 @@
 import { avaTaxConfig } from '../avalara/utils/avatax.config';
 
-export const setUpAvaTax = (settings: any, httpAgent: any) => {
+export const setUpAvaTax = (settings: any) => {
   const creds = {
     username: settings.accountNumber,
     password: settings.licenseKey,
@@ -15,8 +15,7 @@ export const setUpAvaTax = (settings: any, httpAgent: any) => {
     country: settings.country,
   };
   const avataxConfig = avaTaxConfig(
-    settings.env ? 'production' : 'sandbox',
-    httpAgent
+    settings.env ? 'production' : 'sandbox'
   );
 
   return { creds, originAddress, avataxConfig };

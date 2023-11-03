@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { avataxTransactionOperations } from './event.avatax';
+import { post } from '../controllers/event.controller';
 
 const eventRouter: Router = Router();
 
-eventRouter.post('/', avataxTransactionOperations);
+eventRouter.post('/', post);
 
 export default eventRouter;
