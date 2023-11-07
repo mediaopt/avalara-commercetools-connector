@@ -14,9 +14,7 @@ export const setUpAvaTax = (settings: any) => {
     region: settings.region,
     country: settings.country,
   };
-  const avataxConfig = avaTaxConfig(
-    settings.env ? 'production' : 'sandbox'
-  );
+  const avataxConfig = avaTaxConfig(settings.env ? 'production' : 'sandbox');
 
   return { creds, originAddress, avataxConfig };
 };

@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { getData } from '../client/create.client';
 import CustomError from '../errors/custom.error';
 import {
-  MessagePayload,
-  OrderCreatedMessagePayload,
-  OrderStateChangedMessagePayload
+  Message,
+  OrderCreatedMessage,
+  OrderStateChangedMessage,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/message';
 import { logger } from '../utils/logger.utils';
 import { setUpAvaTax } from '../utils/avatax.utils';
@@ -34,50 +34,66 @@ function parseRequest(request: Request) {
     ? Buffer.from(pubSubMessage.data, 'base64').toString().trim()
     : undefined;
   if (decodedData) {
-    logger.info(`Message received: ${pubSubMessage}`)
     logger.info(`Payload received: ${decodedData}`);
-    return JSON.parse(decodedData) as MessagePayload;
+    return JSON.parse(decodedData) as Message;
   }
   throw new CustomError(400, 'Bad request: No payload in the Pub/Sub message');
 }
 
-
-export const post = async (request: Request, response: Response) => {
+export const post = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
   try {
-  const settings = await getData('avalara-commercetools-connector').then(
-    (res) => res?.settings
-  ).catch(e => new CustomError(400, e));
-  if (!settings) {
-    throw new CustomError(400, 'No Avalara merchant data is present.')
-  }
-  if (settings?.disableDocRec) {
-    return response.status(204).send();
-  }
-  let { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
-
-  const messagePayload = parseRequest(request) as OrderCreatedMessagePayload | OrderStateChangedMessagePayload
-  switch (messagePayload.type) {
-    case 'OrderCreated':
-      if (!messagePayload.order) {
-        throw new CustomError(400, `Order must be defined.`);
-      }
-      await commitTransaction(messagePayload.order, creds, originAddress, avataxConfig)
-      break;
-    case 'OrderStateChanged':
-      if (!(messagePayload.orderState === 'Cancelled')) {
-        //await voidTransaction(orderId, creds, avataxConfig)
-      }
-      break;
-    default: 
-      throw new CustomError(400, `Internal Server Error: message type must be one of 'OrderCreated', 'OrderStateChanged'`);
+    const settings = await getData('avalara-commercetools-connector')
+      .then((res) => res?.settings)
+      .catch((e) => new CustomError(400, e));
+    if (!settings) {
+      throw new CustomError(400, 'No Avalara merchant data is present.');
     }
-    
+    if (settings?.disableDocRec) {
+      return response.status(204).send();
+    }
+    let { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
+
+    const messagePayload = parseRequest(request) as
+      | OrderCreatedMessage
+      | OrderStateChangedMessage;
+    switch (messagePayload.type) {
+      case 'OrderCreated':
+        if (!messagePayload.order) {
+          throw new CustomError(400, `Order must be defined.`);
+        }
+        await commitTransaction(
+          messagePayload.order,
+          creds,
+          originAddress,
+          avataxConfig
+        );
+        response.status(200).send();
+        break;
+      case 'OrderStateChanged':
+        if (
+          messagePayload.orderState === 'Cancelled' &&
+          messagePayload.resource.id
+        ) {
+          await voidTransaction(
+            messagePayload.resource.id,
+            creds,
+            avataxConfig
+          );
+          response.status(200).send();
+        }
+        break;
+      default:
+        response.status(200).send();
+    }
   } catch (error) {
-    throw new CustomError(400, `Internal Server error: ${error}`);
+    if (error instanceof Error) {
+      next(new CustomError(400, error.message));
+    } else {
+      next(error);
+    }
   }
-
-  // Return the response for the client
-  response.status(204).send();
 };
-
-

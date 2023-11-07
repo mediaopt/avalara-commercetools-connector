@@ -1,5 +1,5 @@
 // set up avatax client configuration to be used in all calls to avalara
-import * as http from 'node:https'
+import * as http from 'node:https';
 
 export function avaTaxConfig(env: string) {
   return {
