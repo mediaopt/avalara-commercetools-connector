@@ -1,4 +1,5 @@
 node_modules
+mc-app
 coverage
 .terraform
 *.tfstate*

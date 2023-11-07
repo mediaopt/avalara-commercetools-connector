@@ -4,6 +4,7 @@ export const setUpAvaTax = (settings: any) => {
   const creds = {
     username: settings.accountNumber,
     password: settings.licenseKey,
+    companyCode: settings.companyCode
   };
   const originAddress = {
     line1: settings.line1,
