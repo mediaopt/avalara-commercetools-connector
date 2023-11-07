@@ -19,11 +19,12 @@ export const apiSuccess = (
 
   if (updateActions) {
     responseBody.actions = updateActions;
+    response.status(statusCode).json({
+      ...responseBody,
+    });
   }
 
-  response.status(statusCode).json({
-    ...responseBody,
-  });
+  response.status(statusCode).json();
 };
 
 

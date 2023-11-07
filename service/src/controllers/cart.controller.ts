@@ -1,5 +1,5 @@
 import { UpdateAction } from '@commercetools/sdk-client-v2';
-import { createApiRoot, getData } from '../client/create.client';
+import { getData } from '../client/create.client';
 import CustomError from '../errors/custom.error';
 import { Resource } from '../interfaces/resource.interface';
 import { setUpAvaTax } from '../utils/avatax.utils';
