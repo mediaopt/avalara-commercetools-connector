@@ -76,7 +76,7 @@ export async function processCart(
 
     taxDocument.currencyCode = cart?.totalPrice?.currencyCode;
 
-    taxDocument.customerCode = cart?.customerId || '0';
+    taxDocument.customerCode = cart?.customerId || cart?.anonymousId || '';
 
     taxDocument.addresses = {
       shipFrom: shipFrom,

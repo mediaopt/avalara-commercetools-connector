@@ -76,7 +76,7 @@ export async function processOrder(
 
     taxDocument.currencyCode = order?.totalPrice?.currencyCode;
 
-    taxDocument.customerCode = order?.customerId || '';
+    taxDocument.customerCode = order?.customerId || order?.anonymousId || '';
 
     taxDocument.addresses = {
       shipFrom: shipFrom,
