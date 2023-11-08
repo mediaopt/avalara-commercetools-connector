@@ -27,7 +27,7 @@ export async function lineItem(
 
   lineItem.amount = discountedPrice || item?.totalPrice?.centAmount / 100;
 
-  lineItem.description = item?.name['en-US'];
+  lineItem.description = item?.name?.en;
 
   lineItem.itemCode = item?.productKey;
 

@@ -10,6 +10,7 @@ import { logger } from '../utils/logger.utils';
 import { setUpAvaTax } from '../utils/avatax.utils';
 import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
 import { voidTransaction } from '../avalara/requests/actions/void.transaction';
+import { refundTransaction } from '../avalara/requests/actions/refund.transaction';
 
 /**
  * Exposed event POST endpoint.
@@ -53,7 +54,7 @@ export const post = async (
       throw new CustomError(400, 'No Avalara merchant data is present.');
     }
     if (settings?.disableDocRec) {
-      return response.status(204).send();
+      return response.status(200).send();
     }
     let { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
@@ -70,7 +71,8 @@ export const post = async (
           creds,
           originAddress,
           avataxConfig
-        );
+        )
+        .catch(error => logger.error(error));
         response.status(200).send();
         break;
       case 'OrderStateChanged':
@@ -82,7 +84,12 @@ export const post = async (
             messagePayload.resource.id,
             creds,
             avataxConfig
-          );
+          )
+          .catch(async (error) => {
+            logger.error(error);
+            await refundTransaction(messagePayload.resource.id, creds, avataxConfig)
+            .catch(error => logger.error(error))
+          });
           response.status(200).send();
         }
         break;
