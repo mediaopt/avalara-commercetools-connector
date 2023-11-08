@@ -14,13 +14,13 @@ export async function refundTransaction(
   refundModel.refundType = 0;
   refundModel.referenceCode = 'Refund for a committed transaction';
 
-  const refundBody= {
+  const refundBody = {
     companyCode: creds.companyCode,
     transactionCode: orderId,
     model: refundModel,
   };
 
-  const taxResponse = await client.refundTransaction(refundBody)
+  const taxResponse = await client.refundTransaction(refundBody);
 
   return taxResponse;
 }

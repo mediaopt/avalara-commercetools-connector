@@ -1,0 +1,25 @@
+{
+  "ProjectSwitcher.projectsLabel": "Projects menu",
+  "UserSettingsMenu.menuLabel": "User settings menu",
+  "LocaleSwitcher.localesLabel": "Locales menu",
+  "Welcome.title": "Avalara Tax calculation",
+  "Settings.configuration": "Avalara Configuration",
+  "Settings.originAddress": "Avalara Origin Address",
+  "Settings.settings": "Avalara Credentials",
+  "Settings.account": "Account Number",
+  "Settings.licenseKey": "License Key",
+  "Settings.companyCode": "Company Code",
+  "Settings.env": "Activate live environment", 
+  "Settings.logLevel": "Choose your log level", 
+  "Settings.taxCalculation": "Define your tax calculation mode", 
+  "Settings.addressValidation": "Activate address validation", 
+  "Settings.disableDocRec": "Disable document recording", 
+  "Settings.line1": "Line 1", 
+  "Settings.line2": "Line 2",
+  "Settings.line3": "Line 3", 
+  "Settings.city": "City", 
+  "Settings.postalCode": "Postal code", 
+  "Settings.region": "State", 
+  "Settings.country": "Country" 
+
+}

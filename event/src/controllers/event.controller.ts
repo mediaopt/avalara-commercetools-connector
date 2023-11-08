@@ -56,7 +56,7 @@ export const post = async (
     if (settings?.disableDocRec) {
       return response.status(200).send();
     }
-    let { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
+    const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
     const messagePayload = parseRequest(request) as
       | OrderCreatedMessage
@@ -71,8 +71,7 @@ export const post = async (
           creds,
           originAddress,
           avataxConfig
-        )
-        .catch(error => logger.error(error));
+        ).catch((error) => logger.error(error));
         response.status(200).send();
         break;
       case 'OrderStateChanged':
@@ -84,11 +83,13 @@ export const post = async (
             messagePayload.resource.id,
             creds,
             avataxConfig
-          )
-          .catch(async (error) => {
+          ).catch(async (error) => {
             logger.error(error);
-            await refundTransaction(messagePayload.resource.id, creds, avataxConfig)
-            .catch(error => logger.error(error))
+            await refundTransaction(
+              messagePayload.resource.id,
+              creds,
+              avataxConfig
+            ).catch((error) => logger.error(error));
           });
           response.status(200).send();
         }

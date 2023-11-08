@@ -26,5 +26,3 @@ export const apiSuccess = (
 
   response.status(statusCode).json();
 };
-
-

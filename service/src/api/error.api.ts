@@ -1,4 +1,3 @@
-import { UpdateAction } from '@commercetools/sdk-client-v2';
 import { Response } from 'express';
 import { ResponseInterfaceError } from '../interfaces/response.interface';
 
@@ -25,5 +24,3 @@ export const apiError = (
     ...responseBody,
   });
 };
-
-

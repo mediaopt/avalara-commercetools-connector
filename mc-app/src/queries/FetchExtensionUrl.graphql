@@ -1,0 +1,11 @@
+query FetchExtensionUrl($key: String) {
+  extension(key: $key) {
+      destination {
+        ...Url
+    }
+  }
+}
+
+fragment Url on HttpDestination {
+  url
+}

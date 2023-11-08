@@ -18,7 +18,7 @@ export async function createUpdate(resource: Resource) {
     const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
     const cartDraft = JSON.parse(JSON.stringify(resource));
-    const cart: Cart = cartDraft?.obj
+    const cart: Cart = cartDraft?.obj;
 
     const taxCalculationAllowed: boolean = settings.taxCalculation.includes(
       cart?.shippingAddress?.country
@@ -53,19 +53,23 @@ export async function createUpdate(resource: Resource) {
         }
       }
       // If address was valid or address validation was desctivated calculate tax
-      const updateActions: Array<UpdateAction> | void = await getTax(cart, creds, originAddress, avataxConfig).then(
-        (response) => {
-          return postProcessing(cart, response);
-        }
-      );
-      return { statusCode: 200, actions: updateActions}
+      const updateActions: Array<UpdateAction> | void = await getTax(
+        cart,
+        creds,
+        originAddress,
+        avataxConfig
+      ).then((response) => {
+        return postProcessing(cart, response);
+      });
+      return { statusCode: 200, actions: updateActions };
     } else {
       logger.info('Cart update tax extension was not executed');
-      return { statusCode: 200 }
+      return { statusCode: 200 };
     }
   } catch (error) {
     if (error instanceof Error) {
-      return { statusCode: 400,
+      return {
+        statusCode: 400,
         errors: [
           {
             code: 'General',
@@ -74,7 +78,7 @@ export async function createUpdate(resource: Resource) {
         ],
       };
     } else {
-      throw new CustomError(400, 'Internal Server Error')
+      throw new CustomError(400, 'Internal Server Error');
     }
   }
 }
@@ -95,10 +99,10 @@ export const cartController = async (action: string, resource: Resource) => {
       const data = await createUpdate(resource);
       return data;
     }
-    case 'Update':
+    case 'Update': {
       const data = await createUpdate(resource);
       return data;
-
+    }
     default:
       throw new CustomError(
         500,

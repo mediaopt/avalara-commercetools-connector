@@ -1,5 +1,8 @@
 import { describe, expect, test, jest } from '@jest/globals';
-import { postCheckAddress, checkAddressController } from '../src/controllers/check.address.controller'
+import {
+  postCheckAddress,
+  checkAddressController,
+} from '../src/controllers/check.address.controller';
 import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
 import { Request, Response } from 'express';
 
@@ -40,87 +43,89 @@ const cases = [
   },
 ];
 
-const expectValidAddress = (
-  response: {
-    valid: boolean, 
-    address?: ValidatedAddressInfo[] | undefined, 
-    errorMessage?: any
-  }
-) => {
+const expectValidAddress = (response: {
+  valid: boolean;
+  address?: ValidatedAddressInfo[] | undefined;
+  errorMessage?: any;
+}) => {
   expect(response.valid).toBeTruthy();
   expect(response.address).toBeDefined();
   expect(response.errorMessage).toBeUndefined();
-}
+};
 
-const expectInvalidAddress = (
-  response: {
-    valid: boolean, 
-    address?: ValidatedAddressInfo[] | undefined,
-    errorMessage?: any
-  }
-) => {
+const expectInvalidAddress = (response: {
+  valid: boolean;
+  address?: ValidatedAddressInfo[] | undefined;
+  errorMessage?: any;
+}) => {
   expect(response.valid).toBeFalsy();
   expect(response.errorMessage).toBeDefined();
   expect(response.address).toBeUndefined();
-}
+};
 
 const expectSuccessfulCall = async (
-  request: Request, 
-  response: Response, 
+  request: Request,
+  response: Response,
   next: any
 ) => {
   await postCheckAddress(request, response, next);
   expect(next).toBeCalledTimes(0);
-}
+};
 
 const expectFailingCall = async (
-  request: Request, 
-  response: Response, 
+  request: Request,
+  response: Response,
   next: any
 ) => {
   await postCheckAddress(request, response, next);
   expect(next).toBeCalledTimes(1);
-}
+};
 
 describe('Check address responses', () => {
-  test.each(cases)
-  ('Validate check address responses', async ({ requestBody, result }) => {
-    const checkResponse = await checkAddressController(requestBody)
-    if (result) {
-      expectValidAddress(checkResponse);
-    } else {
-      expectInvalidAddress(checkResponse);
+  test.each(cases)(
+    'Validate check address responses',
+    async ({ requestBody, result }) => {
+      const checkResponse = await checkAddressController(requestBody);
+      if (result) {
+        expectValidAddress(checkResponse);
+      } else {
+        expectInvalidAddress(checkResponse);
+      }
     }
-  });
+  );
 });
 
 describe('Check address valid call', () => {
-  test.each(cases)
-  ('Check that check address calls behave as expected', async ({requestBody}) => {
-    await expectSuccessfulCall({
-      body: requestBody
-    } as unknown as Request, 
-    {
-      json: jest.fn(), 
-      status: jest.fn().mockReturnThis(),
-    } as unknown as Response, 
-    jest.fn())
-  })
+  test.each(cases)(
+    'Check that check address calls behave as expected',
+    async ({ requestBody }) => {
+      await expectSuccessfulCall(
+        {
+          body: requestBody,
+        } as unknown as Request,
+        {
+          json: jest.fn(),
+          status: jest.fn().mockReturnThis(),
+        } as unknown as Response,
+        jest.fn()
+      );
+    }
+  );
 });
 
 describe('Check address invalid call', () => {
-  test.each([{
-    requestBody: {
+  test.each([
+    {
+      requestBody: {},
     },
-  }])
-  ('Check that check address calls behave as expected', async ({requestBody}) => {
+  ])('Check that check address calls behave as expected', async ({}) => {
     await expectFailingCall(
-      {} as Request, 
+      {} as Request,
       {
-        json: jest.fn(), 
+        json: jest.fn(),
         status: jest.fn().mockReturnThis(),
       } as unknown as Response,
       jest.fn()
-    )
-  })
+    );
+  });
 });

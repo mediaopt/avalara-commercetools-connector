@@ -13,7 +13,11 @@ import { apiError } from '../api/error.api';
  * @param {Response} response The express response
  * @returns
  */
-export const post = async (request: Request, response: Response, next: NextFunction) => {
+export const post = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
   // Deserialize the action and resource from the body
   const { action, resource } = request.body;
 
@@ -31,26 +35,27 @@ export const post = async (request: Request, response: Response, next: NextFunct
           apiSuccess(200, data?.actions || undefined, response);
           return;
         } else if (data?.errors) {
-          apiError(400, data?.errors || undefined, response)
+          apiError(400, data?.errors || undefined, response);
           return;
         }
-        return next(new CustomError(
-          data ? data.statusCode : 400,
-          JSON.stringify(data)
-        ));
+        return next(
+          new CustomError(data ? data.statusCode : 400, JSON.stringify(data))
+        );
       } catch (error) {
         if (error instanceof Error) {
           next(new CustomError(500, error.message));
         } else {
-          next(error)
+          next(error);
         }
       }
       break;
 
     default:
-      next(new CustomError(
-        500,
-        `Internal Server Error - Resource not recognized. Allowed values are 'cart'.`
-      ));
+      next(
+        new CustomError(
+          500,
+          `Internal Server Error - Resource not recognized. Allowed values are 'cart'.`
+        )
+      );
   }
 };

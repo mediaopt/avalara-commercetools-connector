@@ -1,18 +1,18 @@
 import { describe, expect, test, jest } from '@jest/globals';
 import {
-    createAvalaraEntityUseCodeFields,
-    createAvalaraTaxCodeFields, 
-    createCartUpdateExtension, 
-    deleteAvalaraEntityUseCodeFields,
-    deleteAvalaraTaxCodeFields, 
-    deleteCartUpdateExtension, 
+  createAvalaraEntityUseCodeFields,
+  createAvalaraTaxCodeFields,
+  createCartUpdateExtension,
+  deleteAvalaraEntityUseCodeFields,
+  deleteAvalaraTaxCodeFields,
+  deleteCartUpdateExtension,
 } from '../src/connector/actions';
 
 describe('Testing actions', () => {
   test.each([
     {
-        method: createCartUpdateExtension
-    }
+      method: createCartUpdateExtension,
+    },
   ])('$method', async ({ method }) => {
     const apiRequest: any = {
       execute: jest.fn(() => ({ body: { results: [{}] } })),
@@ -55,7 +55,7 @@ describe('Testing actions', () => {
     {
       method: createAvalaraTaxCodeFields,
       expectedLength: 1,
-    }
+    },
   ])('$method', async ({ method, expectedLength }) => {
     const apiRequest: any = {
       execute: jest.fn(() => ({
@@ -84,7 +84,7 @@ test.each([
   },
   {
     method: deleteAvalaraTaxCodeFields,
-  }
+  },
 ])('delete types', async ({ method }) => {
   const apiRequest: any = {
     execute: jest.fn(() => ({ body: { results: [{}] } })),
@@ -100,4 +100,3 @@ test.each([
   expect(apiRoot.delete).toBeCalledTimes(1);
   expect(apiRequest.execute).toBeCalledTimes(2);
 });
-
