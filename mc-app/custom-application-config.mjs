@@ -4,17 +4,17 @@ import { PERMISSIONS, entryPointUriPath } from './src/constants';
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
  */
 const config = {
-  name: 'Avalara - Tax calculation provider',
+  name: 'Avalara Tax Provider',
   description: 'Sales tax solution',
   entryPointUriPath,
-  cloudIdentifier: 'gcp-eu',
+  cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
       initialProjectKey: 'avalara-demo',
     },
     production: {
-      applicationId: 'clopmlukv015wy20151a6kdox',
-      url: 'http://yoururl.com',
+      applicationId: '${env:APPLICATION_ID}',
+      url: '${env:APPLICATION_URL}',
     },
   },
   headers: {
@@ -28,7 +28,7 @@ const config = {
   },
   icon: '${path:@commercetools-frontend/assets/application-icons/stamp.svg}',
   mainMenuLink: {
-    defaultLabel: 'Avalara Connector',
+    defaultLabel: 'Avalara',
     labelAllLocales: [],
     permissions: [PERMISSIONS.View],
   },
