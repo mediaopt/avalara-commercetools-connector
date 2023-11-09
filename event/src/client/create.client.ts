@@ -87,7 +87,7 @@ export const getCategoriesOfProduct = async (id: string) => {
 export const getBulkProductCategories = async (
   keys: Array<string | undefined>
 ) => {
-  const ps = keys.map((x) => `key:${x}`);
+  const ps = keys.map((x) => `${x},`).reduce((acc, curr) => acc + curr, 'key:').slice(0, -1);
   const data = (
     await createApiRoot()
       .productProjections()
