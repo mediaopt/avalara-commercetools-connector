@@ -31,10 +31,10 @@ export async function lineItem(
 
   lineItem.itemCode = item?.productKey;
 
-  (lineItem.taxIncluded = item.taxRate?.includedInPrice),
-    (lineItem.taxCode =
+  lineItem.taxIncluded = item.taxRate?.includedInPrice;
+  lineItem.taxCode =
       itemTaxCode(item) ??
-      catTaxCodes.find((x) => x.productKey === item?.productKey)?.taxCode);
+      catTaxCodes.find((x) => x.productKey === item?.productKey)?.taxCode;
 
   return lineItem;
 }

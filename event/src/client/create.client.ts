@@ -69,14 +69,14 @@ export const getCategoryTaxCode = async (id: string) => {
 };
 
 export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
-  const cs = cats.map((x) => `id=${x}`);
-
-  return (
-    await createApiRoot().categories().get({ queryArgs: { cs } }).execute()
+  const cs = cats.map((x)=>`"${x}", `).reduce((acc, curr) => acc + curr, '').slice(0, -2);
+  const taxCodes = (
+    await createApiRoot().categories().get({ queryArgs: { where: `id in (${cs})` } }).execute()
   )?.body?.results.map((x) => ({
     id: x.id,
     avalaraTaxCode: x.custom?.fields?.avalaraTaxCode,
   }));
+  return taxCodes
 };
 
 export const getCategoriesOfProduct = async (id: string) => {
@@ -87,12 +87,12 @@ export const getCategoriesOfProduct = async (id: string) => {
 export const getBulkProductCategories = async (
   keys: Array<string | undefined>
 ) => {
-  const ps = keys.map((x) => `key=${x}`);
+  const ps = keys.map((x) => `key:${x}`);
   const data = (
     await createApiRoot()
       .productProjections()
       .search()
-      .get({ queryArgs: { ps } })
+      .get({ queryArgs: { filter: ps } })
       .execute()
   )?.body?.results;
   const result: any = data.map((x: any) => ({
