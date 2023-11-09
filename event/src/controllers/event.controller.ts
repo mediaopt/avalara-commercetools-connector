@@ -91,8 +91,8 @@ export const post = async (
               avataxConfig
             ).catch((error) => logger.error(error));
           });
-          response.status(200).send();
         }
+        response.status(200).send();
         break;
       default:
         response.status(200).send();
