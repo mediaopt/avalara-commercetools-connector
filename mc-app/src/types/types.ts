@@ -11,10 +11,10 @@ export type SettingsFormDataType = {
   taxCalculation: 'none' | 'US' | 'CA' | 'USCA';
   line1: string;
   line2: string;
-  line3: string; 
-  postalCode: string; 
-  city: string; 
-  region: string; 
+  line3: string;
+  postalCode: string;
+  city: string;
+  region: string;
   country: string;
 };
 
@@ -33,8 +33,8 @@ export type FetchedCustomObjectType = {
   version: number;
 };
 
- export type FetchedExtensionUrlType= {
-  url: string
+export type FetchedExtensionUrlType = {
+  url: string;
 };
 
 export type ApollonFetchedCustomObjectType = {

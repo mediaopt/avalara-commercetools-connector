@@ -53,7 +53,7 @@ export default defineMessages({
     id: 'Settings.disableDocRec',
     defaultMessage: 'Disable document recording',
   },
-  
+
   line1: {
     id: 'Settings.line1',
     defaultMessage: 'Line 1',

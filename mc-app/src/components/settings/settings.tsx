@@ -17,14 +17,11 @@ import {
   GRAPHQL_CUSTOMOBJECT_CONTAINER_NAME,
   GRAPHQL_CUSTOMOBJECT_KEY_NAME,
 } from '../../constants';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 import {
-  useShowNotification
-} from '@commercetools-frontend/actions-global';
-import { 
-  DOMAINS, 
+  DOMAINS,
   NOTIFICATION_KINDS_SIDE,
 } from '@commercetools-frontend/constants';
-
 
 const Settings = () => {
   const showNotification = useShowNotification();
@@ -91,13 +88,17 @@ const Settings = () => {
               alignItems="flex-start"
               justifyContent="flex-start"
             >
-              <PrimaryButton label="Save configuration" type="submit" onClick={() => {
-                showNotification({
-                  kind: NOTIFICATION_KINDS_SIDE.success,
-                  domain: DOMAINS.GLOBAL,
-                  text: 'Your data was saved!',
-                });
-              }}/>
+              <PrimaryButton
+                label="Save configuration"
+                type="submit"
+                onClick={() => {
+                  showNotification({
+                    kind: NOTIFICATION_KINDS_SIDE.success,
+                    domain: DOMAINS.GLOBAL,
+                    text: 'Your data was saved!',
+                  });
+                }}
+              />
             </Spacings.Inline>
           </Spacings.Stack>
         </form>

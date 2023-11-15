@@ -19,53 +19,62 @@ const AvalaraConfiguration = ({ values, handleChange }: AvaTaxSettingsType) => {
             <Text.Headline as="h3" intlMessage={messages.configuration} />
           </Spacings.Inline>
           <Spacings.Stack scale="m" alignItems="stretch">
-
-          <SelectField
-                  title="Choose your log level"
-                  value={values.logLevel}
-                  options={[
-                    { value: 'error', label: 'Error' },
-                    { value: 'debug', label: 'Debug' },
-                    { value: 'info', label: 'Info' }
-                  ]}
-                  name="logLevel"
-                  onChange={handleChange}
-                />
+            <SelectField
+              title="Choose your log level"
+              value={values.logLevel}
+              options={[
+                { value: 'error', label: 'Error' },
+                { value: 'debug', label: 'Debug' },
+                { value: 'info', label: 'Info' },
+              ]}
+              name="logLevel"
+              onChange={handleChange}
+            />
 
             <SelectField
-                  title="Tax calculation mode"
-                  value={values.taxCalculation}
-                  options={[
-                    { value: 'none', label: 'None' },
-                    { value: 'US', label: 'USA' },
-                    { value: 'CA', label: 'Canada' }, 
-                    { value: 'USCA', label: 'USA and Canada' }
-                  ]}
-                  name="taxCalculation"
-                  onChange={handleChange}
-                />
-          
+              title="Tax calculation mode"
+              value={values.taxCalculation}
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'US', label: 'USA' },
+                { value: 'CA', label: 'Canada' },
+                { value: 'USCA', label: 'USA and Canada' },
+              ]}
+              name="taxCalculation"
+              onChange={handleChange}
+            />
 
             <Spacings.Inline
-            scale="s"
-            alignItems="center"
-            justifyContent="flex-start"
-            >            
-            <ToggleInput isDisabled={false} isChecked={values.addressValidation} value='false' name='addressValidation' onChange={handleChange} size="big"/>
-            <Text.Body intlMessage={messages.addressValidation} />
-
-            </Spacings.Inline>
-
-            <Spacings.Inline
-            scale="s"
-            alignItems="center"
-            justifyContent="flex-start"
+              scale="s"
+              alignItems="center"
+              justifyContent="flex-start"
             >
-            <ToggleInput isDisabled={false} isChecked={values.disableDocRec} value='false' name='disableDocRec' onChange={handleChange} size="big"/>
-            <Text.Body intlMessage={messages.disableDocRec} />
-
+              <ToggleInput
+                isDisabled={false}
+                isChecked={values.addressValidation}
+                value="false"
+                name="addressValidation"
+                onChange={handleChange}
+                size="big"
+              />
+              <Text.Body intlMessage={messages.addressValidation} />
             </Spacings.Inline>
-            
+
+            <Spacings.Inline
+              scale="s"
+              alignItems="center"
+              justifyContent="flex-start"
+            >
+              <ToggleInput
+                isDisabled={false}
+                isChecked={values.disableDocRec}
+                value="false"
+                name="disableDocRec"
+                onChange={handleChange}
+                size="big"
+              />
+              <Text.Body intlMessage={messages.disableDocRec} />
+            </Spacings.Inline>
           </Spacings.Stack>
         </Spacings.Stack>
       </Spacings.Inset>

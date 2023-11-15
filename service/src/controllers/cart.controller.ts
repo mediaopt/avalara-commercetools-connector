@@ -30,29 +30,6 @@ export async function createUpdate(resource: Resource) {
       cart?.lineItems.length !== 0 &&
       cart?.shippingInfo
     ) {
-      if (settings.addressValidation) {
-        const validationInfo = await checkAddress({
-          creds: creds,
-          address: shippingAddress(cart?.shippingAddress),
-          config: avataxConfig,
-        });
-
-        const valid = validationInfo?.valid;
-
-        if (!valid) {
-          logger.info('Invalid address');
-          return {
-            statusCode: 400,
-            errors: [
-              {
-                code: 'InvalidInput',
-                message: validationInfo?.errorMessage || '',
-              },
-            ],
-          };
-        }
-      }
-      // If address was valid or address validation was desctivated calculate tax
       const updateActions: Array<UpdateAction> | void = await getTax(
         cart,
         creds,

@@ -10,4 +10,5 @@ export const GRAPHQL_CUSTOMOBJECT_CONTAINER_NAME =
 
 export const GRAPHQL_CUSTOMOBJECT_KEY_NAME = 'settings';
 
-export const GRAPHQL_EXTENSION_KEY_NAME = 'avalara-commercetools-connector-cartUpdateExtension';
+export const GRAPHQL_EXTENSION_KEY_NAME =
+  'avalara-commercetools-connector-cartUpdateExtension';

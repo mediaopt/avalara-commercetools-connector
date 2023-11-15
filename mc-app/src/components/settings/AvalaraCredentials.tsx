@@ -7,11 +7,9 @@ import TextInput from '@commercetools-uikit/text-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import ToggleInput from '@commercetools-uikit/toggle-input';
 import { SettingsFormDataType } from '../../types/types';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 import {
-  useShowNotification
-} from '@commercetools-frontend/actions-global';
-import { 
-  DOMAINS, 
+  DOMAINS,
   NOTIFICATION_KINDS_SIDE,
 } from '@commercetools-frontend/constants';
 import { GRAPHQL_EXTENSION_KEY_NAME } from '../../constants';
@@ -36,35 +34,35 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
   const showNotification = useShowNotification();
 
   const testConnection = async (values: SettingsFormDataType) => {
-
     const creds = {
-      username: values.accountNumber, 
-      password: values.licenseKey
-    }
+      username: values.accountNumber,
+      password: values.licenseKey,
+    };
 
-    const response = await fetch(url + "/test-connection", {method: "POST",
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      env: values?.env? "production" : "sandbox", 
-      creds: creds
+    const response = await fetch(url + '/test-connection', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        env: values?.env ? 'production' : 'sandbox',
+        creds: creds,
+      }),
     })
-  }).then(res => res.json()).catch(error => console.log(error))
+      .then((res) => res.json())
+      .catch((error) => console.log(error));
     if (response?.authenticated) {
       showNotification({
         kind: NOTIFICATION_KINDS_SIDE.success,
         domain: DOMAINS.GLOBAL,
         text: 'Connection test successful! Your Avalara credentials are valid.',
       });
-      
     } else {
       showNotification({
         kind: NOTIFICATION_KINDS_SIDE.warning,
         domain: DOMAINS.GLOBAL,
         text: 'AvaTax service is available, but your credentials are invalid!',
       });
-
     }
-  }
+  };
 
   return (
     <div className={styles.border}>
@@ -85,9 +83,11 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
               alignItems="center"
               justifyContent="flex-start"
             >
-              <TextInput id='accountNumber' value={values.accountNumber} onChange={handleChange}></TextInput>
-
-              
+              <TextInput
+                id="accountNumber"
+                value={values.accountNumber}
+                onChange={handleChange}
+              ></TextInput>
             </Spacings.Inline>
 
             <Text.Body intlMessage={messages.licenseKey} />
@@ -97,9 +97,11 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
               alignItems="center"
               justifyContent="flex-start"
             >
-              <TextInput id='licenseKey' value={values.licenseKey} onChange={handleChange}></TextInput>
-
-
+              <TextInput
+                id="licenseKey"
+                value={values.licenseKey}
+                onChange={handleChange}
+              ></TextInput>
             </Spacings.Inline>
 
             <Text.Body intlMessage={messages.companyCode} />
@@ -109,9 +111,11 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
               alignItems="center"
               justifyContent="flex-start"
             >
-              <TextInput id='companyCode' value={values.companyCode} onChange={handleChange}></TextInput>
-
-
+              <TextInput
+                id="companyCode"
+                value={values.companyCode}
+                onChange={handleChange}
+              ></TextInput>
             </Spacings.Inline>
 
             <Spacings.Inline
@@ -119,10 +123,15 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
               alignItems="center"
               justifyContent="flex-start"
             >
-              <ToggleInput isDisabled={false} isChecked={values.env} value='false' name='env' onChange={handleChange} size="big"/>
+              <ToggleInput
+                isDisabled={false}
+                isChecked={values.env}
+                value="false"
+                name="env"
+                onChange={handleChange}
+                size="big"
+              />
               <Text.Body intlMessage={messages.env} />
-
-
             </Spacings.Inline>
 
             <Spacings.Inline
@@ -130,15 +139,15 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
               alignItems="center"
               justifyContent="flex-start"
             >
-              <PrimaryButton label="Test Connection" onClick={() => testConnection(values)} />
+              <PrimaryButton
+                label="Test Connection"
+                onClick={() => testConnection(values)}
+              />
             </Spacings.Inline>
-            
           </Spacings.Stack>
         </Spacings.Stack>
       </Spacings.Inset>
-
     </div>
-    
   );
 };
 

@@ -4,44 +4,81 @@ import { avaTaxConfig } from '../avalara/utils/avatax.config';
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/custom.error';
 import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
+import { getData } from '../client/create.client';
 
 export const checkAddressController = async (data: {
-  creds: {
-    username: string;
-    password: string;
+  creds?: {
+    username?: string;
+    password?: string;
   };
-  env: string;
+  env?: string;
   address: AddressInfo;
 }): Promise<{
-  valid: boolean;
+  valid?: boolean;
   address?: ValidatedAddressInfo[] | undefined;
   errorMessage?: any;
+  addressValidation?: boolean;
 }> => {
-  const client = new AvaTaxClient(avaTaxConfig(data?.env)).withSecurity(
-    data?.creds
-  );
+  if (data?.creds && data?.env) {
+    const client = new AvaTaxClient(avaTaxConfig(data?.env)).withSecurity(
+      data?.creds
+    );
+    const validation = await client.resolveAddress(data?.address);
+    const validatedAddress = validation?.validatedAddresses;
 
-  const addressValidation = await client.resolveAddress(data?.address);
-
-  const validatedAddress = addressValidation?.validatedAddresses;
-
-  const messages: any = addressValidation?.messages;
-
-  let error = false;
-
-  messages ? (error = messages[0].severity === 'Error') : false;
-
-  if (!error) {
+    const messages: any = validation?.messages;
+  
+    let error = false;
+  
+    messages ? (error = messages[0].severity === 'Error') : false;
+  
+    if (!error) {
+      return {
+        valid: true,
+        address: validatedAddress,
+      };
+    }
+  
     return {
-      valid: true,
-      address: validatedAddress,
+      valid: false,
+      errorMessage: messages[0]?.details,
+    };
+  } else {
+    const settings = await getData('avalara-commercetools-connector').then(
+      (res) => res.settings
+    );
+    if (!settings?.addressValidation) {
+      return {
+        addressValidation: settings?.addressValidation
+      }
+    }
+    const client = new AvaTaxClient(avaTaxConfig(settings?.env? 'production': 'sandbox')).withSecurity(
+      {
+        username: settings?.accountNumber,
+        password: settings?.licenseKey
+      }
+    );
+    const validation = await client.resolveAddress(data?.address);
+    const validatedAddress = validation?.validatedAddresses;
+
+    const messages: any = validation?.messages;
+  
+    let error = false;
+  
+    messages ? (error = messages[0].severity === 'Error') : false;
+  
+    if (!error) {
+      return {
+        valid: true,
+        address: validatedAddress,
+      };
+    }
+  
+    return {
+      valid: false,
+      errorMessage: messages[0]?.details,
     };
   }
-
-  return {
-    valid: false,
-    errorMessage: messages[0]?.details,
-  };
 };
 
 export const postCheckAddress = async (
