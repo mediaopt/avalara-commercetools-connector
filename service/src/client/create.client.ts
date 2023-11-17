@@ -28,9 +28,6 @@ export const createApiRoot = ((root?: ByProjectKeyRequestBuilder) => () => {
  *
  * @returns {Promise<ClientResponse<Project>>} apiRoot
  */
-export const getProject = async () => {
-  return await createApiRoot().get().execute();
-};
 
 // Get custom object container as a js dictionary
 export const getData = async (container: string) => {
@@ -49,23 +46,18 @@ export const getData = async (container: string) => {
 export const getShipTaxCode = async (id: string) => {
   return (
     await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
-  )?.body?.custom?.fields?.avalaraTaxCode;
+  )?.body?.custom?.fields?.avalaraTaxCode || '';
 };
 
-export const getDiscountTaxCode = async (id: string) => {
+/*export const getDiscountTaxCode = async (id: string) => {
   return (
     await createApiRoot().cartDiscounts().withId({ ID: id }).get().execute()
   )?.body?.custom?.fields?.avalaraTaxCode;
-};
+};*/
 
 export const getCustomerEntityUseCode = async (id: string) => {
   return (await createApiRoot().customers().withId({ ID: id }).get().execute())
-    ?.body?.custom?.fields?.avalaraEntityUseCode;
-};
-
-export const getCategoryTaxCode = async (id: string) => {
-  return (await createApiRoot().categories().withId({ ID: id }).get().execute())
-    ?.body?.custom?.fields?.avalaraTaxCode;
+    ?.body?.custom?.fields?.avalaraEntityUseCode || '';
 };
 
 export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
@@ -74,15 +66,11 @@ export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
     await createApiRoot().categories().get({ queryArgs: { where: `id in (${cs})` } }).execute()
   )?.body?.results.map((x) => ({
     id: x.id,
-    avalaraTaxCode: x.custom?.fields?.avalaraTaxCode,
+    avalaraTaxCode: x.custom?.fields?.avalaraTaxCode || '',
   }));
   return taxCodes
 };
 
-export const getCategoriesOfProduct = async (id: string) => {
-  return (await createApiRoot().products().withId({ ID: id }).get().execute())
-    ?.body?.masterData?.current?.categories;
-};
 
 export const getBulkProductCategories = async (
   keys: Array<string | undefined>
@@ -95,7 +83,7 @@ export const getBulkProductCategories = async (
       .get({ queryArgs: { filter: ps } })
       .execute()
   )?.body?.results;
-  const result: any = data.map((x: any) => ({
+  const result: { productKey: any; categories: any; }[] = data.map((x: any) => ({
     productKey: x.key,
     categories: x.categories.map((x: any) => x.id),
   }));

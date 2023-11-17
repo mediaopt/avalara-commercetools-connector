@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { apiSuccess } from '../api/success.api';
 import CustomError from '../errors/custom.error';
 import { cartController } from './cart.controller';
-import { apiError } from '../api/error.api';
 
 /**
  * Exposed service endpoint.
@@ -35,12 +34,11 @@ export const post = async (
           apiSuccess(200, data?.actions || undefined, response);
           return;
         } else if (data?.errors) {
-          apiError(400, data?.errors || undefined, response);
-          return;
+          return next(
+            new CustomError(data ? data.statusCode : 400, JSON.stringify(data))
+          );
         }
-        return next(
-          new CustomError(data ? data.statusCode : 400, JSON.stringify(data))
-        );
+
       } catch (error) {
         if (error instanceof Error) {
           next(new CustomError(500, error.message));

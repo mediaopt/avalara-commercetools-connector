@@ -7,8 +7,6 @@ import { Cart } from '@commercetools/platform-sdk';
 import { logger } from '../utils/logger.utils';
 import { getTax } from '../avalara/requests/actions/get.tax';
 import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
-import { checkAddress } from '../avalara/requests/actions/check.address';
-import { shippingAddress } from '../avalara/utils/shipping.address';
 
 export async function createUpdate(resource: Resource) {
   try {

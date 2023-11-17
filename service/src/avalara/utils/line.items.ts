@@ -15,7 +15,7 @@ function itemTaxCode(item: LineItem) {
 
 export async function lineItem(
   item: LineItem,
-  catTaxCodes: [{ [key: string]: string }]
+  catTaxCodes: { productKey: any; taxCode: any; }[]
 ) {
   const lineItem = new LineItemModel();
 

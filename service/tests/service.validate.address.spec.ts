@@ -5,6 +5,7 @@ import {
 } from '../src/controllers/check.address.controller';
 import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
 import { Request, Response } from 'express';
+import { getData } from '../src/client/create.client';
 
 const cases = [
   {
@@ -41,26 +42,42 @@ const cases = [
       },
     },
   },
+  {
+    result: true,
+  requestBody: {
+    address: {
+      line1: '2000 Main Street',
+      city: 'Irvine',
+      region: 'CA',
+      country: 'US',
+      postalCode: '92614',
+    }
+  }  }
+ 
 ];
 
 const expectValidAddress = (response: {
-  valid: boolean;
+  valid?: boolean;
   address?: ValidatedAddressInfo[] | undefined;
   errorMessage?: any;
+  addressValidation?: boolean;
 }) => {
   expect(response.valid).toBeTruthy();
   expect(response.address).toBeDefined();
   expect(response.errorMessage).toBeUndefined();
+  expect(response.addressValidation).toBeUndefined();
 };
 
 const expectInvalidAddress = (response: {
-  valid: boolean;
+  valid?: boolean;
   address?: ValidatedAddressInfo[] | undefined;
   errorMessage?: any;
+  addressValidation?: boolean;
 }) => {
   expect(response.valid).toBeFalsy();
   expect(response.errorMessage).toBeDefined();
   expect(response.address).toBeUndefined();
+  expect(response.addressValidation).toBeUndefined();
 };
 
 const expectSuccessfulCall = async (
@@ -80,6 +97,20 @@ const expectFailingCall = async (
   await postCheckAddress(request, response, next);
   expect(next).toBeCalledTimes(1);
 };
+
+describe('Avalara data can be loaded', () => {
+  test('Data exists and is defined', async () => {
+    const data = await getData('avalara-commercetools-connector');
+    expect(data).toHaveProperty('settings');
+    expect(data.settings).toBeDefined();
+    expect(data.settings).toHaveProperty('accountNumber');
+    expect(data.settings.accountNumber).toBeDefined();
+    expect(data.settings).toHaveProperty('licenseKey');
+    expect(data.settings.licenseKey).toBeDefined();
+    expect(data.settings).toHaveProperty('env');
+    expect(data.settings.env).toBeDefined();
+  })
+})
 
 describe('Check address responses', () => {
   test.each(cases)(
