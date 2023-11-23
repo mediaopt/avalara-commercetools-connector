@@ -16,8 +16,7 @@
     "format": "prettier --write '**/*.{js,ts,tsx}'",
     "typecheck": "tsc --noEmit",
     "versions:appkit": "manypkg upgrade @commercetools-frontend",
-    "versions:uikit": "manypkg upgrade @commercetools-uikit",
-    "resolve:security": "npm i --package-lock-only --legacy-peer-deps && npm audit fix --force --legacy-peer-deps && rm yarn.lock && yarn import && rm package-lock.json"
+    "versions:uikit": "manypkg upgrade @commercetools-uikit"
   },
   "dependencies": {
     "@apollo/client": "3.7.14",

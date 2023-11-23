@@ -3,11 +3,12 @@ import { LineItemModel } from 'avatax/lib/models/LineItemModel';
 import { getShipTaxCode } from '../../client/create.client';
 
 // Mapping CT LineItem Model to Avalara LineItem Model
-export async function shipItem(item: ShippingInfo) {
+export async function shipItem(type: string, item: ShippingInfo) {
   const lineItem = new LineItemModel();
   const taxCode = await getShipTaxCode(item.shippingMethod?.id || '');
   lineItem.quantity = 1;
-  lineItem.amount = item.price.centAmount / 100;
+  lineItem.amount =
+    ((type === 'refund' ? -1 : 1) * item.price.centAmount) / 100;
   lineItem.description = item.shippingMethodName;
   lineItem.itemCode = 'Shipping';
   lineItem.taxIncluded = item.taxRate?.includedInPrice;

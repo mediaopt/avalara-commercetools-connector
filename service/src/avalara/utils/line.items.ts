@@ -15,7 +15,7 @@ function itemTaxCode(item: LineItem) {
 
 export async function lineItem(
   item: LineItem,
-  catTaxCodes: { productKey: any; taxCode: any; }[]
+  catTaxCodes: { sku: any; taxCode: any }[]
 ) {
   const lineItem = new LineItemModel();
 
@@ -27,14 +27,12 @@ export async function lineItem(
 
   lineItem.amount = discountedPrice || item?.totalPrice?.centAmount / 100;
 
-  lineItem.description = item?.name?.en;
-
-  lineItem.itemCode = item?.productKey;
+  lineItem.itemCode = item?.variant?.sku;
 
   lineItem.taxIncluded = item.taxRate?.includedInPrice;
   lineItem.taxCode =
-      itemTaxCode(item) ??
-      catTaxCodes.find((x) => x.productKey === item?.productKey)?.taxCode;
+    itemTaxCode(item) ??
+    catTaxCodes.find((x) => x.sku === item?.variant?.sku)?.taxCode;
 
   return lineItem;
 }

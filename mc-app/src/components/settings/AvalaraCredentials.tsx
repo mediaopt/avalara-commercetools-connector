@@ -45,10 +45,21 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
       body: JSON.stringify({
         env: values?.env ? 'production' : 'sandbox',
         creds: creds,
+        logging: {
+          enabled: values.enableLogging,
+          level: values.logLevel,
+        },
       }),
     })
       .then((res) => res.json())
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        showNotification({
+          kind: NOTIFICATION_KINDS_SIDE.error,
+          domain: DOMAINS.GLOBAL,
+          text: `Internal server error: ${JSON.stringify(error)}`,
+        });
+      });
     if (response?.authenticated) {
       showNotification({
         kind: NOTIFICATION_KINDS_SIDE.success,

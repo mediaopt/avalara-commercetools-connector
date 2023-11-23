@@ -1,6 +1,9 @@
 import { createClient } from './build.client';
 
-import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
+import {
+  ProductProjection,
+  createApiBuilderFromCtpClient,
+} from '@commercetools/platform-sdk';
 
 import { readConfiguration } from '../utils/config.utils';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
@@ -45,8 +48,9 @@ export const getData = async (container: string) => {
 
 export const getShipTaxCode = async (id: string) => {
   return (
-    await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
-  )?.body?.custom?.fields?.avalaraTaxCode || '';
+    (await createApiRoot().shippingMethods().withId({ ID: id }).get().execute())
+      ?.body?.custom?.fields?.avalaraTaxCode || ''
+  );
 };
 
 /*export const getDiscountTaxCode = async (id: string) => {
@@ -56,26 +60,41 @@ export const getShipTaxCode = async (id: string) => {
 };*/
 
 export const getCustomerEntityUseCode = async (id: string) => {
-  return (await createApiRoot().customers().withId({ ID: id }).get().execute())
-    ?.body?.custom?.fields?.avalaraEntityUseCode || '';
+  return (
+    (await createApiRoot().customers().withId({ ID: id }).get().execute())?.body
+      ?.custom?.fields?.avalaraEntityUseCode || ''
+  );
 };
 
 export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
-  const cs = cats.map((x)=>`"${x}", `).reduce((acc, curr) => acc + curr, '').slice(0, -2);
+  const cs = cats
+    .map((x) => `"${x}", `)
+    .reduce((acc, curr) => acc + curr, '')
+    .slice(0, -2);
   const taxCodes = (
-    await createApiRoot().categories().get({ queryArgs: { where: `id in (${cs})` } }).execute()
+    await createApiRoot()
+      .categories()
+      .get({ queryArgs: { where: `id in (${cs})` } })
+      .execute()
   )?.body?.results.map((x) => ({
     id: x.id,
-    avalaraTaxCode: x.custom?.fields?.avalaraTaxCode || '',
+    avalaraTaxCode: x.custom?.fields?.avalaraTaxCode,
   }));
-  return taxCodes
+  return taxCodes;
 };
 
+export const getCategoriesOfProduct = async (id: string) => {
+  return (await createApiRoot().products().withId({ ID: id }).get().execute())
+    ?.body?.masterData?.current?.categories;
+};
 
 export const getBulkProductCategories = async (
   keys: Array<string | undefined>
 ) => {
-  const ps = keys.map((x) => `${x},`).reduce((acc, curr) => acc + curr, 'key:').slice(0, -1);
+  const ps = keys
+    .map((x) => `${x},`)
+    .reduce((acc, curr) => acc + curr, 'variants.sku:')
+    .slice(0, -1);
   const data = (
     await createApiRoot()
       .productProjections()
@@ -83,8 +102,8 @@ export const getBulkProductCategories = async (
       .get({ queryArgs: { filter: ps } })
       .execute()
   )?.body?.results;
-  const result: { productKey: any; categories: any; }[] = data.map((x: any) => ({
-    productKey: x.key,
+  const result: any = data.map((x: ProductProjection) => ({
+    sku: x.variants.find((x) => keys.includes(x?.sku))?.sku,
     categories: x.categories.map((x: any) => x.id),
   }));
   return result;

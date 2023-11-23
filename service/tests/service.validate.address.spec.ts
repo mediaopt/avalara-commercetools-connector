@@ -12,10 +12,10 @@ const cases = [
     result: true,
     requestBody: {
       creds: {
-        username: process.env.AVALARA_USERNAME!,
-        password: process.env.AVALARA_PASSWORD!,
+        username: process.env.AVALARA_USERNAME,
+        password: process.env.AVALARA_PASSWORD,
       },
-      env: process.env.AVALARA_ENV!,
+      env: process.env.AVALARA_ENV,
       address: {
         line1: '2000 Main Street',
         city: 'Irvine',
@@ -29,10 +29,10 @@ const cases = [
     result: false,
     requestBody: {
       creds: {
-        username: process.env.AVALARA_USERNAME!,
-        password: process.env.AVALARA_PASSWORD!,
+        username: process.env.AVALARA_USERNAME,
+        password: process.env.AVALARA_PASSWORD,
       },
-      env: process.env.AVALARA_ENV!,
+      env: process.env.AVALARA_ENV,
       address: {
         line1: '200043 Main Street',
         city: 'Irvine',
@@ -44,16 +44,16 @@ const cases = [
   },
   {
     result: true,
-  requestBody: {
-    address: {
-      line1: '2000 Main Street',
-      city: 'Irvine',
-      region: 'CA',
-      country: 'US',
-      postalCode: '92614',
-    }
-  }  }
- 
+    requestBody: {
+      address: {
+        line1: '2000 Main Street',
+        city: 'Irvine',
+        region: 'CA',
+        country: 'US',
+        postalCode: '92614',
+      },
+    },
+  },
 ];
 
 const expectValidAddress = (response: {
@@ -109,8 +109,8 @@ describe('Avalara data can be loaded', () => {
     expect(data.settings.licenseKey).toBeDefined();
     expect(data.settings).toHaveProperty('env');
     expect(data.settings.env).toBeDefined();
-  })
-})
+  });
+});
 
 describe('Check address responses', () => {
   test.each(cases)(
@@ -149,7 +149,7 @@ describe('Check address invalid call', () => {
     {
       requestBody: {},
     },
-  ])('Check that check address calls behave as expected', async ({}) => {
+  ])('Check that check address calls behave as expected', async () => {
     await expectFailingCall(
       {} as Request,
       {

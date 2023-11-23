@@ -10,10 +10,10 @@ const cases = [
   {
     result: true,
     requestBody: {
-      env: process.env.AVALARA_ENV!,
+      env: process.env.AVALARA_ENV || 'sandbox',
       creds: {
-        username: process.env.AVALARA_USERNAME!,
-        password: process.env.AVALARA_PASSWORD!,
+        username: process.env.AVALARA_USERNAME || '',
+        password: process.env.AVALARA_PASSWORD || '',
       },
     },
   },
@@ -88,7 +88,7 @@ describe('Connection test invalid call', () => {
     {
       requestBody: {},
     },
-  ])('Check that connection test calls behave as expected', async ({}) => {
+  ])('Check that connection test calls behave as expected', async () => {
     await expectFailingCall(
       {} as Request,
       {

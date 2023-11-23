@@ -9,10 +9,14 @@ export const testConnectionController = async (data: {
     username: string;
     password: string;
   };
+  logging?: {
+    enabled?: boolean;
+    level?: string;
+  };
 }) => {
-  const client = new AvaTaxClient(avaTaxConfig(data?.env)).withSecurity(
-    data?.creds
-  );
+  const client = new AvaTaxClient(
+    avaTaxConfig(data?.env, data?.logging?.enabled, data?.logging?.level)
+  ).withSecurity(data?.creds);
 
   return await client.ping();
 };

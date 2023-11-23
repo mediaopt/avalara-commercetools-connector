@@ -13,6 +13,7 @@ function itemTaxCode(item: LineItem) {
 }
 
 export async function lineItem(
+  type: string,
   item: LineItem,
   catTaxCodes: [{ [key: string]: string }]
 ) {
@@ -24,16 +25,18 @@ export async function lineItem(
 
   lineItem.quantity = item?.quantity;
 
-  lineItem.amount = discountedPrice || item?.totalPrice?.centAmount / 100;
+  lineItem.amount =
+    (type === 'refund' ? -1 : 1) *
+    (discountedPrice || item?.totalPrice?.centAmount / 100);
 
   lineItem.description = item?.name?.en;
 
-  lineItem.itemCode = item?.productKey;
+  lineItem.itemCode = item?.variant?.sku;
 
-  lineItem.taxIncluded = item.taxRate?.includedInPrice;
+  lineItem.taxIncluded = item?.taxRate?.includedInPrice;
   lineItem.taxCode =
     itemTaxCode(item) ??
-    catTaxCodes.find((x) => x.productKey === item?.productKey)?.taxCode;
+    catTaxCodes.find((x) => x?.sku === item?.variant?.sku)?.taxCode;
 
   return lineItem;
 }

@@ -13,6 +13,10 @@ export const checkAddressController = async (data: {
   };
   env?: string;
   address: AddressInfo;
+  logging?: {
+    enabled?: boolean;
+    level?: string;
+  };
 }): Promise<{
   valid?: boolean;
   address?: ValidatedAddressInfo[] | undefined;
@@ -20,25 +24,25 @@ export const checkAddressController = async (data: {
   addressValidation?: boolean;
 }> => {
   if (data?.creds && data?.env) {
-    const client = new AvaTaxClient(avaTaxConfig(data?.env)).withSecurity(
-      data?.creds
-    );
+    const client = new AvaTaxClient(
+      avaTaxConfig(data?.env, data?.logging?.enabled, data?.logging?.level)
+    ).withSecurity(data?.creds);
     const validation = await client.resolveAddress(data?.address);
     const validatedAddress = validation?.validatedAddresses;
 
     const messages: any = validation?.messages;
-  
+
     let error = false;
-  
+
     messages ? (error = messages[0].severity === 'Error') : false;
-  
+
     if (!error) {
       return {
         valid: true,
         address: validatedAddress,
       };
     }
-  
+
     return {
       valid: false,
       errorMessage: messages[0]?.details,
@@ -49,31 +53,35 @@ export const checkAddressController = async (data: {
     );
     if (!settings?.addressValidation) {
       return {
-        addressValidation: settings?.addressValidation
-      }
+        addressValidation: settings?.addressValidation,
+      };
     }
-    const client = new AvaTaxClient(avaTaxConfig(settings?.env? 'production': 'sandbox')).withSecurity(
-      {
-        username: settings?.accountNumber,
-        password: settings?.licenseKey
-      }
-    );
+    const client = new AvaTaxClient(
+      avaTaxConfig(
+        settings?.env ? 'production' : 'sandbox',
+        settings?.enableLogging,
+        settings?.logLevel
+      )
+    ).withSecurity({
+      username: settings?.accountNumber,
+      password: settings?.licenseKey,
+    });
     const validation = await client.resolveAddress(data?.address);
     const validatedAddress = validation?.validatedAddresses;
 
     const messages: any = validation?.messages;
-  
+
     let error = false;
-  
+
     messages ? (error = messages[0].severity === 'Error') : false;
-  
+
     if (!error) {
       return {
         valid: true,
         address: validatedAddress,
       };
     }
-  
+
     return {
       valid: false,
       errorMessage: messages[0]?.details,

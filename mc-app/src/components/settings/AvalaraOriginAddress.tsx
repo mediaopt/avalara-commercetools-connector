@@ -63,6 +63,10 @@ const AvalaraOriginAddress = ({ values, handleChange }: AvaTaxSettingsType) => {
         env: values?.env ? 'production' : 'sandbox',
         creds: creds,
         address: address,
+        logging: {
+          enabled: values.enableLogging,
+          level: values.logLevel,
+        },
       }),
     }).then((res) => res.json());
     if (response?.valid) {

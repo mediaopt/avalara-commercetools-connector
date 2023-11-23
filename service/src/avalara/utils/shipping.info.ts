@@ -12,8 +12,6 @@ export async function shipItem(item: ShippingInfo) {
 
   lineItem.amount = item.price.centAmount / 100;
 
-  lineItem.description = item.shippingMethodName;
-
   lineItem.itemCode = 'Shipping';
 
   lineItem.taxIncluded = item.taxRate?.includedInPrice;

@@ -17,7 +17,7 @@ export function postProcessing(
 
   for (const item of cart?.lineItems || []) {
     const taxCentAmount =
-      lines.find((x: any) => x.itemCode === item?.productKey)?.tax * 100;
+      lines.find((x: any) => x.itemCode === item?.variant?.sku)?.tax * 100;
 
     totalTax += taxCentAmount;
 

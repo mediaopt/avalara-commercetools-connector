@@ -18,14 +18,30 @@ const AvalaraConfiguration = ({ values, handleChange }: AvaTaxSettingsType) => {
           >
             <Text.Headline as="h3" intlMessage={messages.configuration} />
           </Spacings.Inline>
+          <Spacings.Inline
+            scale="s"
+            alignItems="center"
+            justifyContent="flex-start"
+          >
+            <ToggleInput
+              isDisabled={false}
+              isChecked={values.enableLogging}
+              value="false"
+              name="enableLogging"
+              onChange={handleChange}
+              size="big"
+            />
+            <Text.Body intlMessage={messages.enableLogging} />
+          </Spacings.Inline>
           <Spacings.Stack scale="m" alignItems="stretch">
             <SelectField
               title="Choose your log level"
               value={values.logLevel}
               options={[
-                { value: 'error', label: 'Error' },
-                { value: 'debug', label: 'Debug' },
-                { value: 'info', label: 'Info' },
+                { value: '0', label: 'Error' },
+                { value: '1', label: 'Warn' },
+                { value: '2', label: 'Info' },
+                { value: '3', label: 'Debug' },
               ]}
               name="logLevel"
               onChange={handleChange}

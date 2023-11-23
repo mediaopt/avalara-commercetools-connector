@@ -39,6 +39,11 @@ export default defineMessages({
     defaultMessage: 'Choose your log level',
   },
 
+  enableLogging: {
+    id: 'Settings.enableLogging',
+    defaultMessage: 'Enable AvaTax logging',
+  },
+
   taxCalculation: {
     id: 'Settings.taxCalculation',
     defaultMessage: 'Define your tax calculation mode',

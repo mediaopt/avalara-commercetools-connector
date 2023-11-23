@@ -1,26 +1,35 @@
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
-import { RefundTransactionModel } from 'avatax/lib/models/RefundTransactionModel';
+import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
+import { getOrder } from '../../../client/create.client';
+import { AddressInfo } from 'avatax/lib/models/AddressInfo';
+import { processOrder } from '../preprocess/preprocess.order';
 
 export async function refundTransaction(
   orderId: string,
   creds: { [key: string]: string },
+  originAddress: AddressInfo,
   config: any
 ) {
   const client = new AvaTaxClient(config).withSecurity(creds);
 
-  const refundModel = new RefundTransactionModel();
-  refundModel.refundTransactionCode = orderId;
-  refundModel.refundDate = new Date();
-  refundModel.refundType = 0;
-  refundModel.referenceCode = 'Refund for a committed transaction';
+  const order = await getOrder(orderId);
 
-  const refundBody = {
-    companyCode: creds.companyCode,
-    transactionCode: orderId,
-    model: refundModel,
-  };
+  const taxDocument = await processOrder(
+    'refund',
+    order,
+    creds?.companyCode,
+    originAddress
+  );
 
-  const taxResponse = await client.refundTransaction(refundBody);
+  taxDocument.referenceCode = 'Refund';
+
+  const taxModel = new TaxOverrideModel();
+  taxModel.taxDate = new Date(order.createdAt);
+  taxModel.type = 3;
+  taxModel.reason = 'Refund';
+  taxDocument.taxOverride = taxModel;
+
+  const taxResponse = await client.createTransaction({ model: taxDocument });
 
   return taxResponse;
 }

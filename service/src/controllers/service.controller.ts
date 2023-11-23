@@ -38,7 +38,6 @@ export const post = async (
             new CustomError(data ? data.statusCode : 400, JSON.stringify(data))
           );
         }
-
       } catch (error) {
         if (error instanceof Error) {
           next(new CustomError(500, error.message));

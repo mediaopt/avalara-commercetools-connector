@@ -11,6 +11,7 @@
   "Settings.companyCode": "Company Code",
   "Settings.env": "Activate live environment", 
   "Settings.logLevel": "Choose your log level", 
+  "Settings.enableLogging": "Enable AvaTax logging",
   "Settings.taxCalculation": "Define your tax calculation mode", 
   "Settings.addressValidation": "Activate address validation", 
   "Settings.disableDocRec": "Disable document recording", 
