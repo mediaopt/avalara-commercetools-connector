@@ -7,14 +7,14 @@ const config = {
   name: 'Avalara Tax Provider',
   description: 'Sales tax solution',
   entryPointUriPath,
-  cloudIdentifier: 'gcp-eu',
+  cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
       initialProjectKey: 'avalara-demo',
     },
     production: {
-      applicationId: 'aaa',
-      url: 'http://yoururl.com',
+      applicationId: '${env:APPLICATION_ID}',
+      url: '${env:APPLICATION_URL}',
     },
   },
   headers: {
