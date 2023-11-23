@@ -92,7 +92,7 @@ export const getBulkProductCategories = async (
   keys: Array<string | undefined>
 ) => {
   const ps = keys
-    .map((x) => `${x},`)
+    .map((x) => `"${x}",`)
     .reduce((acc, curr) => acc + curr, 'variants.sku:')
     .slice(0, -1);
   const data = (
