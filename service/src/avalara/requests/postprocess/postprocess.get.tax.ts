@@ -7,6 +7,11 @@ export function postProcessing(
 ): Array<UpdateAction> {
   const actions = [];
 
+  actions.push({
+    action: 'changeTaxMode',
+    taxMode: 'ExternalAmount',
+  });
+
   const taxRate = taxResponse?.summary
     ?.map((x) => x.rate)
     .reduce((acc, curr) => (acc || 0) + (curr || 0), 0);

@@ -22,8 +22,19 @@ export async function createUpdate(resource: Resource) {
       cart?.shippingAddress?.country
     );
 
+    if (!taxCalculationAllowed) {
+      return {
+        statusCode: 200,
+        actions: [
+          {
+            action: 'changeTaxMode',
+            taxMode: 'Platform',
+          },
+        ],
+      };
+    }
+
     if (
-      taxCalculationAllowed &&
       cart?.shippingAddress &&
       cart?.lineItems.length !== 0 &&
       cart?.shippingInfo
