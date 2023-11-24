@@ -85,12 +85,14 @@ export const post = async (
             avataxConfig
           ).catch(async (error) => {
             logger.error(error);
-            await refundTransaction(
-              messagePayload.resource.id,
-              creds,
-              originAddress,
-              avataxConfig
-            ).catch((error) => logger.error(error));
+            error?.code === 'CannotModifyLockedTransaction'
+              ? await refundTransaction(
+                  messagePayload.resource.id,
+                  creds,
+                  originAddress,
+                  avataxConfig
+                ).catch((error) => logger.error(error))
+              : true;
           });
         }
         response.status(200).send();

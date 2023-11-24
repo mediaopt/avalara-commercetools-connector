@@ -60,10 +60,13 @@ export const getShipTaxCode = async (id: string) => {
 };*/
 
 export const getCustomerEntityUseCode = async (id: string) => {
-  return (
-    (await createApiRoot().customers().withId({ ID: id }).get().execute())?.body
-      ?.custom?.fields?.avalaraEntityUseCode || ''
-  );
+  const customer = (
+    await createApiRoot().customers().withId({ ID: id }).get().execute()
+  )?.body;
+  return {
+    customerNumber: customer?.customerNumber || id,
+    exemptCode: customer?.custom?.fields?.avalaraEntityUseCode || '',
+  };
 };
 
 export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
