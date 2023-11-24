@@ -39,7 +39,7 @@ export async function processOrder(
 
     taxDocument.date = new Date();
 
-    taxDocument.code = order.id;
+    taxDocument.code = order?.orderNumber || order.id;
 
     taxDocument.commit = true;
 

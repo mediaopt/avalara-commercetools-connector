@@ -14,6 +14,10 @@ export async function refundTransaction(
 
   const order = await getOrder(orderId);
 
+  if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
+    return;
+  }
+
   const taxDocument = await processOrder(
     'refund',
     order,

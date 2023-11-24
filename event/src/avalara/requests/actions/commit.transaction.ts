@@ -9,6 +9,9 @@ export async function commitTransaction(
   originAddress: AddressInfo,
   config: any
 ) {
+  if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
+    return;
+  }
   const client = new AvaTaxClient(config).withSecurity(creds);
 
   const taxDocument = await processOrder(
