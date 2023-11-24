@@ -102,9 +102,14 @@ export const getBulkProductCategories = async (
       .get({ queryArgs: { filter: ps } })
       .execute()
   )?.body?.results;
-  const result: any = data.map((x: ProductProjection) => ({
-    sku: x.variants.find((x) => keys.includes(x?.sku))?.sku,
-    categories: x.categories.map((x: any) => x.id),
+  const result: any = keys.map((x) => ({
+    sku: x,
+    categories: data
+      .find(
+        (y) =>
+          y.masterVariant?.sku === x || y.variants.find((z) => z?.sku === x)
+      )
+      ?.categories.map((x: any) => x.id),
   }));
   return result;
 };
