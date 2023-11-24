@@ -31,9 +31,6 @@ export const createApiRoot = ((root?: ByProjectKeyRequestBuilder) => () => {
  *
  * @returns {Promise<ClientResponse<Project>>} apiRoot
  */
-export const getProject = async () => {
-  return await createApiRoot().get().execute();
-};
 
 // Get custom object container as a js dictionary
 export const getData = async (container: string) => {
@@ -51,29 +48,22 @@ export const getData = async (container: string) => {
 
 export const getShipTaxCode = async (id: string) => {
   return (
-    await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
-  )?.body?.custom?.fields?.avalaraTaxCode;
+    (await createApiRoot().shippingMethods().withId({ ID: id }).get().execute())
+      ?.body?.custom?.fields?.avalaraTaxCode || ''
+  );
 };
 
-export const getDiscountTaxCode = async (id: string) => {
+/*export const getDiscountTaxCode = async (id: string) => {
   return (
     await createApiRoot().cartDiscounts().withId({ ID: id }).get().execute()
   )?.body?.custom?.fields?.avalaraTaxCode;
-};
+};*/
 
 export const getCustomerEntityUseCode = async (id: string) => {
-  const customer = (
-    await createApiRoot().customers().withId({ ID: id }).get().execute()
-  )?.body;
-  return {
-    customerNumber: customer?.customerNumber,
-    exemptCode: customer?.custom?.fields?.avalaraEntityUseCode,
-  };
-};
-
-export const getCategoryTaxCode = async (id: string) => {
-  return (await createApiRoot().categories().withId({ ID: id }).get().execute())
-    ?.body?.custom?.fields?.avalaraTaxCode;
+  return (
+    (await createApiRoot().customers().withId({ ID: id }).get().execute())?.body
+      ?.custom?.fields?.avalaraEntityUseCode || ''
+  );
 };
 
 export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
@@ -112,9 +102,14 @@ export const getBulkProductCategories = async (
       .get({ queryArgs: { filter: ps } })
       .execute()
   )?.body?.results;
-  const result: any = data.map((x: ProductProjection) => ({
-    sku: x.variants.find((x) => keys.includes(x?.sku))?.sku,
-    categories: x.categories.map((x: any) => x.id),
+  const result: any = keys.map((x) => ({
+    sku: x,
+    categories: data
+      .find(
+        (y) =>
+          y.masterVariant?.sku === x || y.variants.find((z) => z?.sku === x)
+      )
+      ?.categories.map((x: any) => x.id),
   }));
   return result;
 };
