@@ -2,14 +2,22 @@
   <a href="https://commercetools.com/">
     <img alt="commercetools logo" src="https://unpkg.com/@commercetools-frontend/assets/logos/commercetools_primary-logo_horizontal_RGB.png">
   </a></br>
-  <b>Connect Application Starter in TypeScript</b>
+  <a href="https://www.avalara.com/us/en/products/sales-and-use-tax.html">
+    <img alt="avalara logo" src="https://www.avalara.com/etc.clientlibs/avalara/clientlibs/avalara/resources/images/corporate_home_2_u15612.svg">
+  </a><br>
 </p>
 
-This is the `starter-typescript` template to develop [connect applications](https://marketplace.commercetools.com/) in TypeScript.
+This is a [connect application](https://marketplace.commercetools.com/) to integrate Avalara Tax calculation and Reports services into Commercetools.
+It follows the folder structure to ensure certification & deployment from commercetools connect team as stated [here](https://github.com/commercetools/connect-application-kit#readme).
 
 ## Instructions
 
-Use `create-connect-app` cli with `starter-typescript` as `template` value to download this template repository to build the integration application , folder structure needs to be followed to ensure certification & deployment from commercetools connect team as stated [here](https://github.com/commercetools/connect-application-kit#readme) 
+* `cd avalara-commercetools-connector/service` or `cd avalara-commercetools-connector/event`
+* run `yarn` to install the dependencies 
+* insert commercetools credentials to `.env` file
+* run `./bin/ngrok.sh` or `ngrok http 8080` to start ngrok and insert the dynamic url in the `.env` file as specified in post-deploy script
+* run `yarn connector:post-deploy` to register the extension with the public ngrok url
+* run `ỳarn start:dev` to build the application
 
 ## Architecture principles for building an connect application 
 

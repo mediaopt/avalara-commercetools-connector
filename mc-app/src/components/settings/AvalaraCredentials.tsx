@@ -53,7 +53,6 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
     })
       .then((res) => res.json())
       .catch((error) => {
-        console.log(error);
         showNotification({
           kind: NOTIFICATION_KINDS_SIDE.error,
           domain: DOMAINS.GLOBAL,
