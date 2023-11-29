@@ -22,31 +22,18 @@ export async function createUpdate(resource: Resource) {
       cart?.shippingAddress?.country
     );
 
-    if (!taxCalculationAllowed) {
-      return {
-        statusCode: 200,
-        actions: [
-          {
-            action: 'changeTaxMode',
-            taxMode: 'Platform',
-          },
-        ],
-      };
-    }
-
     if (
+      taxCalculationAllowed &&
       cart?.shippingAddress &&
       cart?.lineItems.length !== 0 &&
       cart?.shippingInfo
     ) {
-      const updateActions: Array<UpdateAction> | void = await getTax(
+      const updateActions = await getTax(
         cart,
         creds,
         originAddress,
         avataxConfig
-      ).then((response) => {
-        return postProcessing(cart, response);
-      });
+      ).then((response) => postProcessing(cart, response));
       return { statusCode: 200, actions: updateActions };
     } else {
       logger.info('Cart update tax extension was not executed');
