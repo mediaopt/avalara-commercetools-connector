@@ -31,7 +31,7 @@ export const post = async (
       try {
         const data = await cartController(action, resource);
         if (data?.statusCode === 200) {
-          apiSuccess(200, data?.actions || undefined, response);
+          apiSuccess(200, data?.actions, response);
           return;
         } else if (data?.errors) {
           return next(

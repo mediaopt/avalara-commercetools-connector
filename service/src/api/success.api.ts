@@ -22,6 +22,7 @@ export const apiSuccess = (
     response.status(statusCode).json({
       ...responseBody,
     });
+    return;
   }
 
   response.status(statusCode).json();
