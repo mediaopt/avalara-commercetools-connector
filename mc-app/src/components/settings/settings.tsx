@@ -9,10 +9,7 @@ import {
   useSetSettings,
 } from '../connector-hooks/use-customObject-connector';
 import { useEffect, useState } from 'react';
-import {
-  ApollonFetchedCustomObjectType,
-  SettingsFormDataType,
-} from '../../types/types';
+import { SettingsFormDataType } from '../../types/types';
 import {
   GRAPHQL_CUSTOMOBJECT_CONTAINER_NAME,
   GRAPHQL_CUSTOMOBJECT_KEY_NAME,
@@ -22,6 +19,25 @@ import {
   DOMAINS,
   NOTIFICATION_KINDS_SIDE,
 } from '@commercetools-frontend/constants';
+
+const DEFAULT = {
+  accountNumber: '',
+  licenseKey: '',
+  companyCode: '',
+  env: false,
+  logLevel: '0',
+  addressValidation: true,
+  disableDocRec: false,
+  taxCalculation: 'USCA',
+  enableLogging: true,
+  line1: '',
+  line2: '',
+  line3: '',
+  postalCode: '',
+  city: '',
+  region: '',
+  country: '',
+};
 
 const Settings = () => {
   const showNotification = useShowNotification();
@@ -34,20 +50,23 @@ const Settings = () => {
   );
   const [setSettingsFunc] = useSetSettings();
 
-  const saveSettings = (values: SettingsFormDataType) => {
-    setSettingsFunc({
-      variables: {
-        draftOfCustomObject: {
-          container: GRAPHQL_CUSTOMOBJECT_CONTAINER_NAME,
-          key: GRAPHQL_CUSTOMOBJECT_KEY_NAME,
-          version: customObjectVersion,
-          value: JSON.stringify(values),
+  const saveSettings = async (values: SettingsFormDataType) => {
+    try {
+      const result: any = await setSettingsFunc({
+        variables: {
+          draftOfCustomObject: {
+            container: GRAPHQL_CUSTOMOBJECT_CONTAINER_NAME,
+            key: GRAPHQL_CUSTOMOBJECT_KEY_NAME,
+            version: customObjectVersion,
+            value: JSON.stringify(values),
+          },
         },
-      },
-    }).then((result: ApollonFetchedCustomObjectType) => {
-      setCustomObjectVersion(result.data.createOrUpdateCustomObject.version);
-      setSettingsObject(result.data.createOrUpdateCustomObject.value);
-    });
+      });
+      setCustomObjectVersion(result.data?.createOrUpdateCustomObject.version);
+      setSettingsObject(result.data?.createOrUpdateCustomObject.value);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -57,8 +76,8 @@ const Settings = () => {
     if (error) {
       console.error(error);
     } else {
-      setCustomObjectVersion(customObject.version);
-      setSettingsObject(customObject.value);
+      setCustomObjectVersion(customObject?.version);
+      setSettingsObject(customObject?.value || DEFAULT);
     }
   }, [customObject, error, loading]);
 
@@ -72,7 +91,7 @@ const Settings = () => {
 
   return (
     <Formik
-      initialValues={customObject?.value}
+      initialValues={customObject?.value || DEFAULT}
       onSubmit={(values) => {
         saveSettings(values);
       }}

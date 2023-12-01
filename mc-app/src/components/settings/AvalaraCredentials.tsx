@@ -30,7 +30,6 @@ const AvalaraCredentials = ({ values, handleChange }: AvaTaxSettingsType) => {
     }
   }, [url, error, loading]);
 
-  process.env.APP_URL = url as any;
   const showNotification = useShowNotification();
 
   const testConnection = async (values: SettingsFormDataType) => {

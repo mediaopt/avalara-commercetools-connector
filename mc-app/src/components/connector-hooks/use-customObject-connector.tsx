@@ -33,12 +33,14 @@ export const useSetSettings = () => {
 
   return [
     setSettingsFunc,
-    {
-      createOrUpdateCustomObject:
-        (data?.createOrUpdateCustomObject as FetchedCustomObjectType) ||
-        undefined,
-      error,
-      loading,
+    () => {
+      return {
+        createOrUpdateCustomObject:
+          (data?.createOrUpdateCustomObject as FetchedCustomObjectType) ||
+          undefined,
+        error,
+        loading,
+      };
     },
   ];
 };

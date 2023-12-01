@@ -5,10 +5,10 @@ export type SettingsFormDataType = {
   licenseKey: string;
   companyCode: string;
   env: boolean;
-  logLevel: '0' | '1' | '2' | '3';
+  logLevel: string;
   addressValidation: boolean;
   disableDocRec: boolean;
-  taxCalculation: 'none' | 'US' | 'CA' | 'USCA';
+  taxCalculation: string;
   enableLogging: boolean;
   line1: string;
   line2: string;
