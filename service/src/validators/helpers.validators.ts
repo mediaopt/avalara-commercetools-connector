@@ -91,7 +91,7 @@ export const getValidateMessages = (validatorConfigs, item) =>
         return val[property];
       }, item);
       if (!validatorFn(...[valueToValidate, ...args])) {
-        return acc.concat(message);
+        return acc?.concat(message);
       }
       return acc;
     }, []);

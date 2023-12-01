@@ -24,7 +24,7 @@ export async function getCategoryTaxCodes(items: Array<LineItem>) {
           ...new Set(
             categoryData
               .map((x: any) => x.categories)
-              .reduce((acc: any, curr: any) => curr.concat(acc), [])
+              .reduce((acc: any, curr: any) => curr?.concat(acc), [])
           ),
         ]
       : [];
