@@ -1,5 +1,5 @@
 import { UpdateAction } from '@commercetools/sdk-client-v2';
-import { getData } from '../client/create.client';
+import { createApiRoot, getData } from '../client/create.client';
 import CustomError from '../errors/custom.error';
 import { Resource } from '../interfaces/resource.interface';
 import { setUpAvaTax } from '../utils/avatax.utils';
@@ -7,19 +7,26 @@ import { Cart } from '@commercetools/platform-sdk';
 import { logger } from '../utils/logger.utils';
 import { getTax } from '../avalara/requests/actions/get.tax';
 import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
+import { AvataxMerchantConfig } from '../interfaces/avatax.config.interface';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
-export async function createUpdate(resource: Resource) {
+export async function createUpdate(
+  resource: Resource,
+  apiRoot: ByProjectKeyRequestBuilder
+) {
   try {
-    const settings = await getData('avalara-commercetools-connector').then(
-      (res) => res.settings
-    );
+    const settings = (await getData(
+      'avalara-commercetools-connector',
+      apiRoot
+    ).then((res) => res.settings)) as AvataxMerchantConfig;
+
     const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
     const cartDraft = JSON.parse(JSON.stringify(resource));
     const cart: Cart = cartDraft?.obj;
 
     const taxCalculationAllowed: boolean = settings.taxCalculation.includes(
-      cart?.shippingAddress?.country
+      cart?.shippingAddress?.country || 'default'
     );
 
     if (
@@ -32,7 +39,8 @@ export async function createUpdate(resource: Resource) {
         cart,
         creds,
         originAddress,
-        avataxConfig
+        avataxConfig, 
+        apiRoot
       ).then((response) => postProcessing(cart, response));
       return { statusCode: 200, actions: updateActions };
     } else {
@@ -66,14 +74,18 @@ export async function createUpdate(resource: Resource) {
  * @param {Resource} resource The resource from the request body
  * @returns {Promise<object>} The data from the method that handles the action
  */
-export const cartController = async (action: string, resource: Resource) => {
+export const cartController = async (
+  action: string,
+  resource: Resource,
+  apiRoot: ByProjectKeyRequestBuilder
+) => {
   switch (action) {
     case 'Create': {
-      const data = await createUpdate(resource);
+      const data = await createUpdate(resource, apiRoot);
       return data;
     }
     case 'Update': {
-      const data = await createUpdate(resource);
+      const data = await createUpdate(resource, apiRoot);
       return data;
     }
     default:

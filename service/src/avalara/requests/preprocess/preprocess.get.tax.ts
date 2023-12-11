@@ -6,12 +6,14 @@ import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 // initialize and specify the tax document model of Avalara
 export async function processCart(
   cart: Cart,
   companyCode: string,
-  originAddress: AddressInfo
+  originAddress: AddressInfo,
+  apiRoot: ByProjectKeyRequestBuilder
 ): Promise<CreateTransactionModel> {
   const taxDocument = new CreateTransactionModel();
 
@@ -20,9 +22,9 @@ export async function processCart(
 
     const shipTo = shippingAddress(cart?.shippingAddress);
 
-    const shippingInfo = await shipItem(cart?.shippingInfo);
+    const shippingInfo = await shipItem(cart?.shippingInfo, apiRoot);
 
-    const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems);
+    const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems, apiRoot);
 
     const lines = await Promise.all(
       cart?.lineItems.map(
@@ -52,7 +54,7 @@ export async function processCart(
     };
 
     taxDocument.entityUseCode = await getCustomerEntityUseCode(
-      cart?.customerId || ''
+      cart?.customerId || '', apiRoot
     );
     taxDocument.lines = lines;
   }

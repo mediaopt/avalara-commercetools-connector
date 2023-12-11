@@ -5,10 +5,14 @@ import { postCheckAddress } from '../controllers/check.address.controller';
 
 const serviceRouter = Router();
 
-serviceRouter.post('/', post);
+serviceRouter.post('/', (req, res, next) => {
+  post(req, res, next);
+});
 
 serviceRouter.post('/test-connection', postTestConnection);
 
-serviceRouter.post('/check-address', postCheckAddress);
+serviceRouter.post('/check-address', (req, res, next) => {
+    postCheckAddress(req, res, next);
+});
 
 export default serviceRouter;

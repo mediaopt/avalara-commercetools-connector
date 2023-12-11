@@ -30,23 +30,21 @@ export const createApiRoot = ((root?: ByProjectKeyRequestBuilder) => () => {
  */
 
 // Get custom object container as a js dictionary
-export const getData = async (container: string) => {
-  const data = (
-    await createApiRoot()
-      .customObjects()
-      .withContainer({ container: container })
-      .get()
-      .execute()
-  )?.body?.results;
-  return data
+export const getData = async (container: string, apiRoot = createApiRoot()) => {
+  const data = await apiRoot
+    .customObjects()
+    .withContainer({ container: container })
+    .get()
+    .execute();
+  return data?.body?.results
     .map((x) => ({ [x.key]: x.value }))
     .reduce((acc, curr) => Object.assign(acc, curr), {});
 };
 
-export const getShipTaxCode = async (id: string) => {
+export const getShipTaxCode = async (id: string, apiRoot = createApiRoot()) => {
   return (
-    (await createApiRoot().shippingMethods().withId({ ID: id }).get().execute())
-      ?.body?.custom?.fields?.avalaraTaxCode || ''
+    (await apiRoot.shippingMethods().withId({ ID: id }).get().execute())?.body
+      ?.custom?.fields?.avalaraTaxCode || ''
   );
 };
 
@@ -56,20 +54,26 @@ export const getShipTaxCode = async (id: string) => {
   )?.body?.custom?.fields?.avalaraTaxCode;
 };*/
 
-export const getCustomerEntityUseCode = async (id: string) => {
+export const getCustomerEntityUseCode = async (
+  id: string,
+  apiRoot = createApiRoot()
+) => {
   return (
-    (await createApiRoot().customers().withId({ ID: id }).get().execute())?.body
-      ?.custom?.fields?.avalaraEntityUseCode || ''
+    (await apiRoot.customers().withId({ ID: id }).get().execute())?.body?.custom
+      ?.fields?.avalaraEntityUseCode || ''
   );
 };
 
-export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
+export const getBulkCategoryTaxCode = async (
+  cats: Array<string>,
+  apiRoot = createApiRoot()
+) => {
   const cs = cats
     .map((x) => `"${x}", `)
     .reduce((acc, curr) => acc + curr, '')
     .slice(0, -2);
   const taxCodes = (
-    await createApiRoot()
+    await apiRoot
       .categories()
       .get({ queryArgs: { where: `id in (${cs})` } })
       .execute()
@@ -80,20 +84,16 @@ export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
   return taxCodes;
 };
 
-export const getCategoriesOfProduct = async (id: string) => {
-  return (await createApiRoot().products().withId({ ID: id }).get().execute())
-    ?.body?.masterData?.current?.categories;
-};
-
 export const getBulkProductCategories = async (
-  keys: Array<string | undefined>
+  keys: Array<string | undefined>,
+  apiRoot = createApiRoot()
 ) => {
   const ps = keys
     .map((x) => `"${x}",`)
     .reduce((acc, curr) => acc + curr, 'variants.sku:')
     .slice(0, -1);
   const data = (
-    await createApiRoot()
+    await apiRoot
       .productProjections()
       .search()
       .get({ queryArgs: { filter: ps } })
@@ -104,7 +104,7 @@ export const getBulkProductCategories = async (
     categories: data
       .find(
         (y) =>
-          y.masterVariant?.sku === x || y.variants.find((z) => z?.sku === x)
+          y?.masterVariant?.sku === x || y?.variants?.find((z) => z?.sku === x)
       )
       ?.categories.map((x: any) => x.id),
   }));

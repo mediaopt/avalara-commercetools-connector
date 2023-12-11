@@ -4,7 +4,8 @@ import { avaTaxConfig } from '../avalara/utils/avatax.config';
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/custom.error';
 import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
-import { getData } from '../client/create.client';
+import { createApiRoot, getData } from '../client/create.client';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export const checkAddressController = async (data: {
   creds?: {
@@ -17,7 +18,7 @@ export const checkAddressController = async (data: {
     enabled?: boolean;
     level?: string;
   };
-}): Promise<{
+}, apiRoot: ByProjectKeyRequestBuilder): Promise<{
   valid?: boolean;
   address?: ValidatedAddressInfo[];
   errorMessage?: any;
@@ -48,7 +49,7 @@ export const checkAddressController = async (data: {
       errorMessage: messages[0]?.details,
     };
   }
-  const settings = await getData('avalara-commercetools-connector').then(
+  const settings = await getData('avalara-commercetools-connector', apiRoot).then(
     (res) => res.settings
   );
   if (!settings?.addressValidation) {
@@ -91,10 +92,10 @@ export const checkAddressController = async (data: {
 export const postCheckAddress = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction, apiRoot: ByProjectKeyRequestBuilder = createApiRoot()
 ) => {
   try {
-    const dataCheckAddress = await checkAddressController(request?.body);
+    const dataCheckAddress = await checkAddressController(request?.body, apiRoot);
     response.status(200).json(dataCheckAddress);
   } catch (error) {
     if (error instanceof Error) {

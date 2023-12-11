@@ -1,6 +1,7 @@
 import { avaTaxConfig } from '../avalara/utils/avatax.config';
+import { AvataxMerchantConfig } from '../interfaces/avatax.config.interface';
 
-export const setUpAvaTax = (settings: any) => {
+export const setUpAvaTax = (settings: AvataxMerchantConfig) => {
   const creds = {
     username: settings.accountNumber,
     password: settings.licenseKey,

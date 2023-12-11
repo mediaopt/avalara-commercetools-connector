@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import { apiSuccess } from '../api/success.api';
 import CustomError from '../errors/custom.error';
 import { cartController } from './cart.controller';
+import { createApiRoot } from '../client/create.client';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 /**
  * Exposed service endpoint.
@@ -15,7 +17,8 @@ import { cartController } from './cart.controller';
 export const post = async (
   request: Request,
   response: Response,
-  next: NextFunction
+  next: NextFunction,
+  apiRoot: ByProjectKeyRequestBuilder = createApiRoot()
 ) => {
   // Deserialize the action and resource from the body
   const { action, resource } = request.body;
@@ -29,7 +32,7 @@ export const post = async (
   switch (resource.typeId) {
     case 'cart':
       try {
-        const data = await cartController(action, resource);
+        const data = await cartController(action, resource, apiRoot);
         if (data?.statusCode === 200) {
           apiSuccess(200, data?.actions, response);
           return;
