@@ -1,5 +1,6 @@
 import { Cart, UpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
+import { hashCart } from '../../../utils/hash.utils';
 
 export function postProcessing(
   cart: Cart,
@@ -37,7 +38,7 @@ export function postProcessing(
         taxRate: {
           name: 'avaTaxRate',
           amount: taxCentAmount ? taxRate : 0,
-          country: cart?.country,
+          country: cart?.country || cart?.shippingAddress?.country,
         },
       },
     });
@@ -60,7 +61,7 @@ export function postProcessing(
       taxRate: {
         name: 'avaTaxRate',
         amount: shipTaxCentAmount ? taxRate : 0,
-        country: cart?.country,
+        country: cart?.country || cart?.shippingAddress?.country,
       },
     },
   });
@@ -70,6 +71,17 @@ export function postProcessing(
     externalTotalGross: {
       currencyCode: cart?.totalPrice?.currencyCode,
       centAmount: cart?.totalPrice?.centAmount + totalTax,
+    },
+  });
+
+  actions.push({
+    action: 'setCustomType',
+    type: {
+      key: 'avalara-hashed-cart',
+      typeId: 'type',
+    },
+    fields: {
+      avahash: hashCart(cart),
     },
   });
 

@@ -5,6 +5,7 @@ import { createApiRoot } from '../client/create.client';
 import { assertError, assertString } from '../utils/assert.utils';
 import {
   createAvalaraEntityUseCodeFields,
+  createAvalaraHashedCartField,
   createAvalaraTaxCodeFields,
   //createCustomCartDiscountType,
   createCartUpdateExtension,
@@ -21,6 +22,7 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
   await createCartUpdateExtension(apiRoot, applicationUrl);
   await createAvalaraEntityUseCodeFields(apiRoot);
   await createAvalaraTaxCodeFields(apiRoot);
+  await createAvalaraHashedCartField(apiRoot);
   //await createCustomCartDiscountType(apiRoot);
 }
 

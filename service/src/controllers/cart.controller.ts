@@ -1,4 +1,3 @@
-import { UpdateAction } from '@commercetools/sdk-client-v2';
 import { getData } from '../client/create.client';
 import CustomError from '../errors/custom.error';
 import { Resource } from '../interfaces/resource.interface';
@@ -7,6 +6,7 @@ import { Cart } from '@commercetools/platform-sdk';
 import { logger } from '../utils/logger.utils';
 import { getTax } from '../avalara/requests/actions/get.tax';
 import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
+import { hashCart } from '../utils/hash.utils';
 
 export async function createUpdate(resource: Resource) {
   try {
@@ -26,7 +26,8 @@ export async function createUpdate(resource: Resource) {
       taxCalculationAllowed &&
       cart?.shippingAddress &&
       cart?.lineItems.length !== 0 &&
-      cart?.shippingInfo
+      cart?.shippingInfo &&
+      hashCart(cart) !== cart?.custom?.fields?.avahash
     ) {
       const updateActions = await getTax(
         cart,
