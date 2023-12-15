@@ -37,8 +37,8 @@ export const getData = async (container: string, apiRoot = createApiRoot()) => {
     .get()
     .execute();
   return data?.body?.results
-    .map((x) => ({ [x.key]: x.value }))
-    .reduce((acc, curr) => Object.assign(acc, curr), {});
+    ?.map((x) => ({ [x.key]: x.value }))
+    ?.reduce((acc, curr) => Object.assign(acc, curr), {});
 };
 
 export const getShipTaxCode = async (id: string, apiRoot = createApiRoot()) => {
@@ -77,7 +77,7 @@ export const getBulkCategoryTaxCode = async (
       .categories()
       .get({ queryArgs: { where: `id in (${cs})` } })
       .execute()
-  )?.body?.results.map((x) => ({
+  )?.body?.results?.map((x) => ({
     id: x.id,
     avalaraTaxCode: x.custom?.fields?.avalaraTaxCode,
   }));
@@ -102,11 +102,11 @@ export const getBulkProductCategories = async (
   const result: any = keys.map((x) => ({
     sku: x,
     categories: data
-      .find(
+      ?.find(
         (y) =>
           y?.masterVariant?.sku === x || y?.variants?.find((z) => z?.sku === x)
       )
-      ?.categories.map((x: any) => x.id),
+      ?.categories?.map((x: any) => x.id),
   }));
   return result;
 };

@@ -36,10 +36,8 @@ export const post = async (
         if (data?.statusCode === 200) {
           apiSuccess(200, data?.actions, response);
           return;
-        } else if (data?.errors) {
-          return next(
-            new CustomError(data ? data.statusCode : 400, JSON.stringify(data))
-          );
+        } else if (data?.error) {
+          throw new CustomError(data.statusCode, data.error);
         }
       } catch (error) {
         if (error instanceof Error) {

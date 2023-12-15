@@ -1,6 +1,6 @@
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
-const ORDER_SUBSCRIPTION_KEY =
+export const ORDER_SUBSCRIPTION_KEY =
   'avalara-commercetools-connector-orderSubscription';
 
 export async function createOrderSubscription(

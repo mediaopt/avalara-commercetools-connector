@@ -1,101 +1,128 @@
-import { describe, expect, test, jest } from '@jest/globals';
-import {
-  postTestConnection,
-  testConnectionController,
-} from '../src/controllers/test.connection.controller';
+import { describe, expect, test, jest, afterEach } from '@jest/globals';
+import { postTestConnection } from '../src/controllers/test.connection.controller';
+import { NextFunction, Request, Response } from 'express';
+import CustomError from '../src/errors/custom.error';
+import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
+import * as http from 'node:https';
 import { PingResultModel } from 'avatax/lib/models/PingResultModel';
-import { Request, Response } from 'express';
 
-const cases = [
-  {
-    result: true,
-    requestBody: {
-      env: process.env.AVALARA_ENV || 'sandbox',
-      creds: {
-        username: process.env.AVALARA_USERNAME || '',
-        password: process.env.AVALARA_PASSWORD || '',
-      },
-    },
-  },
-  {
-    result: false,
-    requestBody: {
-      env: 'sandbox',
-      creds: {
-        username: 'false',
-        password: 'test',
-      },
-    },
-  },
-];
+const response = {
+  json: jest.fn(),
+  status: jest.fn().mockReturnThis(),
+} as unknown as Response;
 
-const expectUserAuthorization = (
-  response: PingResultModel | undefined,
-  result: boolean
-) => {
-  expect(response).toBeDefined();
-  expect(response?.authenticated).toBe(result);
-};
+describe('test test connection controller', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-const expectSuccessfulCall = async (
-  request: Request,
-  response: Response,
-  next: any
-) => {
-  await postTestConnection(request, response, next);
-  expect(next).toBeCalledTimes(0);
-};
-
-const expectFailingCall = async (
-  request: Request,
-  response: Response,
-  next: any
-) => {
-  await postTestConnection(request, response, next);
-  expect(next).toBeCalledTimes(1);
-};
-
-describe('Connection test response', () => {
-  test.each(cases)(
-    'Validate connection test responses',
-    async ({ requestBody, result }) => {
-      const testResponse = await testConnectionController(requestBody);
-      expectUserAuthorization(testResponse, result);
-    }
-  );
-});
-
-describe('Connection test valid call', () => {
-  test.each(cases)(
-    'Check that connection test calls behave as expected',
-    async ({ requestBody }) => {
-      await expectSuccessfulCall(
-        {
-          body: requestBody,
-        } as unknown as Request,
-        {
-          json: jest.fn(),
-          status: jest.fn().mockReturnThis(),
-        } as unknown as Response,
-        jest.fn()
-      );
-    }
-  );
-});
-
-describe('Connection test invalid call', () => {
   test.each([
-    {
-      requestBody: {},
-    },
-  ])('Check that connection test calls behave as expected', async () => {
-    await expectFailingCall(
-      {} as Request,
+    {} as Request,
+    { body: {} } as Request,
+    { body: { creds: {} } } as Request,
+    { body: { creds: { username: 'test', password: 'test' } } } as Request,
+  ])('bad requests throw an error', async (request) => {
+    const next = jest.fn() as NextFunction;
+    await postTestConnection(request, response, next);
+    expect(next).toBeCalledTimes(1);
+    expect(next).toBeCalledWith(new CustomError(400, 'Missing required data!'));
+  });
+
+  test('a valid request is made with an expected AvaTax configuration', async () => {
+    const SpyAvatax = jest.spyOn(moduleAvaTax, 'default');
+    await postTestConnection(
       {
-        json: jest.fn(),
-        status: jest.fn().mockReturnThis(),
-      } as unknown as Response,
+        body: {
+          env: process.env.AVALARA_ENV,
+          creds: {
+            username: process.env.AVALARA_USERNAME,
+            password: process.env.AVALARA_PASSWORD,
+          },
+          logging: {
+            enabled: true,
+            level: '2',
+          },
+        },
+      } as Request,
+      response,
       jest.fn()
     );
+    expect(SpyAvatax).toHaveBeenCalledWith({
+      appName: 'CommercetoolsbyMediaopt',
+      appVersion: 'a0o5a000008TO2qAAG',
+      customHttpAgent: expect.any(http.Agent),
+      environment: process.env.AVALARA_ENV,
+      logOptions: {
+        logEnabled: true, // toggle logging on or off, by default its off.
+        logLevel: 2, // logLevel that will be used, Options are LogLevel.Error (0), LogLevel.Warn (1), LogLevel.Info (2), LogLevel.Debug (3)
+        logRequestAndResponseInfo: true,
+      },
+      machineName: 'v1',
+      timeout: 5000,
+    });
+
+    SpyAvatax.mockRestore();
+  });
+
+  test('valid credentials are authorized', async () => {
+    const next = jest.fn();
+    const spyPing = jest.spyOn(moduleAvaTax.default.prototype, 'ping');
+    const spyCreds = jest.spyOn(moduleAvaTax.default.prototype, 'withSecurity');
+    await postTestConnection(
+      {
+        body: {
+          env: process.env.AVALARA_ENV,
+          creds: {
+            username: process.env.AVALARA_USERNAME,
+            password: process.env.AVALARA_PASSWORD,
+          },
+        },
+      } as Request,
+      response,
+      next
+    );
+    expect(spyCreds).toBeCalledWith({
+      username: process.env.AVALARA_USERNAME,
+      password: process.env.AVALARA_PASSWORD,
+    });
+    expect(spyPing).toBeCalledTimes(1);
+    const getPingresult = (): Promise<PingResultModel> =>
+      spyPing.mock.results[0].value as Promise<PingResultModel>;
+    const pingResult = await getPingresult();
+    expect(pingResult.authenticated).toBe(true);
+    expect(response.json).toBeCalledWith(pingResult);
+    expect(response.status).toBeCalledWith(200);
+    expect(next).toBeCalledTimes(0);
+  });
+
+  test('invalid credentials are unauthorized', async () => {
+    const next = jest.fn();
+    const spyPing = jest.spyOn(moduleAvaTax.default.prototype, 'ping');
+    const spyCreds = jest.spyOn(moduleAvaTax.default.prototype, 'withSecurity');
+    await postTestConnection(
+      {
+        body: {
+          env: 'test',
+          creds: {
+            username: 'test',
+            password: 'test',
+          },
+        },
+      } as Request,
+      response,
+      next
+    );
+    expect(spyCreds).toBeCalledWith({
+      username: 'test',
+      password: 'test',
+    });
+    expect(spyPing).toBeCalledTimes(1);
+    const getPingresult = (): Promise<PingResultModel> =>
+      spyPing.mock.results[0].value as Promise<PingResultModel>;
+    const pingResult = await getPingresult();
+    expect(pingResult.authenticated).toBe(false);
+    expect(response.json).toBeCalledWith(pingResult);
+    expect(response.status).toBeCalledWith(200);
+    expect(next).toBeCalledTimes(0);
   });
 });

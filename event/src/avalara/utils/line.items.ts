@@ -6,7 +6,7 @@ prices, so no need to forward it to Avalara */
 
 function itemTaxCode(item: LineItem) {
   const productTaxCode = item?.variant?.attributes?.filter(
-    (attr) => attr.name === 'avatax-code'
+    (attr) => attr?.name === 'avatax-code'
   )[0]?.value;
 
   return productTaxCode;
@@ -36,7 +36,7 @@ export async function lineItem(
   lineItem.taxIncluded = item?.taxRate?.includedInPrice;
   lineItem.taxCode =
     itemTaxCode(item) ??
-    catTaxCodes.find((x) => x?.sku === item?.variant?.sku)?.taxCode;
+    catTaxCodes?.find((x) => x?.sku === item?.variant?.sku)?.taxCode;
 
   return lineItem;
 }

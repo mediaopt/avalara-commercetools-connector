@@ -24,7 +24,10 @@ export async function processCart(
 
     const shippingInfo = await shipItem(cart?.shippingInfo, apiRoot);
 
-    const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems, apiRoot);
+    const itemCategoryTaxCodes = await getCategoryTaxCodes(
+      cart?.lineItems,
+      apiRoot
+    );
 
     const lines = await Promise.all(
       cart?.lineItems.map(
@@ -54,7 +57,8 @@ export async function processCart(
     };
 
     taxDocument.entityUseCode = await getCustomerEntityUseCode(
-      cart?.customerId || '', apiRoot
+      cart?.customerId || '',
+      apiRoot
     );
     taxDocument.lines = lines;
   }

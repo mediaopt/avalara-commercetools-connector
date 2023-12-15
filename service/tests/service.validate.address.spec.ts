@@ -1,162 +1,190 @@
-import { describe, expect, test, jest } from '@jest/globals';
-import {
-  postCheckAddress,
-  checkAddressController,
-} from '../src/controllers/check.address.controller';
-import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
-import { Request, Response } from 'express';
-import { getData } from '../src/client/create.client';
+import { describe, expect, test, jest, afterEach } from '@jest/globals';
+import { postCheckAddress } from '../src/controllers/check.address.controller';
+import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
+import * as http from 'node:https';
+import { NextFunction, Request, Response } from 'express';
+import { ServiceApiRoot } from './service.api.root';
+import CustomError from '../src/errors/custom.error';
+import { AddressResolutionModel } from 'avatax/lib/models/AddressResolutionModel';
 
-const cases = [
+const response = {
+  json: jest.fn(),
+  status: jest.fn().mockReturnThis(),
+} as unknown as Response;
+
+const badRequests = [
+  { request: {} as Request, errorMessage: 'Bad request: Missing address' },
   {
-    result: true,
-    requestBody: {
-      creds: {
-        username: process.env.AVALARA_USERNAME,
-        password: process.env.AVALARA_PASSWORD,
-      },
-      env: process.env.AVALARA_ENV,
-      address: {
-        line1: '2000 Main Street',
-        city: 'Irvine',
-        region: 'CA',
-        country: 'US',
-        postalCode: '92614',
-      },
-    },
+    request: { body: {} } as Request,
+    errorMessage: 'Bad request: Missing address',
   },
   {
-    result: false,
-    requestBody: {
-      creds: {
-        username: process.env.AVALARA_USERNAME,
-        password: process.env.AVALARA_PASSWORD,
-      },
-      env: process.env.AVALARA_ENV,
-      address: {
-        line1: '200043 Main Street',
-        city: 'Irvine',
-        region: 'CA',
-        country: 'US',
-        postalCode: '92614',
-      },
-    },
+    request: { body: { address: {} } } as Request,
+    errorMessage: 'Bad request: Missing address',
   },
   {
-    result: true,
-    requestBody: {
-      address: {
-        line1: '2000 Main Street',
-        city: 'Irvine',
-        region: 'CA',
-        country: 'US',
-        postalCode: '92614',
+    request: {
+      body: {
+        creds: {},
+        env: 'sandbox',
+        address: {
+          line1: '2000 Main Street',
+          city: 'Irvine',
+          region: 'CA',
+          country: 'US',
+          postalCode: '92614',
+        },
       },
-    },
+    } as Request,
+    errorMessage: 'Authentication failed.',
   },
 ];
 
-const expectValidAddress = (response: {
-  valid?: boolean;
-  address?: ValidatedAddressInfo[] | undefined;
-  errorMessage?: any;
-  addressValidation?: boolean;
-}) => {
-  expect(response.valid).toBeTruthy();
-  expect(response.address).toBeDefined();
-  expect(response.errorMessage).toBeUndefined();
-  expect(response.addressValidation).toBeUndefined();
-};
-
-const expectInvalidAddress = (response: {
-  valid?: boolean;
-  address?: ValidatedAddressInfo[] | undefined;
-  errorMessage?: any;
-  addressValidation?: boolean;
-}) => {
-  expect(response.valid).toBeFalsy();
-  expect(response.errorMessage).toBeDefined();
-  expect(response.address).toBeUndefined();
-  expect(response.addressValidation).toBeUndefined();
-};
-
-const expectSuccessfulCall = async (
-  request: Request,
-  response: Response,
-  next: any
-) => {
-  await postCheckAddress(request, response, next);
-  expect(next).toBeCalledTimes(0);
-};
-
-const expectFailingCall = async (
-  request: Request,
-  response: Response,
-  next: any
-) => {
-  await postCheckAddress(request, response, next);
-  expect(next).toBeCalledTimes(1);
-};
-
-describe('Avalara data can be loaded', () => {
-  test('Data exists and is defined', async () => {
-    const data = await getData('avalara-commercetools-connector');
-    expect(data).toHaveProperty('settings');
-    expect(data.settings).toBeDefined();
-    expect(data.settings).toHaveProperty('accountNumber');
-    expect(data.settings.accountNumber).toBeDefined();
-    expect(data.settings).toHaveProperty('licenseKey');
-    expect(data.settings.licenseKey).toBeDefined();
-    expect(data.settings).toHaveProperty('env');
-    expect(data.settings.env).toBeDefined();
-  });
-});
-
-describe('Check address responses', () => {
-  test.each(cases)(
-    'Validate check address responses',
-    async ({ requestBody, result }) => {
-      const checkResponse = await checkAddressController(requestBody);
-      if (result) {
-        expectValidAddress(checkResponse);
-      } else {
-        expectInvalidAddress(checkResponse);
-      }
-    }
-  );
-});
-
-describe('Check address valid call', () => {
-  test.each(cases)(
-    'Check that check address calls behave as expected',
-    async ({ requestBody }) => {
-      await expectSuccessfulCall(
-        {
-          body: requestBody,
-        } as unknown as Request,
-        {
-          json: jest.fn(),
-          status: jest.fn().mockReturnThis(),
-        } as unknown as Response,
-        jest.fn()
-      );
-    }
-  );
-});
-
-describe('Check address invalid call', () => {
-  test.each([
+const validRequests = (isValidAddress: boolean) => {
+  return [
     {
-      requestBody: {},
-    },
-  ])('Check that check address calls behave as expected', async () => {
-    await expectFailingCall(
-      {} as Request,
-      {
-        json: jest.fn(),
-        status: jest.fn().mockReturnThis(),
-      } as unknown as Response,
-      jest.fn()
-    );
+      body: {
+        env: process.env.AVALARA_ENV,
+        creds: {
+          username: process.env.AVALARA_USERNAME,
+          password: process.env.AVALARA_PASSWORD,
+        },
+        address: {
+          line1: `${isValidAddress ? '2000' : '200043'} Main Street`,
+          city: 'Irvine',
+          region: 'CA',
+          country: 'US',
+          postalCode: '92614',
+        },
+        logging: {
+          enabled: true,
+          level: '2',
+        },
+      },
+    } as Request,
+    {
+      body: {
+        address: {
+          line1: `${isValidAddress ? '2000' : '200043'} Main Street`,
+          city: 'Irvine',
+          region: 'CA',
+          country: 'US',
+          postalCode: '92614',
+        },
+      },
+    } as Request,
+  ];
+};
+
+describe('test check address controller', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
   });
+
+  test.each(badRequests)(
+    'bad requests throw an error',
+    async ({ request, errorMessage }) => {
+      const next = jest.fn() as NextFunction;
+      await postCheckAddress(request, response, next, ServiceApiRoot);
+      expect(ServiceApiRoot.customObjects).toBeCalledTimes(0);
+      expect(next).toBeCalledTimes(1);
+      expect(next).toBeCalledWith(new CustomError(400, errorMessage));
+    }
+  );
+
+  test.each(validRequests(true))(
+    'valid requests are made with an expected AvaTax configuration',
+    async (request) => {
+      const SpyAvatax = jest.spyOn(moduleAvaTax, 'default');
+      await postCheckAddress(request, response, jest.fn(), ServiceApiRoot);
+      if (!request.body?.creds || !request.body?.env) {
+        expect(ServiceApiRoot.customObjects).toBeCalledTimes(1);
+      } else {
+        expect(ServiceApiRoot.customObjects).toBeCalledTimes(0);
+      }
+      expect(SpyAvatax).toHaveBeenCalledWith({
+        appName: 'CommercetoolsbyMediaopt',
+        appVersion: 'a0o5a000008TO2qAAG',
+        customHttpAgent: expect.any(http.Agent),
+        environment: process.env.AVALARA_ENV,
+        logOptions: {
+          logEnabled: true, // toggle logging on or off, by default its off.
+          logLevel: 2, // logLevel that will be used, Options are LogLevel.Error (0), LogLevel.Warn (1), LogLevel.Info (2), LogLevel.Debug (3)
+          logRequestAndResponseInfo: true,
+        },
+        machineName: 'v1',
+        timeout: 5000,
+      });
+
+      SpyAvatax.mockRestore();
+    }
+  );
+
+  test.each(validRequests(true))(
+    'valid address is resolved',
+    async (request) => {
+      const next = jest.fn();
+      const spyValidate = jest.spyOn(
+        moduleAvaTax.default.prototype,
+        'resolveAddress'
+      );
+      const spyCreds = jest.spyOn(
+        moduleAvaTax.default.prototype,
+        'withSecurity'
+      );
+      await postCheckAddress(request, response, next, ServiceApiRoot);
+      expect(spyValidate).toBeCalledWith(request.body.address);
+      expect(spyCreds).toBeCalledWith({
+        username: process.env.AVALARA_USERNAME,
+        password: process.env.AVALARA_PASSWORD,
+      });
+      const getValidateResult = (): Promise<AddressResolutionModel> =>
+        spyValidate.mock.results[0].value as Promise<AddressResolutionModel>;
+      const validation = await getValidateResult();
+      expect(
+        validation?.messages?.find((message) => message.severity === 'Error')
+      ).toBeUndefined();
+      expect(response.json).toBeCalledWith({
+        valid: true,
+        address: validation?.validatedAddresses,
+      });
+      expect(response.status).toBeCalledWith(200);
+      expect(next).toBeCalledTimes(0);
+    }
+  );
+
+  test.each(validRequests(false))(
+    'invalid address is not resolved',
+    async (request) => {
+      const next = jest.fn();
+      const spyValidate = jest.spyOn(
+        moduleAvaTax.default.prototype,
+        'resolveAddress'
+      );
+      const spyCreds = jest.spyOn(
+        moduleAvaTax.default.prototype,
+        'withSecurity'
+      );
+      await postCheckAddress(request, response, next, ServiceApiRoot);
+      expect(spyValidate).toBeCalledWith(request.body.address);
+      expect(spyCreds).toBeCalledWith({
+        username: process.env.AVALARA_USERNAME,
+        password: process.env.AVALARA_PASSWORD,
+      });
+      const getValidateResult = (): Promise<AddressResolutionModel> =>
+        spyValidate.mock.results[0].value as Promise<AddressResolutionModel>;
+      const validation = await getValidateResult();
+      expect(
+        validation?.messages?.find((message) => message.severity === 'Error')
+      ).toBeDefined();
+      expect(response.json).toBeCalledWith({
+        valid: false,
+        errorMessages: validation?.messages?.filter(
+          (message) => message.severity === 'Error'
+        ),
+      });
+      expect(response.status).toBeCalledWith(200);
+      expect(next).toBeCalledTimes(0);
+    }
+  );
 });

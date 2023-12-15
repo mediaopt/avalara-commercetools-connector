@@ -4,7 +4,10 @@ import { getShipTaxCode } from '../../client/create.client';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 // Mapping CT LineItem Model to Avalara LineItem Model
-export async function shipItem(item: ShippingInfo, apiRoot: ByProjectKeyRequestBuilder) {
+export async function shipItem(
+  item: ShippingInfo,
+  apiRoot: ByProjectKeyRequestBuilder
+) {
   const lineItem = new LineItemModel();
 
   const taxCode = await getShipTaxCode(item.shippingMethod?.id || '', apiRoot);

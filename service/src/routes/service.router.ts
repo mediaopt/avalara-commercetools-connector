@@ -9,10 +9,12 @@ serviceRouter.post('/', (req, res, next) => {
   post(req, res, next);
 });
 
-serviceRouter.post('/test-connection', postTestConnection);
+serviceRouter.post('/test-connection', (req, res, next) => {
+  postTestConnection(req, res, next);
+});
 
 serviceRouter.post('/check-address', (req, res, next) => {
-    postCheckAddress(req, res, next);
+  postCheckAddress(req, res, next);
 });
 
 export default serviceRouter;

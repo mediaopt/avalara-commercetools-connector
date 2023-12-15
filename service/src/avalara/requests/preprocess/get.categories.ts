@@ -5,7 +5,10 @@ import {
 } from '../../../client/create.client';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
-export async function getCategoryTaxCodes(items: Array<LineItem>, apiRoot: ByProjectKeyRequestBuilder) {
+export async function getCategoryTaxCodes(
+  items: Array<LineItem>,
+  apiRoot: ByProjectKeyRequestBuilder
+) {
   const itemsWithoutTaxCodes = items
     ?.filter(
       (x) =>

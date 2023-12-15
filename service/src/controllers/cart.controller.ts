@@ -1,5 +1,4 @@
-import { UpdateAction } from '@commercetools/sdk-client-v2';
-import { createApiRoot, getData } from '../client/create.client';
+import { getData } from '../client/create.client';
 import CustomError from '../errors/custom.error';
 import { Resource } from '../interfaces/resource.interface';
 import { setUpAvaTax } from '../utils/avatax.utils';
@@ -9,6 +8,7 @@ import { getTax } from '../avalara/requests/actions/get.tax';
 import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
 import { AvataxMerchantConfig } from '../interfaces/avatax.config.interface';
 import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { hashCart } from '../utils/hash.utils';
 
 export async function createUpdate(
   resource: Resource,
@@ -18,8 +18,11 @@ export async function createUpdate(
     const settings = (await getData(
       'avalara-commercetools-connector',
       apiRoot
-    ).then((res) => res.settings)) as AvataxMerchantConfig;
+    ).then((res) => res?.settings)) as AvataxMerchantConfig;
 
+    if (!settings) {
+      throw new CustomError(400, 'No Avalara merchant configuration found.');
+    }
     const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
     const cartDraft = JSON.parse(JSON.stringify(resource));
@@ -33,13 +36,14 @@ export async function createUpdate(
       taxCalculationAllowed &&
       cart?.shippingAddress &&
       cart?.lineItems.length !== 0 &&
-      cart?.shippingInfo
+      cart?.shippingInfo &&
+      hashCart(cart) !== cart?.custom?.fields?.avahash
     ) {
       const updateActions = await getTax(
         cart,
         creds,
         originAddress,
-        avataxConfig, 
+        avataxConfig,
         apiRoot
       ).then((response) => postProcessing(cart, response));
       return { statusCode: 200, actions: updateActions };
@@ -51,12 +55,7 @@ export async function createUpdate(
     if (error instanceof Error) {
       return {
         statusCode: 400,
-        errors: [
-          {
-            code: 'General',
-            message: error.message,
-          },
-        ],
+        error: error.message,
       };
     } else {
       throw new CustomError(400, 'Internal Server Error');

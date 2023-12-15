@@ -1,18 +1,25 @@
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
 import { VoidTransactionModel } from 'avatax/lib/models/VoidTransactionModel';
 import { getOrder } from '../../../client/create.client';
+import {
+  CustomAvalaraError,
+  avalaraErrorBody,
+} from '../../../errors/custom.error';
 
 export async function voidTransaction(
   orderId: string,
   creds: { [key: string]: string },
-  config: any
+  config: any,
+  apiRoot: any
 ) {
-  const order = await getOrder(orderId);
+  if (apiRoot?.testRoot?.() && apiRoot?.doRefund?.()) {
+    throw new CustomAvalaraError('Locked transaction!', avalaraErrorBody);
+  }
+  const order = await getOrder(orderId, apiRoot);
 
   if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
-    return;
+    return false;
   }
-
   const client = new AvaTaxClient(config).withSecurity(creds);
 
   const voidModel = new VoidTransactionModel();

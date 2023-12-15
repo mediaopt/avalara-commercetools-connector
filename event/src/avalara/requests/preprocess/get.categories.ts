@@ -3,8 +3,12 @@ import {
   getBulkCategoryTaxCode,
   getBulkProductCategories,
 } from '../../../client/create.client';
+import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
-export async function getCategoryTaxCodes(items: Array<LineItem>) {
+export async function getCategoryTaxCodes(
+  items: Array<LineItem>,
+  apiRoot: ByProjectKeyRequestBuilder
+) {
   const itemsWithoutTaxCodes = items
     ?.filter(
       (x) =>
@@ -15,7 +19,7 @@ export async function getCategoryTaxCodes(items: Array<LineItem>) {
 
   const categoryData =
     itemsWithoutTaxCodes.length !== 0
-      ? await getBulkProductCategories(itemsWithoutTaxCodes)
+      ? await getBulkProductCategories(itemsWithoutTaxCodes, apiRoot)
       : [];
 
   const listOfCategories: any =
@@ -31,14 +35,14 @@ export async function getCategoryTaxCodes(items: Array<LineItem>) {
 
   const catTaxCodes =
     listOfCategories.length !== 0
-      ? await getBulkCategoryTaxCode(listOfCategories)
+      ? await getBulkCategoryTaxCode(listOfCategories, apiRoot)
       : [];
 
   return listOfCategories.length !== 0
     ? categoryData.map((x: any) => ({
         sku: x.sku,
         taxCode: x.categories
-          .map((x: any) => catTaxCodes.find((y) => y.id === x)?.avalaraTaxCode)
+          .map((x: any) => catTaxCodes?.find((y) => y.id === x)?.avalaraTaxCode)
           .find((x: any) => x !== undefined),
       }))
     : [];
