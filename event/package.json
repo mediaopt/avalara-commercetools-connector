@@ -1,9 +1,11 @@
 {
-  "name": "event-typescript",
+  "name": "avalara-event-application",
+  "description": "Avalara document recording tool",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
   "private": true,
+  "author": "Mediaopt GmbH",
+  "license": "SEE LICENSE IN ../LICENSE",
   "scripts": {
     "start": "node build/index.js",
     "gcp-build": "tsc",

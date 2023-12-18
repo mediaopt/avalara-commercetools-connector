@@ -124,13 +124,13 @@ const AvalaraOriginAddress = ({ values, handleChange }: AvaTaxSettingsType) => {
       });
       return;
     } else if (response?.valid !== undefined) {
-      for (const error of response?.errorMessages){
+      for (const error of response?.errorMessages) {
         showNotification({
           kind: NOTIFICATION_KINDS_SIDE.warning,
           domain: DOMAINS.GLOBAL,
           text: error?.details || 'Address validation error.',
-        })
-      };
+        });
+      }
       return;
     }
     showNotification({

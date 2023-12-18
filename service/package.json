@@ -1,9 +1,11 @@
 {
-  "name": "service-typescript",
-  "description": "",
+  "name": "avalara-service-application",
+  "description": "Avalara checkout tax calculation",
   "version": "1.0.0",
   "main": "index.js",
   "private": true,
+  "author": "Mediaopt GmbH",
+  "license": "SEE LICENSE IN ../LICENSE",
   "scripts": {
     "start": "node build/index.js",
     "gcp-build": "tsc",
@@ -16,8 +18,6 @@
     "connector:post-deploy": "node build/connector/post-deploy.js",
     "connector:pre-undeploy": "node build/connector/pre-undeploy.js"
   },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
     "@types/cors": "^2.8.15",
