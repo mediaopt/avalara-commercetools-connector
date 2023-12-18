@@ -5,6 +5,7 @@ import { createApiRoot } from '../client/create.client';
 import { assertError } from '../utils/assert.utils';
 import {
   deleteAvalaraEntityUseCodeFields,
+  deleteAvalaraHashedCartField,
   deleteAvalaraTaxCodeFields,
   deleteCartUpdateExtension,
 } from './actions';
@@ -14,6 +15,7 @@ async function preUndeploy(): Promise<void> {
   await deleteCartUpdateExtension(apiRoot);
   await deleteAvalaraEntityUseCodeFields(apiRoot);
   await deleteAvalaraTaxCodeFields(apiRoot);
+  await deleteAvalaraHashedCartField(apiRoot);
 }
 
 async function run(): Promise<void> {
