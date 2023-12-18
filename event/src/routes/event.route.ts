@@ -3,8 +3,6 @@ import { post } from '../controllers/event.controller';
 
 const eventRouter: Router = Router();
 
-eventRouter.post('/', (req, res, next) => {
-  post(req, res, next);
-});
+eventRouter.post('/', post);
 
 export default eventRouter;

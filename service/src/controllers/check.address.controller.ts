@@ -4,24 +4,20 @@ import { avaTaxConfig } from '../avalara/utils/avatax.config';
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/custom.error';
 import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
-import { createApiRoot, getData } from '../client/create.client';
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
+import { getData } from '../client/create.client';
 
-export const checkAddressController = async (
-  data: {
-    creds?: {
-      username?: string;
-      password?: string;
-    };
-    env?: string;
-    address: AddressInfo;
-    logging?: {
-      enabled?: boolean;
-      level?: string;
-    };
-  },
-  apiRoot: ByProjectKeyRequestBuilder
-): Promise<{
+export const checkAddressController = async (data: {
+  creds?: {
+    username?: string;
+    password?: string;
+  };
+  env?: string;
+  address: AddressInfo;
+  logging?: {
+    enabled?: boolean;
+    level?: string;
+  };
+}): Promise<{
   valid?: boolean;
   address?: ValidatedAddressInfo[];
   errorMessages?: Array<any>;
@@ -42,9 +38,7 @@ export const checkAddressController = async (
     const validatedAddress = validation?.validatedAddresses;
     const error = validation?.messages?.find(
       (message) => message.severity === 'Error'
-    )
-      ? true
-      : false;
+    );
 
     if (!error) {
       return {
@@ -60,10 +54,9 @@ export const checkAddressController = async (
       ),
     };
   }
-  const settings = await getData(
-    'avalara-commercetools-connector',
-    apiRoot
-  ).then((res) => res.settings);
+  const settings = await getData('avalara-commercetools-connector').then(
+    (res) => res.settings
+  );
   if (!settings?.addressValidation) {
     return {
       addressValidation: settings?.addressValidation,
@@ -105,14 +98,10 @@ export const checkAddressController = async (
 export const postCheckAddress = async (
   request: Request,
   response: Response,
-  next: NextFunction,
-  apiRoot: ByProjectKeyRequestBuilder = createApiRoot()
+  next: NextFunction
 ) => {
   try {
-    const dataCheckAddress = await checkAddressController(
-      request?.body,
-      apiRoot
-    );
+    const dataCheckAddress = await checkAddressController(request?.body);
     response.status(200).json(dataCheckAddress);
   } catch (error) {
     if (error instanceof Error) {

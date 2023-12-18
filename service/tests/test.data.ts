@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { AvataxMerchantConfig } from '../src/interfaces/avatax.config.interface';
+import { AvataxMerchantConfig } from '../src/types/index.types';
 
 export const avalaraMerchantDataBody = {
   body: {
@@ -100,53 +100,3 @@ export const bulkProductCategoriesBody = {
     ],
   },
 };
-
-export const buildRequest: any = (requestType: string) => {
-  switch (requestType) {
-    case 'getData':
-      return {
-        execute: jest.fn(() => avalaraMerchantDataBody),
-      };
-    case 'getShipTaxCode':
-      return {
-        execute: jest.fn(() => shipTaxCodeBody),
-      };
-    case 'getCustomerEntityUseCode':
-      return {
-        execute: jest.fn(() => entityUseCodeBody),
-      };
-    case 'getBulkCategoryTaxCode':
-      return {
-        execute: jest.fn(() => bulkCategoryTaxCodeBody),
-      };
-    case 'getBulkProductCategories':
-      return {
-        execute: jest.fn(() => bulkProductCategoriesBody),
-      };
-    default:
-      return {
-        execute: jest.fn(() => ({ body: { results: [{}] } })),
-      };
-  }
-};
-export const apiRoot: any = (
-  buildRequest: CallableFunction,
-  requestType = ''
-) => {
-  return {
-    customObjects: jest.fn(() => apiRoot(buildRequest, 'getData')),
-    shippingMethods: jest.fn(() => apiRoot(buildRequest, 'getShipTaxCode')),
-    customers: jest.fn(() => apiRoot(buildRequest, 'getCustomerEntityUseCode')),
-    categories: jest.fn(() => apiRoot(buildRequest, 'getBulkCategoryTaxCode')),
-    productProjections: jest.fn(() =>
-      apiRoot(buildRequest, 'getBulkProductCategories')
-    ),
-    search: jest.fn(() => apiRoot(buildRequest, requestType)),
-    withId: jest.fn(() => apiRoot(buildRequest, requestType)),
-    withContainer: jest.fn(() => apiRoot(buildRequest, requestType)),
-    get: jest.fn(() => buildRequest(requestType)),
-    post: jest.fn(() => buildRequest(requestType)),
-  };
-};
-
-export const ServiceApiRoot = apiRoot(buildRequest);

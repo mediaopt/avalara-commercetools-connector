@@ -65,9 +65,7 @@ export const expectCommitReturn = (
   expect(taxResponse.status).toEqual('Committed');
   expect(taxResponse.type).toEqual('SalesInvoice');
   expect(taxResponse.taxDate).toEqual(
-    `${new Date().getFullYear()}-${
-      new Date().getMonth().toString().length != 2 ? '0' : ''
-    }${new Date().getMonth() + 1}-${new Date().getDate()}`
+    new Date().toISOString().substring(0, 10)
   );
   expectGeneralAvaTaxReturn(taxResponse, false);
 };
@@ -80,9 +78,7 @@ export const expectVoidReturn = (
   expect(taxResponse.status).toEqual('Cancelled');
   expect(taxResponse.type).toEqual('SalesInvoice');
   expect(taxResponse.taxDate).toEqual(
-    `${new Date().getFullYear()}-${
-      new Date().getMonth().toString().length != 2 ? '0' : ''
-    }${new Date().getMonth() + 1}-${new Date().getDate()}`
+    new Date().toISOString().substring(0, 10)
   );
   expectGeneralAvaTaxReturn(taxResponse, false);
 };
@@ -96,10 +92,6 @@ export const expectRefundReturn = (
   expect(taxResponse.type).toEqual('ReturnInvoice');
   expect(taxResponse.taxOverrideType).toEqual('TaxDate');
   expect(taxResponse.taxDate).toEqual('2021-06-01');
-  expect(taxResponse.date).toEqual(
-    `${new Date().getFullYear()}-${
-      new Date().getMonth().toString().length != 2 ? '0' : ''
-    }${new Date().getMonth() + 1}-${new Date().getDate()}`
-  );
+  expect(taxResponse.date).toEqual(new Date().toISOString().substring(0, 10));
   expectGeneralAvaTaxReturn(taxResponse, true);
 };

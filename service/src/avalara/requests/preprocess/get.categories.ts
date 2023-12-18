@@ -3,12 +3,8 @@ import {
   getBulkCategoryTaxCode,
   getBulkProductCategories,
 } from '../../../client/create.client';
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
-export async function getCategoryTaxCodes(
-  items: Array<LineItem>,
-  apiRoot: ByProjectKeyRequestBuilder
-) {
+export async function getCategoryTaxCodes(items: Array<LineItem>) {
   const itemsWithoutTaxCodes = items
     ?.filter(
       (x) =>
@@ -19,7 +15,7 @@ export async function getCategoryTaxCodes(
 
   const categoryData =
     itemsWithoutTaxCodes.length !== 0
-      ? await getBulkProductCategories(itemsWithoutTaxCodes, apiRoot)
+      ? await getBulkProductCategories(itemsWithoutTaxCodes)
       : [];
 
   const listOfCategories: any =
@@ -35,7 +31,7 @@ export async function getCategoryTaxCodes(
 
   const catTaxCodes =
     listOfCategories.length !== 0
-      ? await getBulkCategoryTaxCode(listOfCategories, apiRoot)
+      ? await getBulkCategoryTaxCode(listOfCategories)
       : [];
 
   return listOfCategories.length !== 0

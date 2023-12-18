@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { createApiRoot, getData } from '../client/create.client';
+import { getData } from '../client/create.client';
 import CustomError from '../errors/custom.error';
 import {
   Message,
@@ -11,7 +11,6 @@ import { setUpAvaTax } from '../utils/avatax.utils';
 import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
 import { voidTransaction } from '../avalara/requests/actions/void.transaction';
 import { refundTransaction } from '../avalara/requests/actions/refund.transaction';
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 /**
  * Exposed event POST endpoint.
@@ -46,18 +45,16 @@ function parseRequest(request: Request) {
 export const post = async (
   request: Request,
   response: Response,
-  next: NextFunction,
-  apiRoot: ByProjectKeyRequestBuilder = createApiRoot()
+  next: NextFunction
 ) => {
   try {
     const messagePayload = parseRequest(request) as
       | OrderCreatedMessage
       | OrderStateChangedMessage;
 
-    const settings = await getData(
-      'avalara-commercetools-connector',
-      apiRoot
-    ).then((res) => res?.settings);
+    const settings = await getData('avalara-commercetools-connector').then(
+      (res) => res?.settings
+    );
     if (!settings) {
       logger.error('Missing Avalara settings.');
       throw new CustomError(400, 'No Avalara merchant data is present.');
@@ -76,8 +73,7 @@ export const post = async (
           messagePayload.order,
           creds,
           originAddress,
-          avataxConfig,
-          apiRoot
+          avataxConfig
         ).catch((error) => logger.error(error));
         response.status(200).send();
         break;
@@ -89,8 +85,7 @@ export const post = async (
           await voidTransaction(
             messagePayload.resource.id,
             creds,
-            avataxConfig,
-            apiRoot
+            avataxConfig
           ).catch(async (error) => {
             logger.error(error);
             error?.code === 'CannotModifyLockedTransaction'
@@ -98,8 +93,7 @@ export const post = async (
                   messagePayload.resource.id,
                   creds,
                   originAddress,
-                  avataxConfig,
-                  apiRoot
+                  avataxConfig
                 ).catch((error) => logger.error(error))
               : true;
           });

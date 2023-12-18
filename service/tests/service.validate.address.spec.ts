@@ -3,7 +3,8 @@ import { postCheckAddress } from '../src/controllers/check.address.controller';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
 import * as http from 'node:https';
 import { NextFunction, Request, Response } from 'express';
-import { ServiceApiRoot } from './service.api.root';
+import { avalaraMerchantDataBody } from './test.data';
+import * as moduleApiRoot from '../src/client/create.client';
 import CustomError from '../src/errors/custom.error';
 import { AddressResolutionModel } from 'avatax/lib/models/AddressResolutionModel';
 
@@ -11,6 +12,13 @@ const response = {
   json: jest.fn(),
   status: jest.fn().mockReturnThis(),
 } as unknown as Response;
+
+const apiRoot: any = {
+  customObjects: jest.fn(() => apiRoot),
+  withContainer: jest.fn(() => apiRoot),
+  get: jest.fn(() => apiRoot),
+  execute: jest.fn(() => avalaraMerchantDataBody),
+};
 
 const badRequests = [
   { request: {} as Request, errorMessage: 'Bad request: Missing address' },
@@ -79,14 +87,18 @@ const validRequests = (isValidAddress: boolean) => {
 describe('test check address controller', () => {
   afterEach(() => {
     jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   test.each(badRequests)(
     'bad requests throw an error',
     async ({ request, errorMessage }) => {
       const next = jest.fn() as NextFunction;
-      await postCheckAddress(request, response, next, ServiceApiRoot);
-      expect(ServiceApiRoot.customObjects).toBeCalledTimes(0);
+      jest
+        .spyOn(moduleApiRoot, 'createApiRoot')
+        .mockImplementation(() => apiRoot);
+      await postCheckAddress(request, response, next);
+      expect(apiRoot.execute).toBeCalledTimes(0);
       expect(next).toBeCalledTimes(1);
       expect(next).toBeCalledWith(new CustomError(400, errorMessage));
     }
@@ -95,12 +107,15 @@ describe('test check address controller', () => {
   test.each(validRequests(true))(
     'valid requests are made with an expected AvaTax configuration',
     async (request) => {
+      jest
+        .spyOn(moduleApiRoot, 'createApiRoot')
+        .mockImplementation(() => apiRoot);
       const SpyAvatax = jest.spyOn(moduleAvaTax, 'default');
-      await postCheckAddress(request, response, jest.fn(), ServiceApiRoot);
+      await postCheckAddress(request, response, jest.fn());
       if (!request.body?.creds || !request.body?.env) {
-        expect(ServiceApiRoot.customObjects).toBeCalledTimes(1);
+        expect(apiRoot.execute).toBeCalledTimes(1);
       } else {
-        expect(ServiceApiRoot.customObjects).toBeCalledTimes(0);
+        expect(apiRoot.execute).toBeCalledTimes(0);
       }
       expect(SpyAvatax).toHaveBeenCalledWith({
         appName: 'CommercetoolsbyMediaopt',
@@ -115,8 +130,6 @@ describe('test check address controller', () => {
         machineName: 'v1',
         timeout: 5000,
       });
-
-      SpyAvatax.mockRestore();
     }
   );
 
@@ -124,6 +137,9 @@ describe('test check address controller', () => {
     'valid address is resolved',
     async (request) => {
       const next = jest.fn();
+      jest
+        .spyOn(moduleApiRoot, 'createApiRoot')
+        .mockImplementation(() => apiRoot);
       const spyValidate = jest.spyOn(
         moduleAvaTax.default.prototype,
         'resolveAddress'
@@ -132,7 +148,7 @@ describe('test check address controller', () => {
         moduleAvaTax.default.prototype,
         'withSecurity'
       );
-      await postCheckAddress(request, response, next, ServiceApiRoot);
+      await postCheckAddress(request, response, next);
       expect(spyValidate).toBeCalledWith(request.body.address);
       expect(spyCreds).toBeCalledWith({
         username: process.env.AVALARA_USERNAME,
@@ -157,6 +173,9 @@ describe('test check address controller', () => {
     'invalid address is not resolved',
     async (request) => {
       const next = jest.fn();
+      jest
+        .spyOn(moduleApiRoot, 'createApiRoot')
+        .mockImplementation(() => apiRoot);
       const spyValidate = jest.spyOn(
         moduleAvaTax.default.prototype,
         'resolveAddress'
@@ -165,7 +184,7 @@ describe('test check address controller', () => {
         moduleAvaTax.default.prototype,
         'withSecurity'
       );
-      await postCheckAddress(request, response, next, ServiceApiRoot);
+      await postCheckAddress(request, response, next);
       expect(spyValidate).toBeCalledWith(request.body.address);
       expect(spyCreds).toBeCalledWith({
         username: process.env.AVALARA_USERNAME,

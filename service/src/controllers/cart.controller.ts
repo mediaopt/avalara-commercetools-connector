@@ -6,19 +6,14 @@ import { Cart } from '@commercetools/platform-sdk';
 import { logger } from '../utils/logger.utils';
 import { getTax } from '../avalara/requests/actions/get.tax';
 import { postProcessing } from '../avalara/requests/postprocess/postprocess.get.tax';
-import { AvataxMerchantConfig } from '../interfaces/avatax.config.interface';
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 import { hashCart } from '../utils/hash.utils';
+import { AvataxMerchantConfig } from '../types/index.types';
 
-export async function createUpdate(
-  resource: Resource,
-  apiRoot: ByProjectKeyRequestBuilder
-) {
+export async function createUpdate(resource: Resource) {
   try {
-    const settings = (await getData(
-      'avalara-commercetools-connector',
-      apiRoot
-    ).then((res) => res?.settings)) as AvataxMerchantConfig;
+    const settings = (await getData('avalara-commercetools-connector').then(
+      (res) => res?.settings
+    )) as AvataxMerchantConfig;
 
     if (!settings) {
       throw new CustomError(400, 'No Avalara merchant configuration found.');
@@ -43,8 +38,7 @@ export async function createUpdate(
         cart,
         creds,
         originAddress,
-        avataxConfig,
-        apiRoot
+        avataxConfig
       ).then((response) => postProcessing(cart, response));
       return { statusCode: 200, actions: updateActions };
     } else {
@@ -73,18 +67,14 @@ export async function createUpdate(
  * @param {Resource} resource The resource from the request body
  * @returns {Promise<object>} The data from the method that handles the action
  */
-export const cartController = async (
-  action: string,
-  resource: Resource,
-  apiRoot: ByProjectKeyRequestBuilder
-) => {
+export const cartController = async (action: string, resource: Resource) => {
   switch (action) {
     case 'Create': {
-      const data = await createUpdate(resource, apiRoot);
+      const data = await createUpdate(resource);
       return data;
     }
     case 'Update': {
-      const data = await createUpdate(resource, apiRoot);
+      const data = await createUpdate(resource);
       return data;
     }
     default:

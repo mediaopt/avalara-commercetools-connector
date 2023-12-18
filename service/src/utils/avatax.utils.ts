@@ -1,5 +1,5 @@
 import { avaTaxConfig } from '../avalara/utils/avatax.config';
-import { AvataxMerchantConfig } from '../interfaces/avatax.config.interface';
+import { AvataxMerchantConfig } from '../types/index.types';
 
 export const setUpAvaTax = (settings: AvataxMerchantConfig) => {
   const creds = {

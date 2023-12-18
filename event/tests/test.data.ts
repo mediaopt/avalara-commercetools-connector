@@ -2,7 +2,7 @@ import {
   OrderCreatedMessage,
   OrderStateChangedMessage,
 } from '@commercetools/platform-sdk';
-import { AvataxMerchantConfig } from '../src/interfaces/avatax.config.interface';
+import { AvataxMerchantConfig } from '../src/types/index.types';
 
 export const avalaraMerchantDataBody = (disableDocRec: boolean) => {
   return {

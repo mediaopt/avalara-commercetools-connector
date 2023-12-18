@@ -3,19 +3,17 @@ import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
 import { getOrder } from '../../../client/create.client';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { processOrder } from '../preprocess/preprocess.order';
-import { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder';
 
 export async function refundTransaction(
   orderId: string,
   creds: { [key: string]: string },
   originAddress: AddressInfo,
-  config: any,
-  apiRoot: ByProjectKeyRequestBuilder
+  config: any
 ) {
-  const order = await getOrder(orderId, apiRoot);
+  const order = await getOrder(orderId);
 
   if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
-    return false;
+    return undefined;
   }
   const client = new AvaTaxClient(config).withSecurity(creds);
 
@@ -23,8 +21,7 @@ export async function refundTransaction(
     'refund',
     order,
     creds?.companyCode,
-    originAddress,
-    apiRoot
+    originAddress
   );
 
   taxDocument.referenceCode = 'Refund';
