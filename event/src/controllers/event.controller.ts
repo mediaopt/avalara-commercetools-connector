@@ -27,7 +27,7 @@ function parseRequest(request: Request) {
     throw new CustomError(400, 'Bad request: No Pub/Sub message was received');
   }
   if (!request.body.message) {
-    logger.error('Missing body message');
+    logger.error('Missing body message.');
     throw new CustomError(400, 'Bad request: Wrong No Pub/Sub message format');
   }
   const pubSubMessage = request.body.message;
@@ -38,6 +38,7 @@ function parseRequest(request: Request) {
     logger.info(`Payload received: ${decodedData}`);
     return JSON.parse(decodedData) as Message;
   }
+  logger.error('Missing message payload.');
   throw new CustomError(400, 'Bad request: No payload in the Pub/Sub message');
 }
 
@@ -47,10 +48,15 @@ export const post = async (
   next: NextFunction
 ) => {
   try {
-    const settings = await getData('avalara-commercetools-connector')
-      .then((res) => res?.settings)
-      .catch((e) => new CustomError(400, e));
+    const messagePayload = parseRequest(request) as
+      | OrderCreatedMessage
+      | OrderStateChangedMessage;
+
+    const settings = await getData('avalara-commercetools-connector').then(
+      (res) => res?.settings
+    );
     if (!settings) {
+      logger.error('Missing Avalara settings.');
       throw new CustomError(400, 'No Avalara merchant data is present.');
     }
     if (settings?.disableDocRec) {
@@ -58,9 +64,6 @@ export const post = async (
     }
     const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
 
-    const messagePayload = parseRequest(request) as
-      | OrderCreatedMessage
-      | OrderStateChangedMessage;
     switch (messagePayload.type) {
       case 'OrderCreated':
         if (!messagePayload.order) {

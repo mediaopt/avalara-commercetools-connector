@@ -4,19 +4,22 @@ import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/custom.error';
 
 export const testConnectionController = async (data: {
-  env: string;
-  creds: {
-    username: string;
-    password: string;
+  env?: string;
+  creds?: {
+    username?: string;
+    password?: string;
   };
   logging?: {
     enabled?: boolean;
     level?: string;
   };
 }) => {
+  if (!data || !data?.creds?.username || !data?.creds?.password || !data?.env) {
+    throw new CustomError(400, 'Missing required data!');
+  }
   const client = new AvaTaxClient(
-    avaTaxConfig(data?.env, data?.logging?.enabled, data?.logging?.level)
-  ).withSecurity(data?.creds);
+    avaTaxConfig(data?.env || '', data?.logging?.enabled, data?.logging?.level)
+  ).withSecurity(data?.creds!);
 
   return await client.ping();
 };
@@ -32,7 +35,7 @@ export const postTestConnection = async (
     return;
   } catch (error) {
     if (error instanceof Error) {
-      next(new CustomError(500, error.message));
+      next(new CustomError(400, error.message));
     } else {
       next(error);
     }

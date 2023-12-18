@@ -35,7 +35,7 @@ async function addOrUpdateCustomType(
     const updates = (customType.fieldDefinitions ?? [])
       .filter(
         (newFieldDefinition: FieldDefinition): boolean =>
-          !type.fieldDefinitions.find(
+          !type.fieldDefinitions?.find(
             (existingFieldDefinition: FieldDefinition): boolean =>
               newFieldDefinition.name === existingFieldDefinition.name
           )
@@ -104,7 +104,7 @@ export async function deleteAvalaraEntityUseCodeFields(
     .types()
     .get({
       queryArgs: {
-        where: `key = ${AVALARA_ENTITY_USE_CODES_KEY}`,
+        where: `key = "${AVALARA_ENTITY_USE_CODES_KEY}"`,
       },
     })
     .execute();
@@ -159,7 +159,7 @@ export async function deleteAvalaraHashedCartField(
     .types()
     .get({
       queryArgs: {
-        where: `key = ${AVALARA_HASHED_CART_KEY}`,
+        where: `key = "${AVALARA_HASHED_CART_KEY}"`,
       },
     })
     .execute();
@@ -214,7 +214,7 @@ export async function deleteAvalaraTaxCodeFields(
     .types()
     .get({
       queryArgs: {
-        where: `key = ${AVALARA_TAX_CODES_KEY}`,
+        where: `key = "${AVALARA_TAX_CODES_KEY}"`,
       },
     })
     .execute();

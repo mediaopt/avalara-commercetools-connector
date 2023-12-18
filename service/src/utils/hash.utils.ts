@@ -37,9 +37,30 @@ function hashInvariantObject(obj: any) {
 export function hashCart(cart: Cart) {
   const data = {
     customerId: cart?.customerId,
-    shippingAddress: cart?.shippingAddress,
-    lineItems: cart?.lineItems,
-    shippingInfo: cart?.shippingInfo,
+    shippingAddress: {
+      line1: cart?.shippingAddress?.streetName,
+      line2: cart?.shippingAddress?.streetNumber,
+      line3: cart?.shippingAddress?.additionalStreetInfo,
+      postalCode: cart?.shippingAddress?.postalCode,
+      city: cart?.shippingAddress?.city,
+      region: cart?.shippingAddress?.state,
+      country: cart?.shippingAddress?.country,
+    },
+    lineItems: cart?.lineItems.map((lineItem) => ({
+      avalaraTaxCode: lineItem?.variant?.attributes?.filter(
+        (attr) => attr.name === 'avatax-code'
+      )[0]?.value,
+      sku: lineItem?.variant?.sku,
+      quantity: lineItem?.quantity,
+      discounted: lineItem?.discountedPricePerQuantity,
+      totalPrice: lineItem?.totalPrice,
+      includedInPrice: lineItem?.taxRate?.includedInPrice,
+    })),
+    shippingInfo: {
+      id: cart?.shippingInfo?.shippingMethod?.id,
+      price: cart?.shippingInfo?.price,
+      includedInPrice: cart?.shippingInfo?.taxRate?.includedInPrice,
+    },
   };
   return hashInvariantObject(data);
 }

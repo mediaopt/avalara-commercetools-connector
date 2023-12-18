@@ -83,11 +83,6 @@ export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
   return taxCodes;
 };
 
-export const getCategoriesOfProduct = async (id: string) => {
-  return (await createApiRoot().products().withId({ ID: id }).get().execute())
-    ?.body?.masterData?.current?.categories;
-};
-
 export const getBulkProductCategories = async (
   keys: Array<string | undefined>
 ) => {
@@ -107,7 +102,7 @@ export const getBulkProductCategories = async (
     categories: data
       .find(
         (y) =>
-          y.masterVariant?.sku === x || y.variants.find((z) => z?.sku === x)
+          y?.masterVariant?.sku === x || y?.variants?.find((z) => z?.sku === x)
       )
       ?.categories.map((x: any) => x.id),
   }));

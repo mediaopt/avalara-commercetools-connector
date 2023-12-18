@@ -10,9 +10,8 @@ export async function voidTransaction(
   const order = await getOrder(orderId);
 
   if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
-    return;
+    return undefined;
   }
-
   const client = new AvaTaxClient(config).withSecurity(creds);
 
   const voidModel = new VoidTransactionModel();

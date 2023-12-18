@@ -38,7 +38,7 @@ export async function getCategoryTaxCodes(items: Array<LineItem>) {
     ? categoryData.map((x: any) => ({
         sku: x.sku,
         taxCode: x.categories
-          .map((x: any) => catTaxCodes.find((y) => y.id === x)?.avalaraTaxCode)
+          .map((x: any) => catTaxCodes?.find((y) => y.id === x)?.avalaraTaxCode)
           .find((x: any) => x !== undefined),
       }))
     : [];

@@ -10,13 +10,12 @@ export async function refundTransaction(
   originAddress: AddressInfo,
   config: any
 ) {
-  const client = new AvaTaxClient(config).withSecurity(creds);
-
   const order = await getOrder(orderId);
 
   if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
-    return;
+    return undefined;
   }
+  const client = new AvaTaxClient(config).withSecurity(creds);
 
   const taxDocument = await processOrder(
     'refund',
