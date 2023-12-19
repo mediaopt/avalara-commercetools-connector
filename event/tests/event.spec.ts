@@ -1,11 +1,4 @@
-import {
-  describe,
-  expect,
-  test,
-  jest,
-  afterEach,
-  beforeEach,
-} from '@jest/globals';
+import { describe, expect, test, jest, afterEach } from '@jest/globals';
 import { post } from '../src/controllers/event.controller';
 import { NextFunction, Request, Response } from 'express';
 import {
@@ -15,7 +8,6 @@ import {
   entityUseCodeBody,
   messageOrderCreated,
   messageOrderStateChanged,
-  order,
   orderRequest,
   shipTaxCodeBody,
 } from './test.data';

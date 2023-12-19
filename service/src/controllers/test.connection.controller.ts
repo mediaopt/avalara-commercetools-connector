@@ -19,7 +19,7 @@ export const testConnectionController = async (data: {
   }
   const client = new AvaTaxClient(
     avaTaxConfig(data?.env || '', data?.logging?.enabled, data?.logging?.level)
-  ).withSecurity(data?.creds!);
+  ).withSecurity(data?.creds);
 
   return await client.ping();
 };

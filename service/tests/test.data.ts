@@ -1,4 +1,3 @@
-import { jest } from '@jest/globals';
 import { AvataxMerchantConfig } from '../src/types/index.types';
 
 export const avalaraMerchantDataBody = {
