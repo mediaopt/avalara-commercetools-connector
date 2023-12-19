@@ -31,7 +31,7 @@ a cart does not have line items, or shipping address, or shipping method specifi
     {
         valid?: boolean;
         address?: ValidatedAddressInfo[];
-        errorMessage?: any;
+        errorMessages?: Error[];
         addressValidation?: boolean;
     }
 ```
