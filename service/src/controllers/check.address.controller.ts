@@ -4,7 +4,7 @@ import { avaTaxConfig } from '../avalara/utils/avatax.config';
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/custom.error';
 import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
-import { getData } from '../client/create.client';
+import { getData } from '../client/data.client';
 
 export const checkAddressController = async (data: {
   creds?: {

@@ -3,7 +3,6 @@ import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { NextFunction, Request, Response } from 'express';
 import { fullCart, emptyCart, cartRequest } from './carts';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
-import * as moduleApiRoot from '../src/client/create.client';
 import { post } from '../src/controllers/service.controller';
 import * as http from 'node:https';
 import CustomError from '../src/errors/custom.error';
@@ -16,25 +15,29 @@ import {
   shipTaxCodeBody,
 } from './test.data';
 
-const response = {
-  json: jest.fn(),
-  status: jest.fn().mockReturnThis(),
-} as unknown as Response;
-
-let apiRequest: any = undefined;
 const apiRoot: any = {
   customObjects: jest.fn(() => apiRoot),
   shippingMethods: jest.fn(() => apiRoot),
   customers: jest.fn(() => apiRoot),
-  categories: jest.fn(() => apiRoot),
-  orders: jest.fn(() => apiRoot),
   productProjections: jest.fn(() => apiRoot),
+  categories: jest.fn(() => apiRoot),
   search: jest.fn(() => apiRoot),
   withId: jest.fn(() => apiRoot),
   withContainer: jest.fn(() => apiRoot),
-  get: jest.fn(() => apiRequest),
-  post: jest.fn(() => apiRequest),
+  get: jest.fn(() => apiRoot),
+  execute: jest.fn(),
 };
+
+jest.mock('../src/client/create.client', () => {
+  return {
+    createApiRoot: () => apiRoot,
+  };
+});
+
+const response = {
+  json: jest.fn(),
+  status: jest.fn().mockReturnThis(),
+} as unknown as Response;
 
 const serviceThrowCases = [
   {
@@ -86,12 +89,7 @@ describe('test service/cart controller', () => {
     'bad requests throw an error',
     async ({ request, error }) => {
       const next = jest.fn() as NextFunction;
-      apiRequest = {
-        execute: jest.fn(() => ({ body: { results: [{}] } })),
-      };
-      jest
-        .spyOn(moduleApiRoot, 'createApiRoot')
-        .mockImplementation(() => apiRoot);
+      apiRoot.execute = jest.fn(() => ({ body: { results: [] } }));
       await post(request, response, next);
       expect(next).toBeCalledTimes(1);
       expect(next).toBeCalledWith(new CustomError(400, error));
@@ -100,12 +98,7 @@ describe('test service/cart controller', () => {
 
   test('no Avalara merchant data was specified in the api root', async () => {
     const next = jest.fn() as NextFunction;
-    apiRequest = {
-      execute: jest.fn(() => ({ body: { results: [{}] } })),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementation(() => apiRoot);
+    apiRoot.execute = jest.fn(() => ({ body: { results: [] } }));
     await post(cartRequest(emptyCart), response, next);
     expect(next).toBeCalledTimes(1);
     expect(next).toBeCalledWith(
@@ -140,18 +133,13 @@ describe('test service/cart controller', () => {
     'make valid cart request with insufficient/non-US-Canada address/same hash data, no tax calculation will be made',
     async (request) => {
       const next = jest.fn() as NextFunction;
-      apiRequest = {
-        execute: jest
-          .fn()
-          .mockReturnValueOnce(avalaraMerchantDataBody)
-          .mockReturnValueOnce(shipTaxCodeBody)
-          .mockReturnValueOnce(bulkProductCategoriesBody)
-          .mockReturnValueOnce(bulkCategoryTaxCodeBody)
-          .mockReturnValueOnce(entityUseCodeBody),
-      };
-      jest
-        .spyOn(moduleApiRoot, 'createApiRoot')
-        .mockImplementation(() => apiRoot);
+      apiRoot.execute = jest
+        .fn()
+        .mockReturnValueOnce(avalaraMerchantDataBody)
+        .mockReturnValueOnce(shipTaxCodeBody)
+        .mockReturnValueOnce(bulkProductCategoriesBody)
+        .mockReturnValueOnce(bulkCategoryTaxCodeBody)
+        .mockReturnValueOnce(entityUseCodeBody);
       const spyGetTax = jest.spyOn(
         moduleAvaTax.default.prototype,
         'createTransaction'
@@ -167,18 +155,13 @@ describe('test service/cart controller', () => {
 
   test('make valid cart request with sufficient data and new cart hash, tax calculation will be made', async () => {
     const next = jest.fn() as NextFunction;
-    apiRequest = {
-      execute: jest
-        .fn()
-        .mockReturnValueOnce(avalaraMerchantDataBody)
-        .mockReturnValueOnce(shipTaxCodeBody)
-        .mockReturnValueOnce(bulkProductCategoriesBody)
-        .mockReturnValueOnce(bulkCategoryTaxCodeBody)
-        .mockReturnValueOnce(entityUseCodeBody),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementation(() => apiRoot);
+    apiRoot.execute = jest
+      .fn()
+      .mockReturnValueOnce(avalaraMerchantDataBody)
+      .mockReturnValueOnce(shipTaxCodeBody)
+      .mockReturnValueOnce(bulkProductCategoriesBody)
+      .mockReturnValueOnce(bulkCategoryTaxCodeBody)
+      .mockReturnValueOnce(entityUseCodeBody);
     const spyGetTax = jest.spyOn(
       moduleAvaTax.default.prototype,
       'createTransaction'
@@ -214,18 +197,13 @@ describe('test service/cart controller', () => {
 
   test('valid cart request is made with an expected AvaTax configuration', async () => {
     const next = jest.fn() as NextFunction;
-    apiRequest = {
-      execute: jest
-        .fn()
-        .mockReturnValueOnce(avalaraMerchantDataBody)
-        .mockReturnValueOnce(shipTaxCodeBody)
-        .mockReturnValueOnce(bulkProductCategoriesBody)
-        .mockReturnValueOnce(bulkCategoryTaxCodeBody)
-        .mockReturnValueOnce(entityUseCodeBody),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementation(() => apiRoot);
+    apiRoot.execute = jest
+      .fn()
+      .mockReturnValueOnce(avalaraMerchantDataBody)
+      .mockReturnValueOnce(shipTaxCodeBody)
+      .mockReturnValueOnce(bulkProductCategoriesBody)
+      .mockReturnValueOnce(bulkCategoryTaxCodeBody)
+      .mockReturnValueOnce(entityUseCodeBody);
     const SpyAvatax = jest.spyOn(moduleAvaTax, 'default');
     await post(
       cartRequest(
@@ -259,18 +237,13 @@ describe('test service/cart controller', () => {
 
   test('make valid cart request with sufficient data and wrong address, avalara throws', async () => {
     const next = jest.fn() as NextFunction;
-    apiRequest = {
-      execute: jest
-        .fn()
-        .mockReturnValueOnce(avalaraMerchantDataBody)
-        .mockReturnValueOnce(shipTaxCodeBody)
-        .mockReturnValueOnce(bulkProductCategoriesBody)
-        .mockReturnValueOnce(bulkCategoryTaxCodeBody)
-        .mockReturnValueOnce(entityUseCodeBody),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementation(() => apiRoot);
+    apiRoot.execute = jest
+      .fn()
+      .mockReturnValueOnce(avalaraMerchantDataBody)
+      .mockReturnValueOnce(shipTaxCodeBody)
+      .mockReturnValueOnce(bulkProductCategoriesBody)
+      .mockReturnValueOnce(bulkCategoryTaxCodeBody)
+      .mockReturnValueOnce(entityUseCodeBody);
     const spyGetTax = jest.spyOn(
       moduleAvaTax.default.prototype,
       'createTransaction'

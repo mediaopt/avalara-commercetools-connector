@@ -1,6 +1,6 @@
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
 import { VoidTransactionModel } from 'avatax/lib/models/VoidTransactionModel';
-import { getOrder } from '../../../client/create.client';
+import { getOrder } from '../../../client/data.client';
 
 export async function voidTransaction(
   orderId: string,

@@ -4,14 +4,8 @@ import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
 import * as http from 'node:https';
 import { NextFunction, Request, Response } from 'express';
 import { avalaraMerchantDataBody } from './test.data';
-import * as moduleApiRoot from '../src/client/create.client';
 import CustomError from '../src/errors/custom.error';
 import { AddressResolutionModel } from 'avatax/lib/models/AddressResolutionModel';
-
-const response = {
-  json: jest.fn(),
-  status: jest.fn().mockReturnThis(),
-} as unknown as Response;
 
 const apiRoot: any = {
   customObjects: jest.fn(() => apiRoot),
@@ -19,6 +13,17 @@ const apiRoot: any = {
   get: jest.fn(() => apiRoot),
   execute: jest.fn(() => avalaraMerchantDataBody),
 };
+
+jest.mock('../src/client/create.client', () => {
+  return {
+    createApiRoot: () => apiRoot,
+  };
+});
+
+const response = {
+  json: jest.fn(),
+  status: jest.fn().mockReturnThis(),
+} as unknown as Response;
 
 const badRequests = [
   { request: {} as Request, errorMessage: 'Bad request: Missing address' },
@@ -94,9 +99,6 @@ describe('test check address controller', () => {
     'bad requests throw an error',
     async ({ request, errorMessage }) => {
       const next = jest.fn() as NextFunction;
-      jest
-        .spyOn(moduleApiRoot, 'createApiRoot')
-        .mockImplementation(() => apiRoot);
       await postCheckAddress(request, response, next);
       expect(apiRoot.execute).toBeCalledTimes(0);
       expect(next).toBeCalledTimes(1);
@@ -107,9 +109,6 @@ describe('test check address controller', () => {
   test.each(validRequests(true))(
     'valid requests are made with an expected AvaTax configuration',
     async (request) => {
-      jest
-        .spyOn(moduleApiRoot, 'createApiRoot')
-        .mockImplementation(() => apiRoot);
       const SpyAvatax = jest.spyOn(moduleAvaTax, 'default');
       await postCheckAddress(request, response, jest.fn());
       if (!request.body?.creds || !request.body?.env) {
@@ -137,9 +136,6 @@ describe('test check address controller', () => {
     'valid address is resolved',
     async (request) => {
       const next = jest.fn();
-      jest
-        .spyOn(moduleApiRoot, 'createApiRoot')
-        .mockImplementation(() => apiRoot);
       const spyValidate = jest.spyOn(
         moduleAvaTax.default.prototype,
         'resolveAddress'
@@ -173,9 +169,6 @@ describe('test check address controller', () => {
     'invalid address is not resolved',
     async (request) => {
       const next = jest.fn();
-      jest
-        .spyOn(moduleApiRoot, 'createApiRoot')
-        .mockImplementation(() => apiRoot);
       const spyValidate = jest.spyOn(
         moduleAvaTax.default.prototype,
         'resolveAddress'

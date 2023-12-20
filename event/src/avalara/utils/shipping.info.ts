@@ -1,6 +1,6 @@
 import { ShippingInfo } from '@commercetools/platform-sdk';
 import { LineItemModel } from 'avatax/lib/models/LineItemModel';
-import { getShipTaxCode } from '../../client/create.client';
+import { getShipTaxCode } from '../../client/data.client';
 
 // Mapping CT LineItem Model to Avalara LineItem Model
 export async function shipItem(type: string, item: ShippingInfo) {

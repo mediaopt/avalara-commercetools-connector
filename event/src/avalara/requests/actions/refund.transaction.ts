@@ -1,6 +1,6 @@
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
 import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
-import { getOrder } from '../../../client/create.client';
+import { getOrder } from '../../../client/data.client';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { processOrder } from '../preprocess/preprocess.order';
 

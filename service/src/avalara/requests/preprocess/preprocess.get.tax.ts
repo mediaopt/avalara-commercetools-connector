@@ -1,5 +1,5 @@
 import { Cart, LineItem } from '@commercetools/platform-sdk';
-import { getCustomerEntityUseCode } from '../../../client/create.client';
+import { getCustomerEntityUseCode } from '../../../client/data.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';

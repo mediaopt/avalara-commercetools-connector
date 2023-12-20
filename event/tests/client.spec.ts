@@ -6,8 +6,7 @@ import {
   getBulkCategoryTaxCode,
   getBulkProductCategories,
   getOrder,
-} from '../src/client/create.client';
-import * as moduleApiRoot from '../src/client/create.client';
+} from '../src/client/data.client';
 import {
   avalaraMerchantDataBody,
   bulkCategoryTaxCodeBody,
@@ -17,20 +16,31 @@ import {
   shipTaxCodeBody,
 } from './test.data';
 
+const apiRoot: any = {
+  customObjects: jest.fn(() => apiRoot),
+  shippingMethods: jest.fn(() => apiRoot),
+  customers: jest.fn(() => apiRoot),
+  productProjections: jest.fn(() => apiRoot),
+  categories: jest.fn(() => apiRoot),
+  orders: jest.fn(() => apiRoot),
+  search: jest.fn(() => apiRoot),
+  withId: jest.fn(() => apiRoot),
+  withContainer: jest.fn(() => apiRoot),
+  get: jest.fn(() => apiRoot),
+  execute: jest.fn(() => ({ body: { results: [] } })),
+};
+jest.mock('../src/client/create.client', () => {
+  return {
+    createApiRoot: () => apiRoot,
+  };
+});
+
 describe('test coco api client', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
   test('get avalara merchant data method', async () => {
-    const apiRoot: any = {
-      customObjects: jest.fn(() => apiRoot),
-      withContainer: jest.fn(() => apiRoot),
-      get: jest.fn(() => apiRoot),
-      execute: jest.fn(() => avalaraMerchantDataBody(false)),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementationOnce(() => apiRoot);
+    apiRoot.execute = jest.fn(() => avalaraMerchantDataBody(false));
     const data = await getData('avalara-commercetools-connector');
     expect(apiRoot.customObjects).toBeCalledTimes(1);
     expect(apiRoot.withContainer).toBeCalledWith({
@@ -45,15 +55,7 @@ describe('test coco api client', () => {
   });
 
   test('get shipping tax code method', async () => {
-    const apiRoot: any = {
-      shippingMethods: jest.fn(() => apiRoot),
-      withId: jest.fn(() => apiRoot),
-      get: jest.fn(() => apiRoot),
-      execute: jest.fn(() => shipTaxCodeBody('PC030000')),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementationOnce(() => apiRoot);
+    apiRoot.execute = jest.fn(() => shipTaxCodeBody('PC030000'));
     const data = await getShipTaxCode('123');
     expect(apiRoot.shippingMethods).toBeCalledTimes(1);
     expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
@@ -64,15 +66,7 @@ describe('test coco api client', () => {
   });
 
   test('get customer entity use code method', async () => {
-    const apiRoot: any = {
-      customers: jest.fn(() => apiRoot),
-      withId: jest.fn(() => apiRoot),
-      get: jest.fn(() => apiRoot),
-      execute: jest.fn(() => entityUseCodeBody('B')),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementationOnce(() => apiRoot);
+    apiRoot.execute = jest.fn(() => entityUseCodeBody('B'));
     const data = await getCustomerEntityUseCode('123');
     expect(apiRoot.customers).toBeCalledTimes(1);
     expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
@@ -84,15 +78,7 @@ describe('test coco api client', () => {
   });
 
   test('get all categories of a list of products', async () => {
-    const apiRoot: any = {
-      productProjections: jest.fn(() => apiRoot),
-      search: jest.fn(() => apiRoot),
-      get: jest.fn(() => apiRoot),
-      execute: jest.fn(() => bulkProductCategoriesBody),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementationOnce(() => apiRoot);
+    apiRoot.execute = jest.fn(() => bulkProductCategoriesBody);
     const data = await getBulkProductCategories(['sku123', 'sku456']);
     expect(apiRoot.productProjections).toBeCalledTimes(1);
     expect(apiRoot.search).toBeCalledTimes(1);
@@ -109,14 +95,9 @@ describe('test coco api client', () => {
   });
 
   test('get all tax codes of a list of categories', async () => {
-    const apiRoot: any = {
-      categories: jest.fn(() => apiRoot),
-      get: jest.fn(() => apiRoot),
-      execute: jest.fn(() => bulkCategoryTaxCodeBody(['PS081282', 'PS080101'])),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementationOnce(() => apiRoot);
+    apiRoot.execute = jest.fn(() =>
+      bulkCategoryTaxCodeBody(['PS081282', 'PS080101'])
+    );
     const data = await getBulkCategoryTaxCode(['123', '456']);
     expect(apiRoot.categories).toBeCalledTimes(1);
     expect(apiRoot.get).toBeCalledWith({
@@ -132,15 +113,7 @@ describe('test coco api client', () => {
   });
 
   test('get order', async () => {
-    const apiRoot: any = {
-      orders: jest.fn(() => apiRoot),
-      withId: jest.fn(() => apiRoot),
-      get: jest.fn(() => apiRoot),
-      execute: jest.fn(() => orderRequest('123', 'US')),
-    };
-    jest
-      .spyOn(moduleApiRoot, 'createApiRoot')
-      .mockImplementationOnce(() => apiRoot);
+    apiRoot.execute = jest.fn(() => orderRequest('123', 'US'));
     const data = await getOrder('123');
     expect(apiRoot.orders).toBeCalledTimes(1);
     expect(apiRoot.withId).toBeCalledWith({ ID: '123' });

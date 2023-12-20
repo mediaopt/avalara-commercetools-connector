@@ -2,7 +2,7 @@ import { LineItem } from '@commercetools/platform-sdk';
 import {
   getBulkCategoryTaxCode,
   getBulkProductCategories,
-} from '../../../client/create.client';
+} from '../../../client/data.client';
 
 export async function getCategoryTaxCodes(items: Array<LineItem>) {
   const itemsWithoutTaxCodes = items
