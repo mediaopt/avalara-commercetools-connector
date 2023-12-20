@@ -1,11 +1,10 @@
-import { AvaTaxSettingsType } from '../../types/types';
 import styles from './settings.module.css';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import messages from './messages';
 import TextInput from '@commercetools-uikit/text-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
-import { SettingsFormDataType } from '../../types/types';
+import { AvaTaxSettingsType, SettingsFormDataType } from '../../types/types';
 import { useShowNotification } from '@commercetools-frontend/actions-global';
 import {
   DOMAINS,

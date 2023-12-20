@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { Formik } from 'formik';
 import Spacings from '@commercetools-uikit/spacings';
 import PrimaryButton from '@commercetools-uikit/primary-button';
