@@ -58,6 +58,11 @@ export default defineMessages({
     id: 'Settings.disableDocRec',
     defaultMessage: 'Disable document recording',
   },
+  
+  displayPricesWithTax: {
+    id: 'Settings.displayPricesWithTax',
+    defaultMessage: 'Display prices with Tax Included',
+  },
 
   line1: {
     id: 'Settings.line1',
