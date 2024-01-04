@@ -26,6 +26,7 @@ export type AvataxMerchantConfig = {
   disableDocRec: boolean;
   taxCalculation: string;
   enableLogging: boolean;
+  displayPricesWithTax: boolean;
   line1: string;
   line2: string;
   line3: string;

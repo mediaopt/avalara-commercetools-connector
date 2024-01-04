@@ -31,6 +31,7 @@ const DEFAULT = {
   disableDocRec: false,
   taxCalculation: 'USCA',
   enableLogging: true,
+  displayPricesWithTax: true,
   line1: '',
   line2: '',
   line3: '',
