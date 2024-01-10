@@ -4,11 +4,7 @@ import { expect } from '@jest/globals';
 
 export const expectAvaTaxReturn = (taxResponse: TransactionModel) => {
   expect(taxResponse.code).toEqual('0');
-  expect(taxResponse.date).toEqual(
-    `${new Date().getFullYear()}-${
-      new Date().getMonth().toString().length != 2 ? '0' : ''
-    }${new Date().getMonth() + 1}-${new Date().getDate()}`
-  );
+  expect(taxResponse.date).toEqual(new Date().toISOString().substring(0, 10));
   expect(taxResponse.status).toEqual('Temporary');
   expect(taxResponse.type).toEqual('SalesOrder');
   expect(taxResponse.currencyCode).toEqual('USD');

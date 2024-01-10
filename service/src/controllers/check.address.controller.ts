@@ -7,11 +7,7 @@ import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
 import { getData } from '../client/data.client';
 
 export const checkAddressController = async (data: {
-  creds?: {
-    username?: string;
-    password?: string;
-  };
-  env?: string;
+  mcApp?: boolean;
   address: AddressInfo;
   logging?: {
     enabled?: boolean;
@@ -23,6 +19,12 @@ export const checkAddressController = async (data: {
   errorMessages?: Array<any>;
   addressValidation?: boolean;
 }> => {
+  const env = process.env.AVALARA_ENV || 'sandbox';
+  const creds = {
+    username: process.env.AVALARA_USERNAME || '',
+    password: process.env.AVALARA_PASSWORD || '',
+  };
+
   if (
     !data?.address ||
     (!data?.address?.line1 && !data?.address?.city && !data?.address?.region) ||
@@ -30,48 +32,21 @@ export const checkAddressController = async (data: {
   ) {
     throw new CustomError(400, 'Bad request: Missing address');
   }
-  if (data?.creds && data?.env) {
-    const client = new AvaTaxClient(
-      avaTaxConfig(data?.env, data?.logging?.enabled, data?.logging?.level)
-    ).withSecurity(data?.creds);
-    const validation = await client.resolveAddress(data?.address);
-    const validatedAddress = validation?.validatedAddresses;
-    const error = validation?.messages?.find(
-      (message) => message.severity === 'Error'
-    );
-
-    if (!error) {
-      return {
-        valid: true,
-        address: validatedAddress,
-      };
-    }
-
-    return {
-      valid: false,
-      errorMessages: validation?.messages?.filter(
-        (message) => message.severity === 'Error'
-      ),
-    };
-  }
   const settings = await getData('avalara-commercetools-connector').then(
     (res) => res.settings
   );
-  if (!settings?.addressValidation) {
+  if (!data?.mcApp && !settings?.addressValidation) {
     return {
       addressValidation: settings?.addressValidation,
     };
   }
   const client = new AvaTaxClient(
     avaTaxConfig(
-      settings?.env ? 'production' : 'sandbox',
-      settings?.enableLogging,
-      settings?.logLevel
+      env,
+      data?.logging?.enabled ?? settings?.enableLogging,
+      data?.logging?.level ?? settings?.logLevel
     )
-  ).withSecurity({
-    username: settings?.accountNumber,
-    password: settings?.licenseKey,
-  });
+  ).withSecurity(creds);
   const validation = await client.resolveAddress(data?.address);
   const validatedAddress = validation?.validatedAddresses;
   const error = validation?.messages?.find(

@@ -5,6 +5,11 @@ import express, { Express } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
+import {
+  createSessionMiddleware,
+  CLOUD_IDENTIFIERS,
+} from '@commercetools-backend/express';
+
 // Import routes
 import ServiceRoutes from './routes/service.router';
 
@@ -27,7 +32,14 @@ app.disable('x-powered-by');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors());
+app.use(
+  createSessionMiddleware({
+    audience: 'https://ff70da18716e.ngrok.app/',
+    issuer: CLOUD_IDENTIFIERS.GCP_EU,
+  })
+);
+
+app.use(cors({ origin: '*.commercetools.com' }));
 
 // Define routes
 app.use('/service', ServiceRoutes);

@@ -1,1 +1,27 @@
-{}
+{
+    "ProjectSwitcher.projectsLabel": "Projektmenü",
+    "UserSettingsMenu.menuLabel": "Benutzermenü",
+    "LocaleSwitcher.localesLabel": "Sprachauswahl",
+    "Welcome.title": "Avalara Steuerberechnung",
+    "Settings.configuration": "Avalara Konfiguration",
+    "Settings.originAddress": "Avalara Herkunftsaddresse",
+    "Settings.connection": "Verbindung mit Avalara",
+    "Settings.info": "Hier können Sie überprüfen, ob Ihre Zugangsdaten, die Sie beim Connector Deployment konfiguriert haben, authorisiert sind und eine Verbindung zum Avalara Service ermöglichen.",
+    "Settings.licenseKey": "Lizenzschlüssel",
+    "Settings.companyCode": "Firmencode",
+    "Settings.env": "Produktionsumgebung aktivieren",
+    "Settings.logLevel": "Logstufe auswählen",
+    "Settings.enableLogging": "Logging aktivieren",
+    "Settings.taxCalculation": "Steuerberechnungsmodus wählen",
+    "Settings.addressValidation": "Addressvalidierung aktivieren",
+    "Settings.disableDocRec": "Dokumentenübergabe deaktivieren",
+    "Settings.displayPricesWithTax": "Bruttopreise anzeigen",
+    "Settings.line1": "Addresszeile 1",
+    "Settings.line2": "Addresszeile 2",
+    "Settings.line3": "Addresszeile 3",
+    "Settings.city": "Stadt",
+    "Settings.postalCode": "Postleitzahl",
+    "Settings.region": "Bundesland",
+    "Settings.country": "Land"
+  }
+  

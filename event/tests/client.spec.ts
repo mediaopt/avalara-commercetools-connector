@@ -50,8 +50,7 @@ describe('test coco api client', () => {
     expect(apiRoot.execute).toBeCalledTimes(1);
 
     expect(data).toBeDefined();
-    expect(data?.settings).toHaveProperty('accountNumber');
-    expect(data?.settings.accountNumber).toBe(process.env.AVALARA_USERNAME);
+    expect(Object.keys(data?.settings).length).toBe(12);
   });
 
   test('get shipping tax code method', async () => {

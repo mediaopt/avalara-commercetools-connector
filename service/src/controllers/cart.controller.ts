@@ -11,6 +11,12 @@ import { AvataxMerchantConfig } from '../types/index.types';
 
 export async function createUpdate(resource: Resource) {
   try {
+    const env = process.env.AVALARA_ENV || 'sandbox';
+    const creds = {
+      username: process.env.AVALARA_USERNAME || '',
+      password: process.env.AVALARA_PASSWORD || '',
+      companyCode: process.env.AVALARA_COMPANY_CODE || '',
+    };
     const settings = (await getData('avalara-commercetools-connector').then(
       (res) => res?.settings
     )) as AvataxMerchantConfig;
@@ -18,7 +24,7 @@ export async function createUpdate(resource: Resource) {
     if (!settings) {
       throw new CustomError(400, 'No Avalara merchant configuration found.');
     }
-    const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
+    const { originAddress, avataxConfig } = setUpAvaTax(settings, env);
 
     const cartDraft = JSON.parse(JSON.stringify(resource));
     const cart: Cart = cartDraft?.obj;

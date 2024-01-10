@@ -19,13 +19,16 @@ describe('test test connection controller', () => {
   test.each([
     {} as Request,
     { body: {} } as Request,
-    { body: { creds: {} } } as Request,
-    { body: { creds: { username: 'test', password: 'test' } } } as Request,
+    { body: { logging: {} } } as Request,
+    { body: { logging: { enabled: true } } } as Request,
+    { body: { logging: { level: '2' } } } as Request,
   ])('bad requests throw an error', async (request) => {
     const next = jest.fn() as NextFunction;
     await postTestConnection(request, response, next);
     expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(new CustomError(400, 'Missing required data!'));
+    expect(next).toBeCalledWith(
+      new CustomError(400, 'Bad request: missing required data.')
+    );
   });
 
   test('a valid request is made with an expected AvaTax configuration', async () => {
@@ -33,11 +36,6 @@ describe('test test connection controller', () => {
     await postTestConnection(
       {
         body: {
-          env: process.env.AVALARA_ENV,
-          creds: {
-            username: process.env.AVALARA_USERNAME,
-            password: process.env.AVALARA_PASSWORD,
-          },
           logging: {
             enabled: true,
             level: '2',
@@ -71,10 +69,9 @@ describe('test test connection controller', () => {
     await postTestConnection(
       {
         body: {
-          env: process.env.AVALARA_ENV,
-          creds: {
-            username: process.env.AVALARA_USERNAME,
-            password: process.env.AVALARA_PASSWORD,
+          logging: {
+            enabled: true,
+            level: '2',
           },
         },
       } as Request,
@@ -96,16 +93,17 @@ describe('test test connection controller', () => {
   });
 
   test('invalid credentials are unauthorized', async () => {
+    process.env.AVALARA_USERNAME = 'test';
+    process.env.AVALARA_PASSWORD = 'test';
     const next = jest.fn();
     const spyPing = jest.spyOn(moduleAvaTax.default.prototype, 'ping');
     const spyCreds = jest.spyOn(moduleAvaTax.default.prototype, 'withSecurity');
     await postTestConnection(
       {
         body: {
-          env: 'test',
-          creds: {
-            username: 'test',
-            password: 'test',
+          logging: {
+            enabled: true,
+            level: '2',
           },
         },
       } as Request,

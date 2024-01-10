@@ -39,6 +39,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@commercetools-backend/express": "^22.15.0",
     "@commercetools-backend/loggers": "^21.19.0",
     "@commercetools/platform-sdk": "^4.0.0",
     "@commercetools/sdk-client-v2": "^2.0.0",

@@ -35,33 +35,12 @@ const badRequests = [
     request: { body: { address: {} } } as Request,
     errorMessage: 'Bad request: Missing address',
   },
-  {
-    request: {
-      body: {
-        creds: {},
-        env: 'sandbox',
-        address: {
-          line1: '2000 Main Street',
-          city: 'Irvine',
-          region: 'CA',
-          country: 'US',
-          postalCode: '92614',
-        },
-      },
-    } as Request,
-    errorMessage: 'Authentication failed.',
-  },
 ];
 
 const validRequests = (isValidAddress: boolean) => {
   return [
     {
       body: {
-        env: process.env.AVALARA_ENV,
-        creds: {
-          username: process.env.AVALARA_USERNAME,
-          password: process.env.AVALARA_PASSWORD,
-        },
         address: {
           line1: `${isValidAddress ? '2000' : '200043'} Main Street`,
           city: 'Irvine',
@@ -199,4 +178,26 @@ describe('test check address controller', () => {
       expect(next).toBeCalledTimes(0);
     }
   );
+  test('invalid credentials throw an error', async () => {
+    process.env.AVALARA_USERNAME = 'test';
+    process.env.AVALARA_PASSWORD = 'test';
+    const next = jest.fn() as NextFunction;
+    await postCheckAddress(
+      {
+        body: {
+          address: {
+            line1: '2000 Main Street',
+            city: 'Irvine',
+            region: 'CA',
+            country: 'US',
+            postalCode: '92614',
+          },
+        },
+      } as Request,
+      response,
+      next
+    );
+    expect(next).toBeCalledTimes(1);
+    expect(next).toBeCalledWith(new CustomError(400, 'Authentication failed.'));
+  });
 });

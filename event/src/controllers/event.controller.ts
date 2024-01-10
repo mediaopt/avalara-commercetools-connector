@@ -48,6 +48,12 @@ export const post = async (
   next: NextFunction
 ) => {
   try {
+    const env = process.env.AVALARA_ENV || 'sandbox';
+    const creds = {
+      username: process.env.AVALARA_USERNAME || '',
+      password: process.env.AVALARA_PASSWORD || '',
+      companyCode: process.env.AVALARA_COMPANY_CODE || '',
+    };
     const messagePayload = parseRequest(request) as
       | OrderCreatedMessage
       | OrderStateChangedMessage;
@@ -62,7 +68,7 @@ export const post = async (
     if (settings?.disableDocRec) {
       return response.status(200).send();
     }
-    const { creds, originAddress, avataxConfig } = setUpAvaTax(settings);
+    const { originAddress, avataxConfig } = setUpAvaTax(settings, env);
 
     switch (messagePayload.type) {
       case 'OrderCreated':
@@ -88,14 +94,14 @@ export const post = async (
             avataxConfig
           ).catch(async (error) => {
             logger.error(error);
-            error?.code === 'CannotModifyLockedTransaction'
-              ? await refundTransaction(
-                  messagePayload.resource.id,
-                  creds,
-                  originAddress,
-                  avataxConfig
-                ).catch((error) => logger.error(error))
-              : true;
+            if (error?.code === 'CannotModifyLockedTransaction') {
+              await refundTransaction(
+                messagePayload.resource.id,
+                creds,
+                originAddress,
+                avataxConfig
+              ).catch((error) => logger.error(error));
+            }
           });
         }
         response.status(200).send();

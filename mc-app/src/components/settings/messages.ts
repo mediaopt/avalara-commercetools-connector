@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  settings: {
-    id: 'Settings.settings',
-    defaultMessage: 'Avalara Credentials',
+  connection: {
+    id: 'Settings.connection',
+    defaultMessage: 'Connection to Avalara',
   },
 
   configuration: {
@@ -15,9 +15,10 @@ export default defineMessages({
     id: 'Settings.originAddress',
     defaultMessage: 'Avalara Origin Address',
   },
-  account: {
-    id: 'Settings.account',
-    defaultMessage: 'Account Number',
+  info: {
+    id: 'Settings.info',
+    defaultMessage:
+      'Here you can check if you are authorized to use the Avalara service using the credentials you specified when deploying the connector.',
   },
   licenseKey: {
     id: 'Settings.licenseKey',
@@ -58,7 +59,7 @@ export default defineMessages({
     id: 'Settings.disableDocRec',
     defaultMessage: 'Disable document recording',
   },
-  
+
   displayPricesWithTax: {
     id: 'Settings.displayPricesWithTax',
     defaultMessage: 'Display prices with Tax Included',
