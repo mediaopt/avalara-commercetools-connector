@@ -17,10 +17,6 @@ export type Wrapper = (
 ) => (value: object) => boolean;
 
 export type AvataxMerchantConfig = {
-  accountNumber: string;
-  licenseKey: string;
-  companyCode: string;
-  env: boolean;
   logLevel: string;
   addressValidation: boolean;
   disableDocRec: boolean;

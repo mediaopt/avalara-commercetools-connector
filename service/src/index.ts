@@ -27,7 +27,7 @@ app.disable('x-powered-by');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(cors());
+app.use(cors({ origin: '*.commercetools.com' }));
 
 // Define routes
 app.use('/service', ServiceRoutes);

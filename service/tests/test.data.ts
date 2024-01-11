@@ -6,10 +6,6 @@ export const avalaraMerchantDataBody = {
       {
         key: 'settings',
         value: {
-          accountNumber: process.env.AVALARA_USERNAME,
-          licenseKey: process.env.AVALARA_PASSWORD,
-          companyCode: process.env.AVALARA_COMPANY_CODE,
-          env: false,
           logLevel: '2',
           addressValidation: true,
           disableDocRec: false,

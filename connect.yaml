@@ -18,6 +18,18 @@ deployAs:
           description: commercetools Composable Commerce client secret
         - key: CTP_SCOPE
           description: commercetools Composable Commerce client scope
+        - key: AVALARA_USERNAME
+          description: Avalara Backoffice Account Number
+          required: true
+        - key: AVALARA_PASSWORD
+          description: Avalara Backoffice License Key
+          required: true
+        - key: AVALARA_COMPANY_CODE
+          description: Avalara Backoffice Company Code
+          required: true
+        - key: AVALARA_ENV
+          description: Avalara Backoffice Environment
+          required: true
   - name: event
     applicationType: event
     endpoint: /event
@@ -36,7 +48,19 @@ deployAs:
         - key: CTP_CLIENT_SECRET
           description: commercetools Composable Commerce client secret
         - key: CTP_SCOPE
-          description: commercetools Composable Commerce client scope
+          description: commercetools Composable Commerce client scope\
+        - key: AVALARA_USERNAME
+          description: Avalara Backoffice Account Number
+          required: true
+        - key: AVALARA_PASSWORD
+          description: Avalara Backoffice License Key
+          required: true
+        - key: AVALARA_COMPANY_CODE
+          description: Avalara Backoffice Company Code
+          required: true
+        - key: AVALARA_ENV
+          description: Avalara Backoffice Environment
+          required: true
   - name: mc-app
     applicationType: mc-app
     endpoint: /

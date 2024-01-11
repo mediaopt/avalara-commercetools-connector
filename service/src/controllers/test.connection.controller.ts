@@ -4,22 +4,19 @@ import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/custom.error';
 
 export const testConnectionController = async (data: {
-  env?: string;
-  creds?: {
-    username?: string;
-    password?: string;
-  };
-  logging?: {
-    enabled?: boolean;
-    level?: string;
+  logging: {
+    enabled: boolean;
+    level: string;
   };
 }) => {
-  if (!data || !data?.creds?.username || !data?.creds?.password || !data?.env) {
-    throw new CustomError(400, 'Missing required data!');
-  }
+  const env = process.env.AVALARA_ENV || 'sandbox';
+  const creds = {
+    username: process.env.AVALARA_USERNAME || '',
+    password: process.env.AVALARA_PASSWORD || '',
+  };
   const client = new AvaTaxClient(
-    avaTaxConfig(data?.env || '', data?.logging?.enabled, data?.logging?.level)
-  ).withSecurity(data?.creds);
+    avaTaxConfig(env, data.logging.enabled, data.logging.level)
+  ).withSecurity(creds);
 
   return await client.ping();
 };
@@ -30,7 +27,15 @@ export const postTestConnection = async (
   next: NextFunction
 ) => {
   try {
-    const dataTestConnection = await testConnectionController(request?.body);
+    if (
+      !request.body ||
+      !request.body.logging ||
+      !request.body.logging.enabled ||
+      !request.body.logging.level
+    ) {
+      throw new CustomError(400, 'Bad request: missing required data.');
+    }
+    const dataTestConnection = await testConnectionController(request.body);
     response.status(200).json(dataTestConnection);
     return;
   } catch (error) {

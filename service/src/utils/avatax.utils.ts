@@ -1,12 +1,7 @@
 import { avaTaxConfig } from '../avalara/utils/avatax.config';
 import { AvataxMerchantConfig } from '../types/index.types';
 
-export const setUpAvaTax = (settings: AvataxMerchantConfig) => {
-  const creds = {
-    username: settings?.accountNumber,
-    password: settings?.licenseKey,
-    companyCode: settings?.companyCode,
-  };
+export const setUpAvaTax = (settings: AvataxMerchantConfig, env: string) => {
   const originAddress = {
     line1: settings?.line1,
     line2: settings?.line2,
@@ -17,10 +12,10 @@ export const setUpAvaTax = (settings: AvataxMerchantConfig) => {
     country: settings?.country,
   };
   const avataxConfig = avaTaxConfig(
-    settings.env ? 'production' : 'sandbox',
+    env,
     settings?.enableLogging,
     settings?.logLevel
   );
 
-  return { creds, originAddress, avataxConfig };
+  return { originAddress, avataxConfig };
 };

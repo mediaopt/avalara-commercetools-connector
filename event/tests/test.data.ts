@@ -11,10 +11,6 @@ export const avalaraMerchantDataBody = (disableDocRec: boolean) => {
         {
           key: 'settings',
           value: {
-            accountNumber: process.env.AVALARA_USERNAME,
-            licenseKey: process.env.AVALARA_PASSWORD,
-            companyCode: process.env.AVALARA_COMPANY_CODE,
-            env: false,
             logLevel: '3',
             addressValidation: true,
             disableDocRec: disableDocRec,
