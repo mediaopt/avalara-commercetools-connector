@@ -4,26 +4,38 @@ describe('loadMessages', () => {
   test('should load messages for "de" locale', async () => {
     const locale = 'de';
     const expectedMessages = {
-      // Needs to added expected translations for "de" locale here. Note that the de.json file is empty and leaved empty here, as well.
+      'Settings.displayPricesWithTax': 'Bruttopreise anzeigen',
+      'Settings.connection': 'Verbindung mit Avalara',
+      'Welcome.title': 'Avalara Steuerberechnung',
     };
 
     const messages = await loadMessages(locale);
 
-    expect(messages).toEqual(expectedMessages);
+    expect(messages['Settings.connection']).toEqual(
+      expectedMessages['Settings.connection']
+    );
+    
+    expect(messages['Settings.displayPricesWithTax']).toEqual(
+      expectedMessages['Settings.displayPricesWithTax']
+    );
+    
+    expect(messages['Welcome.title']).toEqual(
+      expectedMessages['Welcome.title']
+    );
   });
 
   test('should load messages for other locales', async () => {
     const locale = 'en';
     const expectedMessages = {
       'Settings.displayPricesWithTax': 'Display prices with Tax Included',
-      'Settings.settings': 'Avalara Credentials',
+      'Settings.connection': 'Connection to Avalara',
       'Welcome.title': 'Avalara Tax calculation',
     };
 
     const messages = await loadMessages(locale);
 
-    expect(messages['Settings.settings']).toEqual(
-      expectedMessages['Settings.settings']
+    expect(messages['Settings.connection']).toEqual(
+      expectedMessages['Settings.connection']
     );
     
     expect(messages['Settings.displayPricesWithTax']).toEqual(
@@ -37,7 +49,6 @@ describe('loadMessages', () => {
 
   test('should handle error while loading messages', async () => {
     const locale = 'en';
-    const expectedMessages = {};
 
     // Mocking the error thrown by getChunkImport
     const handledErrorImplementation = (error: Error) => {

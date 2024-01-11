@@ -6,6 +6,7 @@ import {
 import { renderApplicationWithRedux } from '../src/test-utils';
 import { entryPointUriPath, PERMISSIONS } from '../src/constants';
 import ApplicationRoutes from '../src/routes';
+import loadMessages from '../src/load-messages';
 
 const renderApp = (options: Partial<TRenderAppWithReduxOptions> = {}) => {
   const route = options.route || `/${entryPointUriPath}`;
@@ -22,6 +23,8 @@ const renderApp = (options: Partial<TRenderAppWithReduxOptions> = {}) => {
 };
 
 it('should render settings component', async () => {
+  const locale = 'en';
+  const messages = await loadMessages(locale);
   renderApp();
-  await screen.findByText('Avalara Tax calculation');
+  await screen.findByText(messages['Welcome.title'].toString());
 });
