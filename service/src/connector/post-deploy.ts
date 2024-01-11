@@ -10,6 +10,8 @@ import {
   //createCustomCartDiscountType,
   createCartUpdateExtension,
 } from './actions';
+import { testConnectionController } from '../controllers/test.connection.controller';
+import { logger } from '../utils/logger.utils';
 
 const CONNECT_APPLICATION_URL_KEY = 'CONNECT_SERVICE_URL';
 
@@ -23,6 +25,17 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
   await createAvalaraEntityUseCodeFields(apiRoot);
   await createAvalaraTaxCodeFields(apiRoot);
   await createAvalaraHashedCartField(apiRoot);
+  const testConnection = await testConnectionController({
+    logging: {
+      enabled: true,
+      level: '0',
+    },
+  });
+  testConnection.authenticated
+    ? logger.info('Your Avalara credentials are valid!')
+    : logger.info(
+        'Your Avalara credentials are invalid! Please check your credentials and redeploy.'
+      );
   //await createCustomCartDiscountType(apiRoot);
 }
 
