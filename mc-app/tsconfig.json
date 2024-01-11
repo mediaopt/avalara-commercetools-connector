@@ -5,5 +5,5 @@
     // Allow tsc to resolve dependencies of `@types` packages in the way pnpm sets up the `node_modules`.
     "preserveSymlinks": false
   },
-  "include": ["src", "./**/*.graphql"]
+  "include": ["src", "./**/*.graphql", "tests/*.spec.tsx"]
 }
