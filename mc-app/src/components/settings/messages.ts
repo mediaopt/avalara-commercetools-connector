@@ -20,21 +20,7 @@ export default defineMessages({
     defaultMessage:
       'Here you can check if you are authorized to use the Avalara service using the credentials you specified when deploying the connector.',
   },
-  licenseKey: {
-    id: 'Settings.licenseKey',
-    defaultMessage: 'License Key',
-  },
-
-  companyCode: {
-    id: 'Settings.companyCode',
-    defaultMessage: 'Company Code',
-  },
-
-  env: {
-    id: 'Settings.env',
-    defaultMessage: 'Activate live environment',
-  },
-
+  
   logLevel: {
     id: 'Settings.logLevel',
     defaultMessage: 'Choose your log level',

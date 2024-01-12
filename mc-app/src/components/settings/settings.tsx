@@ -22,10 +22,6 @@ import {
 } from '@commercetools-frontend/constants';
 
 const DEFAULT = {
-  accountNumber: '',
-  licenseKey: '',
-  companyCode: '',
-  env: false,
   logLevel: '0',
   addressValidation: true,
   disableDocRec: false,
