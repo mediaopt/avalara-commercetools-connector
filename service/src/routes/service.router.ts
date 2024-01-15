@@ -21,7 +21,7 @@ serviceRouter.use('/:var(test-connection|check-address)', async (req: Request, r
             const key = await client.getSigningKey();
             const signingKey = key.getPublicKey();
             jwt.verify(token, signingKey)
-            return;
+            return next();
         }
         const apiKey = process.env.FRONTEND_API_KEY as string
         jwt.verify(token, apiKey)
