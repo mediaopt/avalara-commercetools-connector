@@ -11,10 +11,14 @@ serviceRouter.post('/', post);
 
 serviceRouter.use('/:var(test-connection|check-address)', async (req: Request, res, next) => {
     try {
-        if (req.get('origin') === process.env.FRONTEND_URL) {
-            // do some clever authorization here
-        }
         const token = (req.get('authorization') as string).split(' ')[1];
+        const origin = req.get('origin') as string
+        const acceptedFrontendUrls = (process.env.FRONTEND_URLS as string).split(',')
+        if (acceptedFrontendUrls.includes(origin)) {
+            const apiKey = (process.env.FRONTEND_API_KEYS as string).split(',')[acceptedFrontendUrls.indexOf(origin)] as string
+            jwt.verify(token, apiKey)
+            return;
+        }
         const payload = jwt.decode(token) as any
         const client = jwksClient({
             jwksUri: `${payload.iss}/.well-known/jwks.json`,

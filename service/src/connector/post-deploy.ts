@@ -33,7 +33,7 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
   });
   testConnection.authenticated
     ? logger.info('Your Avalara credentials are valid!')
-    : logger.info(
+    : logger.warn(
         'Your Avalara credentials are invalid! Please check your credentials and redeploy.'
       );
   //await createCustomCartDiscountType(apiRoot);
