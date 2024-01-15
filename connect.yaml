@@ -30,11 +30,8 @@ deployAs:
         - key: AVALARA_ENV
           description: Avalara Backoffice Environment
           required: true
-        - key: FRONTEND_URLS
-          description: Frontend URLs that are accepted for address validation, divided by comma
-          required: true
-        - key: FRONTEND_API_KEYS
-          description: Frontend API Keys for the URLs above, divided by comma
+        - key: FRONTEND_API_KEY
+          description: Frontend API Key for address validation tool
           required: true
   - name: event
     applicationType: event
