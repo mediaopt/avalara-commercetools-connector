@@ -20,7 +20,7 @@ export default defineMessages({
     defaultMessage:
       'Here you can check if you are authorized to use the Avalara service using the credentials you specified when deploying the connector.',
   },
-  
+
   logLevel: {
     id: 'Settings.logLevel',
     defaultMessage: 'Choose your log level',
