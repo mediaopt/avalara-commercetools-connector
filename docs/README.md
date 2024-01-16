@@ -12,7 +12,7 @@ a cart does not have line items, or shipping address, or shipping method specifi
 
 - there is also a possibility for specifying product-level tax codes. To this edge, a product attribute with name `avatax-code` must be created. It can be either unique for every variant or the same for each variant. The type of this attribute must be set to `text`. 
 
-- this extension with the main route `/service` also has two additional subrouted endpoints for Avalara specific functionality: testing availability and credentials to the AvaTax Service under `/test-connection`, and validating addresses via the AvaTax Service under `/check-address`. `/test-connection` endpoint is only available while using mc-app. `/check-address` is used within mc-app for verifying the merchant's origin address, but it can also be used for validating shipping addresses in the frontend. In the latter case the frontend developer only needs to send an AvaTax formatted address to this endpoint, and the AvaTax credentials will be fetched by the extension automatically from the corresponding custom objects. The request body has the following scheme:
+- this extension with the main route `/service` also has two additional subrouted endpoints for Avalara specific functionality: testing availability and credentials to the AvaTax Service under `/test-connection`, and validating addresses via the AvaTax Service under `/check-address`. `/test-connection` endpoint is only available while using mc-app. `/check-address` is used within mc-app for verifying the merchant's origin address, but it can also be used for validating shipping addresses in the frontend. In the latter case the frontend developer only needs to send an AvaTax formatted address to this endpoint, and the AvaTax credentials will be fetched by the extension automatically from the `service` application secured configuration. This endpoint requires an authorization with a json web token, fully described [here](https://github.com/mediaopt/avalara-commercetools-cofe-integration) with an implementation example. The request body has the following scheme:
 ```
     {
         address: {
@@ -54,6 +54,6 @@ a cart does not have line items, or shipping address, or shipping method specifi
 
 - this application provides a configuration window for the AvaTax service used within service and event applications. A merchant-specific data about configuration of this app can be found [here](https://projects.mediaopt.de/projects/mopt-ecomqe/wiki/User_manual). 
 
-- Merchant AvaTax credentials and origin address data, as well as AvaTax service configuration properties are saved as properties of a custom object with container `avalara-commercetools-connector`. Those are fetched by the mc-app when it loads and are saved/updated upon clicking `save data` button. 
+- Merchant AvaTax service configuration properties and origin address data are saved as properties of a custom object with container `avalara-commercetools-connector`. Those are fetched by the mc-app when it loads and are saved/updated upon clicking `save data` button. 
 
 - mc-app utilizes 2 endpoints of the service application as described above in the service application, `/test-connection` and `/check-address`. The corresponding extension base url is fetched from the commercetools composable API. 
