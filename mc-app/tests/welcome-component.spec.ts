@@ -3,14 +3,16 @@ import {
   mapResourceAccessToAppliedPermissions,
   type TRenderAppWithReduxOptions,
 } from '@commercetools-frontend/application-shell/test-utils';
-import { renderApplicationWithRedux } from '../src/test-utils';
+import { renderApplicationWithRoutesAndRedux } from '../src/test-utils';
 import { entryPointUriPath, PERMISSIONS } from '../src/constants';
-import ApplicationRoutes from '../src/routes';
 import loadMessages from '../src/load-messages';
+import defineMessages from '../src/components/welcome/messages';
 
-const renderApp = (options: Partial<TRenderAppWithReduxOptions> = {}) => {
+const renderAppWithRoutesAndRedux = (
+  options: Partial<TRenderAppWithReduxOptions> = {}
+) => {
   const route = options.route || `/${entryPointUriPath}`;
-  const { history } = renderApplicationWithRedux(<ApplicationRoutes />, {
+  renderApplicationWithRoutesAndRedux({
     route,
     project: {
       allAppliedPermissions: mapResourceAccessToAppliedPermissions([
@@ -19,12 +21,11 @@ const renderApp = (options: Partial<TRenderAppWithReduxOptions> = {}) => {
     },
     ...options,
   });
-  return { history };
 };
 
-it('should render settings component', async () => {
+it('should render settings component with routes and redux', async () => {
   const locale = 'en';
   const messages = await loadMessages(locale);
-  renderApp();
-  await screen.findByText(messages['Welcome.title'].toString());
+  renderAppWithRoutesAndRedux();
+  await screen.findByText(messages[defineMessages.title.id].toString());
 });

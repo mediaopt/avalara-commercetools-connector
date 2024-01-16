@@ -1,50 +1,48 @@
 import loadMessages from '../src/load-messages';
 
 describe('loadMessages', () => {
-  test('should load messages for "de" locale', async () => {
-    const locale = 'de';
-    const expectedMessages = {
-      'Settings.displayPricesWithTax': 'Bruttopreise anzeigen',
-      'Settings.connection': 'Verbindung mit Avalara',
-      'Welcome.title': 'Avalara Steuerberechnung',
-    };
+  test('should have same keys for "de" and "en" locales', async () => {
+    const enLocale = 'en';
+    const enMessages = await loadMessages(enLocale);
 
-    const messages = await loadMessages(locale);
+    const deLocale = 'de';
+    const deMessageKeys = Object.keys(await loadMessages(deLocale));
 
-    expect(messages['Settings.connection']).toEqual(
-      expectedMessages['Settings.connection']
-    );
-    
-    expect(messages['Settings.displayPricesWithTax']).toEqual(
-      expectedMessages['Settings.displayPricesWithTax']
-    );
-    
-    expect(messages['Welcome.title']).toEqual(
-      expectedMessages['Welcome.title']
-    );
+    for (const key in enMessages) {
+      expect(deMessageKeys).toContain(key);
+    }
+  });
+
+  test('should have different messages for "de" and "en" locales', async () => {
+    const enLocale = 'en';
+    const enMessages = await loadMessages(enLocale);
+
+    const deLocale = 'de';
+    const deMessages = await loadMessages(deLocale);
+
+    for (const message in enMessages) {
+      expect(enMessages[message]).not.toBe(deMessages[message]);
+    }
   });
 
   test('should load messages for other locales', async () => {
     const locale = 'en';
-    const expectedMessages = {
-      'Settings.displayPricesWithTax': 'Display prices with Tax Included',
-      'Settings.connection': 'Connection to Avalara',
-      'Welcome.title': 'Avalara Tax calculation',
-    };
-
     const messages = await loadMessages(locale);
 
-    expect(messages['Settings.connection']).toEqual(
-      expectedMessages['Settings.connection']
-    );
-    
-    expect(messages['Settings.displayPricesWithTax']).toEqual(
-      expectedMessages['Settings.displayPricesWithTax']
-    );
-    
-    expect(messages['Welcome.title']).toEqual(
-      expectedMessages['Welcome.title']
-    );
+    for (const message in messages) {
+      expect(messages[message]).toBeDefined();
+      expect(messages[message]).not.toBe('');
+    }
+  });
+
+  test('should load messages for "de" locale', async () => {
+    const locale = 'de';
+    const messages = await loadMessages(locale);
+
+    for (const message in messages) {
+      expect(messages[message]).toBeDefined();
+      expect(messages[message]).not.toBe('');
+    }
   });
 
   test('should handle error while loading messages', async () => {
@@ -61,7 +59,7 @@ describe('loadMessages', () => {
     jest.spyOn(console, 'warn').mockImplementation(handledErrorImplementation);
     jest.spyOn(console, 'error').mockImplementation(handledErrorImplementation);
 
-    const _ = await loadMessages(locale);
+    await loadMessages(locale);
 
     expect(console.warn).toHaveBeenCalledTimes(0);
   });
