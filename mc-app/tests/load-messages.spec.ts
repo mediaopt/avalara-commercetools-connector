@@ -1,6 +1,16 @@
 import loadMessages from '../src/load-messages';
 
 describe('loadMessages', () => {
+  test('should have minimum amount of keys for "de" and "en" locales', async () => {
+    const enLocale = 'en';
+    const enMessageKeys = Object.keys(await loadMessages(enLocale));
+    expect(enMessageKeys.length).toBeGreaterThan(20);
+
+    const deLocale = 'de';
+    const deMessageKeys = Object.keys(await loadMessages(deLocale));
+    expect(deMessageKeys.length).toBeGreaterThan(20);
+  });
+
   test('should have same keys for "de" and "en" locales', async () => {
     const enLocale = 'en';
     const enMessages = await loadMessages(enLocale);
