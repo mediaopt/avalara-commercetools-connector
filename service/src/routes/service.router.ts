@@ -1,4 +1,4 @@
-import { Request, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { post } from '../controllers/service.controller';
 import { postTestConnection } from '../controllers/test.connection.controller';
 import { postCheckAddress } from '../controllers/check.address.controller';
@@ -12,7 +12,7 @@ serviceRouter.post('/', post);
 
 serviceRouter.use(
   '/:var(test-connection|check-address)',
-  async (req: Request, res, next) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = (req.get('authorization') as string).split(' ')[1];
       if (req.get('origin')?.includes('commercetools.com')) {
