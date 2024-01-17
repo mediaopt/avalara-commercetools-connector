@@ -21,8 +21,8 @@ export const checkAddressController = async (data: {
 }> => {
   const env = process.env.AVALARA_ENV || 'sandbox';
   const creds = {
-    username: process.env.AVALARA_USERNAME || '',
-    password: process.env.AVALARA_PASSWORD || '',
+    username: process.env.AVALARA_USERNAME as string,
+    password: process.env.AVALARA_PASSWORD as string,
   };
 
   if (

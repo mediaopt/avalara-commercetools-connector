@@ -13,9 +13,9 @@ export async function createUpdate(resource: Resource) {
   try {
     const env = process.env.AVALARA_ENV || 'sandbox';
     const creds = {
-      username: process.env.AVALARA_USERNAME || '',
-      password: process.env.AVALARA_PASSWORD || '',
-      companyCode: process.env.AVALARA_COMPANY_CODE || '',
+      username: process.env.AVALARA_USERNAME as string,
+      password: process.env.AVALARA_PASSWORD as string,
+      companyCode: process.env.AVALARA_COMPANY_CODE as string,
     };
     const settings = (await getData('avalara-commercetools-connector').then(
       (res) => res?.settings
