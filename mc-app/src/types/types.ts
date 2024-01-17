@@ -2,10 +2,6 @@
 import { ChangeEvent } from 'react';
 
 export type SettingsFormDataType = {
-  accountNumber: string;
-  licenseKey: string;
-  companyCode: string;
-  env: boolean;
   logLevel: string;
   addressValidation: boolean;
   disableDocRec: boolean;

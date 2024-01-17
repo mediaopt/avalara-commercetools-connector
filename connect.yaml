@@ -30,6 +30,9 @@ deployAs:
         - key: AVALARA_ENV
           description: Avalara Backoffice Environment
           required: true
+        - key: FRONTEND_API_KEY
+          description: Frontend API Key for address validation tool
+          required: true
   - name: event
     applicationType: event
     endpoint: /event
