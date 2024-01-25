@@ -32,7 +32,7 @@ deployAs:
           required: true
         - key: AVALARA_FRONTEND_API_KEY
           description: Frontend API Key for address validation tool
-          required: true
+          required: false
   - name: event
     applicationType: event
     endpoint: /event

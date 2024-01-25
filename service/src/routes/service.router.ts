@@ -31,6 +31,9 @@ serviceRouter.use(
         return next();
       }
       const apiKey = process.env.AVALARA_FRONTEND_API_KEY as string;
+      if (!apiKey) {
+        throw new CustomError(401, 'No frontend communication allowed.');
+      }
       jwt.verify(token, apiKey);
     } catch (error) {
       logger.error(error);
