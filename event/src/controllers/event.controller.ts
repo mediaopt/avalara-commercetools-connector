@@ -99,7 +99,8 @@ export const post = async (
                 messagePayload.resource.id,
                 creds,
                 originAddress,
-                avataxConfig
+                avataxConfig,
+                settings.displayPricesWithTax
               ).catch((error) => logger.error(error));
             }
           });

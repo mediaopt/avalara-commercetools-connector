@@ -7,14 +7,15 @@ export async function getTax(
   cart: Cart,
   creds: { [key: string]: string },
   originAddress: AddressInfo,
-  config: any
+  config: any,
+  pricesIncludesTax: boolean
 ) {
   const client = new AvaTaxClient(config).withSecurity(creds);
-
   const taxDocument = await processCart(
     cart,
     creds?.companyCode,
-    originAddress
+    originAddress,
+    pricesIncludesTax
   );
 
   const taxResponse = await client.createTransaction({ model: taxDocument });

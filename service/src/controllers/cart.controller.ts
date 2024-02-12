@@ -44,8 +44,11 @@ export async function createUpdate(resource: Resource) {
         cart,
         creds,
         originAddress,
-        avataxConfig
-      ).then((response) => postProcessing(cart, response));
+        avataxConfig,
+        settings.displayPricesWithTax
+      ).then((response) =>
+        postProcessing(cart, response, settings.displayPricesWithTax)
+      );
       return { statusCode: 200, actions: updateActions };
     } else {
       logger.info('Cart update tax extension was not executed');

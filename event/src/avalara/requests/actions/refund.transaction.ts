@@ -8,7 +8,8 @@ export async function refundTransaction(
   orderId: string,
   creds: { [key: string]: string },
   originAddress: AddressInfo,
-  config: any
+  config: any,
+  pricesIncludesTax: boolean
 ) {
   const order = await getOrder(orderId);
 
@@ -21,7 +22,8 @@ export async function refundTransaction(
     'refund',
     order,
     creds?.companyCode,
-    originAddress
+    originAddress,
+    pricesIncludesTax
   );
 
   taxDocument.referenceCode = 'Refund';

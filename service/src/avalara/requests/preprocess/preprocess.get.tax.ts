@@ -11,7 +11,8 @@ import { getCategoryTaxCodes } from './get.categories';
 export async function processCart(
   cart: Cart,
   companyCode: string,
-  originAddress: AddressInfo
+  originAddress: AddressInfo,
+  pricesIncludesTax: boolean
 ): Promise<CreateTransactionModel> {
   const taxDocument = new CreateTransactionModel();
 
@@ -20,13 +21,14 @@ export async function processCart(
 
     const shipTo = shippingAddress(cart?.shippingAddress);
 
-    const shippingInfo = await shipItem(cart?.shippingInfo);
+    const shippingInfo = await shipItem(cart?.shippingInfo, pricesIncludesTax);
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems);
 
     const lines = await Promise.all(
       cart?.lineItems.map(
-        async (x: LineItem) => await lineItem(x, itemCategoryTaxCodes)
+        async (x: LineItem) =>
+          await lineItem(x, itemCategoryTaxCodes, pricesIncludesTax)
       )
     );
 

@@ -11,6 +11,7 @@ export const avalaraMerchantDataBody = {
           disableDocRec: false,
           taxCalculation: 'USCA',
           enableLogging: true,
+          displayPricesWithTax: false,
           line1: '505 Beasley St',
           line2: '',
           line3: '',
@@ -18,6 +19,20 @@ export const avalaraMerchantDataBody = {
           city: 'Jackson',
           region: 'MS',
           country: 'US',
+        } as AvataxMerchantConfig,
+      },
+    ],
+  },
+};
+
+export const avalaraMerchantDataBodyWithPriceIncludedTaxConfig = {
+  body: {
+    results: [
+      {
+        key: 'settings',
+        value: {
+          ...avalaraMerchantDataBody.body.results[0].value,
+          displayPricesWithTax: true,
         } as AvataxMerchantConfig,
       },
     ],

@@ -47,7 +47,7 @@ describe('test coco api client', () => {
     expect(apiRoot.execute).toBeCalledTimes(1);
 
     expect(data).toBeDefined();
-    expect(Object.keys(data?.settings).length).toBe(12);
+    expect(Object.keys(data?.settings).length).toBe(13);
   });
 
   test('get shipping tax code method', async () => {

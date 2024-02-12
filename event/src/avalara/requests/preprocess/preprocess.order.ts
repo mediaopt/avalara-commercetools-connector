@@ -12,7 +12,8 @@ export async function processOrder(
   type: string,
   order: Order,
   companyCode: string,
-  originAddress: AddressInfo
+  originAddress: AddressInfo,
+  pricesIncludesTax: boolean
 ): Promise<CreateTransactionModel> {
   const taxDocument = new CreateTransactionModel();
 
@@ -21,13 +22,17 @@ export async function processOrder(
 
     const shipTo = shippingAddress(order?.shippingAddress);
 
-    const shippingInfo = await shipItem(type, order?.shippingInfo);
+    const shippingInfo = await shipItem(
+      type,
+      order?.shippingInfo,
+      pricesIncludesTax
+    );
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(order?.lineItems);
 
     const lines = await Promise.all(
       order?.lineItems.map(
-        async (x: LineItem) => await lineItem(type, x, itemCategoryTaxCodes)
+        async (x: LineItem) => await lineItem(type, x, itemCategoryTaxCodes, pricesIncludesTax)
       )
     );
 

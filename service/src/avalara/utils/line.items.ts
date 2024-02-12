@@ -15,7 +15,8 @@ function itemTaxCode(item: LineItem) {
 
 export async function lineItem(
   item: LineItem,
-  catTaxCodes: { sku: any; taxCode: any }[]
+  catTaxCodes: { sku: any; taxCode: any }[],
+  pricesIncludesTax: boolean
 ) {
   const lineItem = new LineItemModel();
 
@@ -29,7 +30,7 @@ export async function lineItem(
 
   lineItem.itemCode = item?.variant?.sku;
 
-  lineItem.taxIncluded = item.taxRate?.includedInPrice;
+  lineItem.taxIncluded = pricesIncludesTax;
   lineItem.taxCode =
     itemTaxCode(item) ??
     catTaxCodes.find((x) => x.sku === item?.variant?.sku)?.taxCode;
