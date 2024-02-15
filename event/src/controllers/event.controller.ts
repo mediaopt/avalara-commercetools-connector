@@ -49,7 +49,7 @@ export const post = async (
 ) => {
   try {
     const env = process.env.AVALARA_ENV || 'sandbox';
-    const creds = {
+    const credentials = {
       username: process.env.AVALARA_USERNAME as string,
       password: process.env.AVALARA_PASSWORD as string,
       companyCode: process.env.AVALARA_COMPANY_CODE as string,
@@ -77,9 +77,10 @@ export const post = async (
         }
         await commitTransaction(
           messagePayload.order,
-          creds,
+          credentials,
           originAddress,
-          avataxConfig
+          avataxConfig,
+          settings.displayPricesWithTax
         ).catch((error) => logger.error(error));
         response.status(200).send();
         break;
@@ -90,14 +91,14 @@ export const post = async (
         ) {
           await voidTransaction(
             messagePayload.resource.id,
-            creds,
+            credentials,
             avataxConfig
           ).catch(async (error) => {
             logger.error(error);
             if (error?.code === 'CannotModifyLockedTransaction') {
               await refundTransaction(
                 messagePayload.resource.id,
-                creds,
+                credentials,
                 originAddress,
                 avataxConfig,
                 settings.displayPricesWithTax

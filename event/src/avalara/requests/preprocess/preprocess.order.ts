@@ -6,6 +6,17 @@ import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
+import { DocumentType } from 'avatax/lib/enums/DocumentType';
+import { TransactionParameterModel } from 'avatax/lib/models/TransactionParameterModel';
+
+function extractVatId(order: Order) {
+  const paymentCustomerVatIds = order?.paymentInfo?.payments.map(
+    (payment) => payment.obj?.customer?.obj?.vatId
+  );
+  const vatId = paymentCustomerVatIds?.find((vatId) => vatId !== undefined);
+
+  return vatId || order?.customerId;
+}
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
@@ -32,7 +43,8 @@ export async function processOrder(
 
     const lines = await Promise.all(
       order?.lineItems.map(
-        async (x: LineItem) => await lineItem(type, x, itemCategoryTaxCodes, pricesIncludesTax)
+        async (x: LineItem) =>
+          await lineItem(type, x, itemCategoryTaxCodes, pricesIncludesTax)
       )
     );
 
@@ -50,7 +62,10 @@ export async function processOrder(
 
     taxDocument.companyCode = companyCode;
 
-    taxDocument.type = type === 'refund' ? 5 : 1;
+    taxDocument.type =
+      type === 'refund'
+        ? DocumentType.ReturnInvoice
+        : DocumentType.SalesInvoice;
 
     taxDocument.currencyCode = order?.totalPrice?.currencyCode;
 
@@ -62,6 +77,16 @@ export async function processOrder(
     };
     taxDocument.entityUseCode = customerInfo?.exemptCode;
     taxDocument.lines = lines;
+
+    taxDocument.businessIdentificationNo = extractVatId(order);
+    taxDocument.parameters = [
+      {
+        name: 'Transport',
+        value:
+          taxDocument.type === DocumentType.SalesInvoice ? 'Seller' : 'Buyer',
+        unit: '',
+      } as TransactionParameterModel,
+    ];
   }
 
   return taxDocument;

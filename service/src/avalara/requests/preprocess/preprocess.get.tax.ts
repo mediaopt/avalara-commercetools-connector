@@ -6,6 +6,17 @@ import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
+import { TransactionParameterModel } from 'avatax/lib/models/TransactionParameterModel';
+import { DocumentType } from 'avatax/lib/enums/DocumentType';
+
+function extractVatId(cart: Cart) {
+  const paymentCustomerVatIds = cart?.paymentInfo?.payments.map(
+    (payment) => payment.obj?.customer?.obj?.vatId
+  );
+  const vatId = paymentCustomerVatIds?.find((vatId) => vatId !== undefined);
+
+  return vatId || cart?.customerId;
+}
 
 // initialize and specify the tax document model of Avalara
 export async function processCart(
@@ -39,10 +50,9 @@ export async function processCart(
     taxDocument.code = '0';
 
     taxDocument.commit = false;
-
     taxDocument.companyCode = companyCode;
 
-    taxDocument.type = 0;
+    taxDocument.type = DocumentType.SalesOrder;
 
     taxDocument.currencyCode = cart?.totalPrice?.currencyCode;
 
@@ -57,6 +67,15 @@ export async function processCart(
       cart?.customerId || ''
     );
     taxDocument.lines = lines;
+
+    taxDocument.businessIdentificationNo = extractVatId(cart);
+    taxDocument.parameters = [
+      {
+        name: 'Transport',
+        value: 'Seller',
+        unit: '',
+      } as TransactionParameterModel,
+    ];
   }
 
   return taxDocument;

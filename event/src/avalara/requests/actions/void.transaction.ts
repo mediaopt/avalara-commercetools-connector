@@ -1,10 +1,12 @@
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
 import { VoidTransactionModel } from 'avatax/lib/models/VoidTransactionModel';
 import { getOrder } from '../../../client/data.client';
+import { DocumentType } from 'avatax/lib/enums/DocumentType';
+import { VoidReasonCode } from 'avatax/lib/enums/VoidReasonCode';
 
 export async function voidTransaction(
   orderId: string,
-  creds: { [key: string]: string },
+  credentials: { [key: string]: string },
   config: any
 ) {
   const order = await getOrder(orderId);
@@ -12,14 +14,14 @@ export async function voidTransaction(
   if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
     return undefined;
   }
-  const client = new AvaTaxClient(config).withSecurity(creds);
+  const client = new AvaTaxClient(config).withSecurity(credentials);
 
   const voidModel = new VoidTransactionModel();
-  voidModel.code = 3;
+  voidModel.code = VoidReasonCode.DocVoided;
   const voidBody = {
-    companyCode: creds.companyCode,
+    companyCode: credentials.companyCode,
     transactionCode: order?.orderNumber || orderId,
-    documentType: 1,
+    documentType: DocumentType.SalesInvoice,
     model: voidModel,
   };
 
