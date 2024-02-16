@@ -13,22 +13,32 @@ export const getData = async (container: string) => {
 
 export const getShipTaxCode = async (id: string) => {
   return (
-    (await createApiRoot().shippingMethods().withId({ ID: id }).get().execute())
-      ?.body?.custom?.fields?.avalaraTaxCode || ''
-  );
+    await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
+  )?.body?.custom?.fields?.avalaraTaxCode as string;
 };
 
-/*export const getDiscountTaxCode = async (id: string) => {
-  return (
-    await createApiRoot().cartDiscounts().withId({ ID: id }).get().execute()
-  )?.body?.custom?.fields?.avalaraTaxCode;
-};*/
+export const getDiscountInfo = async (ids: Array<string>) => {
+  const discounts = ids
+    .map((x) => `"${x}", `)
+    .reduce((acc, curr) => acc + curr, '')
+    .slice(0, -2);
+  const data = (
+    await createApiRoot()
+      .cartDiscounts()
+      .get({ queryArgs: { where: `id in (${discounts})` } })
+      .execute()
+  ).body.results;
+
+  return data.map((x) => ({
+    id: x.id,
+    name: x.name['en-US'],
+    taxCode: x.custom?.fields?.avalaraTaxCode as string,
+  }));
+};
 
 export const getCustomerEntityUseCode = async (id: string) => {
-  return (
-    (await createApiRoot().customers().withId({ ID: id }).get().execute())?.body
-      ?.custom?.fields?.avalaraEntityUseCode || ''
-  );
+  return (await createApiRoot().customers().withId({ ID: id }).get().execute())
+    ?.body?.custom?.fields?.avalaraEntityUseCode as string;
 };
 
 export const getBulkCategoryTaxCode = async (cats: Array<string>) => {

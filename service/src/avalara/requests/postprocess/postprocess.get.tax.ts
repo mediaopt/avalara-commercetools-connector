@@ -1,11 +1,12 @@
 import { Cart, UpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { hashCart } from '../../../utils/hash.utils';
+import { getDiscountInfo } from '../../../client/data.client';
 
-export function postProcessing(
+export async function postProcessing(
   cart: Cart,
   taxResponse: TransactionModel
-): Array<UpdateAction> {
+): Promise<Array<UpdateAction>> {
   const actions = [];
 
   actions.push({
@@ -20,6 +21,21 @@ export function postProcessing(
   let totalTax = 0;
 
   const lines: any = taxResponse?.lines;
+
+  const discountsInfo = await getDiscountInfo(
+    cart?.discountOnTotalPrice?.includedDiscounts?.map(
+      (x) => x.discount.id
+    ) as string[]
+  );
+
+  for (const discount of discountsInfo) {
+    const taxCentAmount =
+      lines.find(
+        (x: any) => x.itemCode === 'Discount' && x.description === discount.name
+      )?.tax * 100;
+
+    totalTax += taxCentAmount;
+  }
 
   for (const item of cart?.lineItems || []) {
     const taxCentAmount =

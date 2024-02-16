@@ -41,7 +41,7 @@
   "dependencies": {
     "@commercetools-backend/express": "^22.15.0",
     "@commercetools-backend/loggers": "^21.19.0",
-    "@commercetools/platform-sdk": "^4.0.0",
+    "@commercetools/platform-sdk": "^7.3.0",
     "@commercetools/sdk-client-v2": "^2.0.0",
     "avatax": "^23.8.1",
     "body-parser": "^1.20.2",
