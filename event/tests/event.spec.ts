@@ -90,45 +90,6 @@ const refundRequestConfigTest = generateGoodRequest(
   'US'
 );
 
-const expectedSuccessfulCreateOrderResponse = {
-  createdAt: '2021-06-01T00:00:00.000Z',
-  custom: {
-    fields: { invoiceMessages: undefined },
-    type: { id: 'invoiceMessagesType', key: 'invoiceMessages', typeId: 'type' },
-  },
-  customerId: '123',
-  id: '123',
-  lineItems: [
-    {
-      custom: {
-        fields: { vatCode: '' },
-        type: { id: 'vatCodeType', key: 'vatCode', typeId: 'type' },
-      },
-      name: { en: 'Test Product' },
-      quantity: 2,
-      taxRate: { includedInPrice: false },
-      totalPrice: { centAmount: 12300, currencyCode: 'USD' },
-      variant: { id: 1, sku: 'sku123' },
-    },
-  ],
-  orderNumber: orderNumber,
-  shippingAddress: {
-    city: 'Irvine',
-    country: 'US',
-    postalCode: '92614',
-    streetName: 'Main Street',
-    streetNumber: '2000',
-  },
-  shippingInfo: {
-    price: { centAmount: 123, currencyCode: 'USD' },
-    shippingMethod: { id: '123' },
-    shippingMethodName: 'Standard',
-    taxRate: { includedInPrice: false },
-  },
-  totalPrice: { centAmount: 24600, currencyCode: 'USD' },
-  version: 1,
-};
-
 const commitRequest = (country: string) =>
   generateGoodRequest('OrderCreated', orderNumber, country);
 const voidRequest = (country: string) =>
@@ -260,7 +221,7 @@ describe('test event controller', () => {
 
     expect(spyCommit).toBeCalledTimes(1);
     expectCommitReturn(orderNumber, await getCommitResult());
-    expectSuccessfulCall(next, response, 1);
+    expectSuccessfulCall(next, response);
   });
 
   test('cancel order, no lock transaction error is thrown', async () => {
