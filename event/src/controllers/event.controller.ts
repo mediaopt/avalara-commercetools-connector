@@ -11,6 +11,9 @@ import { setUpAvaTax } from '../utils/avatax.utils';
 import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
 import { voidTransaction } from '../avalara/requests/actions/void.transaction';
 import { refundTransaction } from '../avalara/requests/actions/refund.transaction';
+import { TransactionModel } from 'avatax/lib/models/TransactionModel';
+import { Order } from '@commercetools/platform-sdk';
+import { TransactionLineModel } from 'avatax/lib/models/TransactionLineModel';
 
 /**
  * Exposed event POST endpoint.
@@ -40,6 +43,47 @@ function parseRequest(request: Request) {
   }
   logger.error('Missing message payload.');
   throw new CustomError(400, 'Bad request: No payload in the Pub/Sub message');
+}
+
+function buildResponseModel(
+  orderMessage: OrderCreatedMessage,
+  transaction: any
+) {
+  if (!(transaction || transaction instanceof TransactionModel)) {
+    return undefined;
+  }
+  const lineItems = orderMessage.order?.lineItems?.map((lineItem) => {
+    return {
+      ...lineItem,
+      custom: {
+        type: {
+          id: 'vatCodeType',
+          key: 'vatCode',
+          typeId: 'type',
+        },
+        fields: {
+          vatCode: transaction.lines?.find(
+            (x: TransactionLineModel) => x.itemCode === lineItem.variant.sku
+          )?.vatCode,
+        },
+      },
+    };
+  });
+  const order = {
+    ...orderMessage.order,
+    lineItems: lineItems,
+    custom: {
+      type: {
+        id: 'invoiceMessagesType',
+        key: 'invoiceMessages',
+        typeId: 'type',
+      },
+      fields: {
+        invoiceMessages: transaction.invoiceMessages,
+      },
+    },
+  };
+  return order as Order;
 }
 
 export const post = async (
@@ -75,14 +119,15 @@ export const post = async (
         if (!messagePayload.order) {
           throw new CustomError(400, `Order must be defined.`);
         }
-        await commitTransaction(
+        const transaction = await commitTransaction(
           messagePayload.order,
           credentials,
           originAddress,
           avataxConfig,
           settings.displayPricesWithTax
         ).catch((error) => logger.error(error));
-        response.status(200).send();
+        const updatedOrder = buildResponseModel(messagePayload, transaction);
+        response.status(200).send(updatedOrder);
         break;
       case 'OrderStateChanged':
         if (
