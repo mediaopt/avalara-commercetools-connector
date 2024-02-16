@@ -1,5 +1,8 @@
 import { LineItem, Order } from '@commercetools/platform-sdk';
-import { getCustomerEntityUseCode } from '../../../client/data.client';
+import {
+  getCustomerEntityUseCode,
+  getCustomerVatId,
+} from '../../../client/data.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';
@@ -8,15 +11,6 @@ import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
 import { DocumentType } from 'avatax/lib/enums/DocumentType';
 import { TransactionParameterModel } from 'avatax/lib/models/TransactionParameterModel';
-
-function extractVatId(order: Order) {
-  const paymentCustomerVatIds = order?.paymentInfo?.payments.map(
-    (payment) => payment.obj?.customer?.obj?.vatId
-  );
-  const vatId = paymentCustomerVatIds?.find((vatId) => vatId !== undefined);
-
-  return vatId || order?.customerId;
-}
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
@@ -78,7 +72,9 @@ export async function processOrder(
     taxDocument.entityUseCode = customerInfo?.exemptCode;
     taxDocument.lines = lines;
 
-    taxDocument.businessIdentificationNo = extractVatId(order);
+    taxDocument.businessIdentificationNo = await getCustomerVatId(
+      order?.customerId
+    );
     taxDocument.parameters = [
       {
         name: 'Transport',

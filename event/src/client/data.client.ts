@@ -98,3 +98,13 @@ export const performOrderUpdateActions = async (
       .execute()
   ).body;
 };
+
+export const getCustomerVatId = async (id?: string) => {
+  if (!id) {
+    return '';
+  }
+  return (
+    (await createApiRoot().customers().withId({ ID: id }).get().execute())?.body
+      ?.vatId || ''
+  );
+};
