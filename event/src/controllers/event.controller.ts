@@ -11,9 +11,8 @@ import { setUpAvaTax } from '../utils/avatax.utils';
 import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
 import { voidTransaction } from '../avalara/requests/actions/void.transaction';
 import { refundTransaction } from '../avalara/requests/actions/refund.transaction';
-import { TransactionModel } from 'avatax/lib/models/TransactionModel';
-import { Order } from '@commercetools/platform-sdk';
-import { TransactionLineModel } from 'avatax/lib/models/TransactionLineModel';
+import { postProcessing as commitPostProcessing } from '../avalara/requests/postprocess/postprocess.order.commit';
+import { postProcessing as refundPostProcessing } from '../avalara/requests/postprocess/postprocess.order.refund';
 
 /**
  * Exposed event POST endpoint.
@@ -43,47 +42,6 @@ function parseRequest(request: Request) {
   }
   logger.error('Missing message payload.');
   throw new CustomError(400, 'Bad request: No payload in the Pub/Sub message');
-}
-
-function buildResponseModel(
-  orderMessage: OrderCreatedMessage,
-  transaction: any
-) {
-  if (!(transaction || transaction instanceof TransactionModel)) {
-    return undefined;
-  }
-  const lineItems = orderMessage.order?.lineItems?.map((lineItem) => {
-    return {
-      ...lineItem,
-      custom: {
-        type: {
-          id: 'vatCodeType',
-          key: 'vatCode',
-          typeId: 'type',
-        },
-        fields: {
-          vatCode: transaction.lines?.find(
-            (x: TransactionLineModel) => x.itemCode === lineItem.variant.sku
-          )?.vatCode,
-        },
-      },
-    };
-  });
-  const order = {
-    ...orderMessage.order,
-    lineItems: lineItems,
-    custom: {
-      type: {
-        id: 'invoiceMessagesType',
-        key: 'invoiceMessages',
-        typeId: 'type',
-      },
-      fields: {
-        invoiceMessages: transaction.invoiceMessages,
-      },
-    },
-  };
-  return order as Order;
 }
 
 export const post = async (
@@ -119,15 +77,23 @@ export const post = async (
         if (!messagePayload.order) {
           throw new CustomError(400, `Order must be defined.`);
         }
-        const transaction = await commitTransaction(
+        await commitTransaction(
           messagePayload.order,
           credentials,
           originAddress,
           avataxConfig,
           settings.displayPricesWithTax
-        ).catch((error) => logger.error(error));
-        const updatedOrder = buildResponseModel(messagePayload, transaction);
-        response.status(200).send(updatedOrder);
+        )
+          .then(
+            async (transaction) =>
+              await commitPostProcessing(
+                messagePayload.order.id,
+                messagePayload.order.version,
+                transaction
+              )
+          )
+          .catch((error) => logger.error(error));
+        response.status(200).send();
         break;
       case 'OrderStateChanged':
         if (
@@ -147,7 +113,16 @@ export const post = async (
                 originAddress,
                 avataxConfig,
                 settings.displayPricesWithTax
-              ).catch((error) => logger.error(error));
+              )
+                .then(
+                  async (transaction) =>
+                    await refundPostProcessing(
+                      messagePayload.resource.id,
+                      messagePayload.version,
+                      transaction
+                    )
+                )
+                .catch((error) => logger.error(error));
             }
           });
         }

@@ -156,20 +156,11 @@ const response = {
   send: jest.fn(),
 } as unknown as Response;
 
-const expectSuccessfulCall = (
-  next: NextFunction,
-  res: Response,
-  times = 1,
-  responseBody: any = undefined
-) => {
+const expectSuccessfulCall = (next: NextFunction, res: Response, times = 1) => {
   expect(next).toBeCalledTimes(0);
   expect(res.status).toBeCalledWith(200);
   expect(res.send).toBeCalledTimes(times);
-  if (responseBody) {
-    expect(res.send).toBeCalledWith(responseBody);
-  } else {
-    expect(res.send).toBeCalledWith();
-  }
+  expect(res.send).toBeCalledWith();
 };
 
 describe('test event controller', () => {
@@ -269,12 +260,7 @@ describe('test event controller', () => {
 
     expect(spyCommit).toBeCalledTimes(1);
     expectCommitReturn(orderNumber, await getCommitResult());
-    expectSuccessfulCall(
-      next,
-      response,
-      1,
-      expectedSuccessfulCreateOrderResponse
-    );
+    expectSuccessfulCall(next, response, 1);
   });
 
   test('cancel order, no lock transaction error is thrown', async () => {

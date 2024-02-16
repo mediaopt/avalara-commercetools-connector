@@ -73,3 +73,13 @@ export const getBulkProductCategories = async (
   }));
   return result;
 };
+
+export const getCustomerVatId = async (id?: string) => {
+  if (!id) {
+    return '';
+  }
+  return (
+    (await createApiRoot().customers().withId({ ID: id }).get().execute())?.body
+      ?.vatId || ''
+  );
+};

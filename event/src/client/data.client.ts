@@ -1,4 +1,5 @@
 import { createApiRoot } from './create.client';
+import { OrderUpdateAction } from '@commercetools/platform-sdk';
 
 export const getData = async (container: string) => {
   const data = (
@@ -82,4 +83,18 @@ export const getBulkProductCategories = async (
 export const getOrder = async (id: string) => {
   return (await createApiRoot().orders().withId({ ID: id }).get().execute())
     .body;
+};
+
+export const performOrderUpdateActions = async (
+  id: string,
+  version: number,
+  actions: Array<OrderUpdateAction>
+) => {
+  return (
+    await createApiRoot()
+      .orders()
+      .withId({ ID: id })
+      .post({ body: { version, actions } })
+      .execute()
+  ).body;
 };

@@ -9,13 +9,6 @@ function getLineItemTaxAmountAction(
   taxRate: number,
   pricesIncludesTax: boolean
 ) {
-  console.log(
-    'getLineItemTaxAmountAction',
-    pricesIncludesTax,
-    taxCentAmount,
-    taxRate,
-    item.totalPrice.centAmount
-  );
   return {
     action: 'setLineItemTaxAmount',
     lineItemId: item.id,
