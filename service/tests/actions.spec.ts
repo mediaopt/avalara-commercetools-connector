@@ -55,6 +55,8 @@ describe('Testing actions', () => {
           {
             resourceTypeId: 'cart',
             actions: ['Create', 'Update'],
+            condition:
+              'shippingAddress is defined AND shippingInfo is defined AND lineItems is not empty',
           },
         ],
       },
