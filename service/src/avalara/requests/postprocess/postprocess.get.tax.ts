@@ -75,14 +75,9 @@ export function postProcessing(
   });
 
   actions.push({
-    action: 'setCustomType',
-    type: {
-      key: 'avalara-hashed-cart',
-      typeId: 'type',
-    },
-    fields: {
-      avahash: hashCart(cart),
-    },
+    action: 'setCustomField',
+    name: 'avalaraHash',
+    value: hashCart(cart),
   });
 
   return actions;

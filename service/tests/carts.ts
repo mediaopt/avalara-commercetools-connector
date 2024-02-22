@@ -58,7 +58,7 @@ export const fullCart = (address: Address, hash = '123') => {
     ],
     custom: {
       fields: {
-        avahash: hash,
+        avalaraHash: hash,
       },
     },
     totalPrice: {

@@ -2,16 +2,19 @@ import { describe, expect, test, jest } from '@jest/globals';
 import {
   CART_UPDATE_EXTENSION_KEY,
   createAvalaraEntityUseCodeFields,
-  createAvalaraTaxCodeFields,
+  createShippingTaxCodeFields,
+  createCategoryTaxCodeFields,
   createCartUpdateExtension,
   createAvalaraHashedCartField,
   deleteAvalaraEntityUseCodeFields,
-  deleteAvalaraTaxCodeFields,
+  deleteShippingTaxCodeFields,
+  deleteCategoryTaxCodeFields,
   deleteCartUpdateExtension,
   deleteAvalaraHashedCartField,
-  AVALARA_ENTITY_USE_CODES_KEY,
+  AVALARA_ENTITY_USE_CODE_KEY,
   AVALARA_HASHED_CART_KEY,
-  AVALARA_TAX_CODES_KEY,
+  AVALARA_CATEGORY_TAX_CODE_KEY,
+  AVALARA_SHIPPING_TAX_CODE_KEY,
 } from '../src/connector/actions';
 
 describe('Testing actions', () => {
@@ -95,9 +98,9 @@ describe('Testing actions', () => {
     {
       method: createAvalaraEntityUseCodeFields,
       customType: {
-        key: AVALARA_ENTITY_USE_CODES_KEY,
+        key: AVALARA_ENTITY_USE_CODE_KEY,
         name: {
-          en: 'Additional field to store Avalara Entity Use codes',
+          en: 'Additional fields to store Avalara Entity Use Codes',
         },
         resourceTypeIds: ['customer'],
         fieldDefinitions: [
@@ -116,13 +119,36 @@ describe('Testing actions', () => {
       },
     },
     {
-      method: createAvalaraTaxCodeFields,
+      method: createShippingTaxCodeFields,
       customType: {
-        key: AVALARA_TAX_CODES_KEY,
+        key: AVALARA_SHIPPING_TAX_CODE_KEY,
         name: {
-          en: 'Additional field to store Avalara Tax codes',
+          en: 'Additional fields to store Avalara Tax codes for shipping methods',
         },
-        resourceTypeIds: ['category', 'shipping-method', 'cart-discount'],
+        resourceTypeIds: ['shipping-method'],
+        fieldDefinitions: [
+          {
+            name: 'avalaraTaxCode',
+            label: {
+              en: 'Avalara Tax code',
+            },
+            required: false,
+            type: {
+              name: 'String',
+            },
+            inputHint: 'SingleLine',
+          },
+        ],
+      },
+    },
+    {
+      method: createCategoryTaxCodeFields,
+      customType: {
+        key: AVALARA_CATEGORY_TAX_CODE_KEY,
+        name: {
+          en: 'Additional fields to store Avalara Tax codes for categories',
+        },
+        resourceTypeIds: ['category'],
         fieldDefinitions: [
           {
             name: 'avalaraTaxCode',
@@ -148,7 +174,7 @@ describe('Testing actions', () => {
         resourceTypeIds: ['order'],
         fieldDefinitions: [
           {
-            name: 'avahash',
+            name: 'avalaraHash',
             label: {
               en: 'Avalara Cart Hash',
             },
@@ -164,7 +190,9 @@ describe('Testing actions', () => {
   ])('$method', async ({ method, customType }) => {
     const apiRequest: any = {
       execute: jest.fn(() => ({
-        body: { results: [] },
+        body: {
+          results: [{ version: 1, fieldDefinitions: [] }],
+        },
       })),
     };
     const apiRoot: any = {
@@ -179,54 +207,113 @@ describe('Testing actions', () => {
     expect(apiRequest.execute).toBeCalledTimes(2);
     expect(apiRoot.get).toBeCalledWith({
       queryArgs: {
-        where: `key = "${customType?.key}"`,
+        where: `resourceTypeIds contains all (${customType.resourceTypeIds
+          .map((x) => `"${x}", `)
+          .reduce((acc, curr) => acc + curr, '')
+          .slice(0, -2)})`,
       },
     });
 
     expect(apiRoot.post).toBeCalledWith({
-      body: customType,
+      body: {
+        version: 1,
+        actions: [
+          {
+            action: 'addFieldDefinition',
+            fieldDefinition: customType.fieldDefinitions[0],
+          },
+        ],
+      },
     });
   });
 
   test.each([
     {
       method: deleteAvalaraEntityUseCodeFields,
-      key: AVALARA_ENTITY_USE_CODES_KEY,
+      customType: {
+        key: AVALARA_ENTITY_USE_CODE_KEY,
+        resourceTypeIds: ['customer'],
+        fieldDefinitions: [
+          {
+            name: 'avalaraEntityUseCode',
+          },
+        ],
+      },
     },
     {
-      method: deleteAvalaraTaxCodeFields,
-      key: AVALARA_TAX_CODES_KEY,
+      method: deleteShippingTaxCodeFields,
+      customType: {
+        key: AVALARA_SHIPPING_TAX_CODE_KEY,
+        resourceTypeIds: ['shipping-method'],
+        fieldDefinitions: [
+          {
+            name: 'avalaraTaxCode',
+          },
+        ],
+      },
+    },
+    {
+      method: deleteCategoryTaxCodeFields,
+      customType: {
+        key: AVALARA_CATEGORY_TAX_CODE_KEY,
+        resourceTypeIds: ['category'],
+        fieldDefinitions: [
+          {
+            name: 'avalaraTaxCode',
+          },
+        ],
+      },
     },
     {
       method: deleteAvalaraHashedCartField,
-      key: AVALARA_HASHED_CART_KEY,
+      customType: {
+        key: AVALARA_HASHED_CART_KEY,
+        resourceTypeIds: ['order'],
+        fieldDefinitions: [
+          {
+            name: 'avalaraHash',
+          },
+        ],
+      },
     },
-  ])('delete types', async ({ method, key }) => {
+  ])('delete types', async ({ method, customType }) => {
     const apiRequest: any = {
-      execute: jest.fn(() => ({ body: { results: [{ version: 1 }] } })),
+      execute: jest.fn(() => ({
+        body: {
+          results: [
+            { version: 1, fieldDefinitions: customType.fieldDefinitions },
+          ],
+        },
+      })),
     };
     const apiRoot: any = {
       types: jest.fn(() => apiRoot),
       withKey: jest.fn(() => apiRoot),
-      delete: jest.fn(() => apiRequest),
       get: jest.fn(() => apiRequest),
+      post: jest.fn(() => apiRequest),
     };
     await method(apiRoot);
     expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.delete).toBeCalledTimes(1);
     expect(apiRequest.execute).toBeCalledTimes(2);
 
     expect(apiRoot.get).toBeCalledWith({
       queryArgs: {
-        where: `key = "${key}"`,
+        where: `resourceTypeIds contains all (${customType.resourceTypeIds
+          .map((x) => `"${x}", `)
+          .reduce((acc, curr) => acc + curr, '')
+          .slice(0, -2)})`,
       },
     });
-
-    expect(apiRoot.withKey).toBeCalledWith({ key: key });
-
-    expect(apiRoot.delete).toBeCalledWith({
-      queryArgs: {
+    expect(apiRoot.post).toBeCalled();
+    expect(apiRoot.post).toBeCalledWith({
+      body: {
         version: 1,
+        actions: [
+          {
+            action: 'removeFieldDefinition',
+            fieldName: customType.fieldDefinitions[0].name,
+          },
+        ],
       },
     });
   });
