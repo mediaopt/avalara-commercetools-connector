@@ -35,9 +35,6 @@ export async function createUpdate(resource: Resource) {
 
     if (
       taxCalculationAllowed &&
-      cart?.shippingAddress &&
-      cart?.lineItems.length !== 0 &&
-      cart?.shippingInfo &&
       hashCart(cart) !== cart?.custom?.fields?.avahash
     ) {
       const updateActions = await getTax(
