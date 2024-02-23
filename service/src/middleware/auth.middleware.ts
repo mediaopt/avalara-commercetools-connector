@@ -31,7 +31,7 @@ export async function verifyJWT(
   try {
     const token = (req.get('authorization') as string).split(' ')[1];
     if (!req.get('origin')?.includes('commercetools.com')) {
-      const apiKey = process.env.AVALARA_FRONTEND_API_KEY as string;
+      const apiKey = process.env.FRONTEND_API_KEY as string;
       if (!apiKey) {
         throw new CustomError(401, 'No external communication allowed.');
       }

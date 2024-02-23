@@ -1,8 +1,4 @@
-import { entryPointUriPathToPermissionKeys } from '@commercetools-frontend/application-shell/ssr';
-
-export const entryPointUriPath = '${env:UNIQUE_IDENTIFIER}/avalara';
-
-export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
+import { PERMISSIONS, entryPointUriPath } from './src/constants';
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
