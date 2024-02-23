@@ -16,7 +16,7 @@ deployAs:
         - key: CATEGORY_CUSTOM_TYPE_NAME
           description: Custom type name for category
           required: true
-          default: Additional field to store Avalara Tax codes for categories
+          default: 'Additional field to store Avalara Tax codes for categories'
         - key: SHIPPING_METHOD_CUSTOM_TYPE_KEY
           description: Custom type key for shipping method
           required: true
@@ -24,7 +24,7 @@ deployAs:
         - key: SHIPPING_METHOD_CUSTOM_TYPE_NAME
           description: Custom type name for shipping method
           required: true
-          default: Additional field to store Avalara Tax codes for shipping methods
+          default: 'Additional field to store Avalara Tax codes for shipping methods'
         - key: CUSTOMER_CUSTOM_TYPE_KEY
           description: Custom type key for customer
           required: true
@@ -32,7 +32,7 @@ deployAs:
         - key: CUSTOMER_CUSTOM_TYPE_NAME
           description: Custom type name for customer
           required: true
-          default: Additional field to store Avalara Entity Use (Exemption) codes for customers
+          default: 'Additional field to store Avalara Entity Use (Exemption) codes for customers'
         - key: ORDER_CUSTOM_TYPE_KEY
           description: Custom type key for order
           required: true
@@ -40,7 +40,7 @@ deployAs:
         - key: ORDER_CUSTOM_TYPE_NAME
           description: Custom type name for order
           required: true
-          default: Additional field to store cart hash
+          default: 'Additional field to store cart hash'
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key
