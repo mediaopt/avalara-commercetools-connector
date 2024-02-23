@@ -6,8 +6,7 @@ import { assertError } from '../utils/assert.utils';
 import {
   deleteAvalaraEntityUseCodeFields,
   deleteAvalaraHashedCartField,
-  deleteCategoryTaxCodeFields,
-  deleteShippingTaxCodeFields,
+  deleteTaxCodeFields,
   deleteCartUpdateExtension,
 } from './actions';
 
@@ -15,8 +14,7 @@ async function preUndeploy(): Promise<void> {
   const apiRoot = createApiRoot();
   await deleteCartUpdateExtension(apiRoot);
   await deleteAvalaraEntityUseCodeFields(apiRoot);
-  await deleteShippingTaxCodeFields(apiRoot);
-  await deleteCategoryTaxCodeFields(apiRoot);
+  await deleteTaxCodeFields(apiRoot);
   await deleteAvalaraHashedCartField(apiRoot);
 }
 

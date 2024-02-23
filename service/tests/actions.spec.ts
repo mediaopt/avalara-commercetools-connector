@@ -2,19 +2,16 @@ import { describe, expect, test, jest } from '@jest/globals';
 import {
   CART_UPDATE_EXTENSION_KEY,
   createAvalaraEntityUseCodeFields,
-  createShippingTaxCodeFields,
-  createCategoryTaxCodeFields,
+  createTaxCodeFields,
   createCartUpdateExtension,
   createAvalaraHashedCartField,
   deleteAvalaraEntityUseCodeFields,
-  deleteShippingTaxCodeFields,
-  deleteCategoryTaxCodeFields,
+  deleteTaxCodeFields,
   deleteCartUpdateExtension,
   deleteAvalaraHashedCartField,
   AVALARA_ENTITY_USE_CODE_KEY,
   AVALARA_HASHED_CART_KEY,
-  AVALARA_CATEGORY_TAX_CODE_KEY,
-  AVALARA_SHIPPING_TAX_CODE_KEY,
+  AVALARA_TAX_CODE_KEY,
 } from '../src/connector/actions';
 
 describe('Testing actions', () => {
@@ -119,36 +116,13 @@ describe('Testing actions', () => {
       },
     },
     {
-      method: createShippingTaxCodeFields,
+      method: createTaxCodeFields,
       customType: {
-        key: AVALARA_SHIPPING_TAX_CODE_KEY,
+        key: AVALARA_TAX_CODE_KEY,
         name: {
-          en: 'Additional fields to store Avalara Tax codes for shipping methods',
+          en: 'Additional fields to store Avalara Tax Codes',
         },
-        resourceTypeIds: ['shipping-method'],
-        fieldDefinitions: [
-          {
-            name: 'avalaraTaxCode',
-            label: {
-              en: 'Avalara Tax code',
-            },
-            required: false,
-            type: {
-              name: 'String',
-            },
-            inputHint: 'SingleLine',
-          },
-        ],
-      },
-    },
-    {
-      method: createCategoryTaxCodeFields,
-      customType: {
-        key: AVALARA_CATEGORY_TAX_CODE_KEY,
-        name: {
-          en: 'Additional fields to store Avalara Tax codes for categories',
-        },
-        resourceTypeIds: ['category'],
+        resourceTypeIds: ['shipping-method', 'category'],
         fieldDefinitions: [
           {
             name: 'avalaraTaxCode',
@@ -207,7 +181,7 @@ describe('Testing actions', () => {
     expect(apiRequest.execute).toBeCalledTimes(2);
     expect(apiRoot.get).toBeCalledWith({
       queryArgs: {
-        where: `resourceTypeIds contains all (${customType.resourceTypeIds
+        where: `resourceTypeIds contains any (${customType.resourceTypeIds
           .map((x) => `"${x}", `)
           .reduce((acc, curr) => acc + curr, '')
           .slice(0, -2)})`,
@@ -241,22 +215,10 @@ describe('Testing actions', () => {
       },
     },
     {
-      method: deleteShippingTaxCodeFields,
+      method: deleteTaxCodeFields,
       customType: {
-        key: AVALARA_SHIPPING_TAX_CODE_KEY,
-        resourceTypeIds: ['shipping-method'],
-        fieldDefinitions: [
-          {
-            name: 'avalaraTaxCode',
-          },
-        ],
-      },
-    },
-    {
-      method: deleteCategoryTaxCodeFields,
-      customType: {
-        key: AVALARA_CATEGORY_TAX_CODE_KEY,
-        resourceTypeIds: ['category'],
+        key: AVALARA_TAX_CODE_KEY,
+        resourceTypeIds: ['shipping-method', 'category'],
         fieldDefinitions: [
           {
             name: 'avalaraTaxCode',
@@ -298,7 +260,7 @@ describe('Testing actions', () => {
 
     expect(apiRoot.get).toBeCalledWith({
       queryArgs: {
-        where: `resourceTypeIds contains all (${customType.resourceTypeIds
+        where: `resourceTypeIds contains any (${customType.resourceTypeIds
           .map((x) => `"${x}", `)
           .reduce((acc, curr) => acc + curr, '')
           .slice(0, -2)})`,
