@@ -4,7 +4,7 @@ import {
   type TRenderAppWithReduxOptions,
 } from '@commercetools-frontend/application-shell/test-utils';
 import { renderApplicationWithRoutesAndRedux } from '../src/test-utils';
-import { entryPointUriPath, PERMISSIONS } from '../src/constants';
+import { entryPointUriPath, PERMISSIONS } from '../src/test-utils';
 import loadMessages from '../src/load-messages';
 import defineMessages from '../src/components/welcome/messages';
 

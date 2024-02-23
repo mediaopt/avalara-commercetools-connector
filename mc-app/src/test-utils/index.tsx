@@ -1,5 +1,8 @@
 import type { ReactElement } from 'react';
-import { createApolloClient } from '@commercetools-frontend/application-shell';
+import {
+  createApolloClient,
+  entryPointUriPathToPermissionKeys,
+} from '@commercetools-frontend/application-shell';
 import {
   renderApp,
   renderAppWithRedux,
@@ -7,7 +10,10 @@ import {
   type TRenderAppWithReduxOptions,
 } from '@commercetools-frontend/application-shell/test-utils';
 import ApplicationRoutes from '../routes';
-import { entryPointUriPath } from '../constants';
+
+export const entryPointUriPath = 'avalara';
+
+export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
 
 const mergeWithDefaultOptions = (
   options: Partial<TRenderAppOptions> | Partial<TRenderAppWithReduxOptions> = {}

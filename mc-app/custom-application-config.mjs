@@ -1,8 +1,4 @@
-import { entryPointUriPathToPermissionKeys } from '@commercetools-frontend/application-shell/ssr';
-
-const entryPointUriPath = '${env:UNIQUE_IDENTIFIER}';
-
-const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
+import {PERMISSIONS, entryPointUriPath} from './src/constants';
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
@@ -10,7 +6,7 @@ const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
 const config = {
   name: 'Avalara Tax Provider',
   description: 'Sales tax solution',
-  entryPointUriPath: entryPointUriPath,
+  entryPointUriPath,
   cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
