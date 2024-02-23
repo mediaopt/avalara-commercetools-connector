@@ -52,7 +52,7 @@ export async function processCart(
     };
 
     taxDocument.entityUseCode = await getCustomerEntityUseCode(
-      cart?.customerId || ''
+      cart?.customerId as string
     );
     taxDocument.lines = lines;
   }

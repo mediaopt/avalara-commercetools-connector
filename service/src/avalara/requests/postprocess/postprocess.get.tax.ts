@@ -74,11 +74,24 @@ export function postProcessing(
     },
   });
 
-  actions.push({
-    action: 'setCustomField',
-    name: 'avalaraHash',
-    value: hashCart(cart),
-  });
+  if (!cart?.custom?.type) {
+    actions.push({
+      action: 'setCustomType',
+      type: {
+        key: process.env.ORDER_CUSTOM_TYPE_KEY as string,
+        typeId: 'type',
+      },
+      fields: {
+        avalaraHash: hashCart(cart),
+      },
+    });
+  } else {
+    actions.push({
+      action: 'setCustomField',
+      name: 'avalaraHash',
+      value: hashCart(cart),
+    });
+  }
 
   return actions;
 }

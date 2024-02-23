@@ -32,7 +32,7 @@ export const checkAddressController = async (data: {
   ) {
     throw new CustomError(400, 'Bad request: Missing address');
   }
-  const settings = await getData('avalara-commercetools-connector').then(
+  const settings = await getData('avalara-settings').then(
     (res) => res.settings
   );
   if (!data?.mcApp && !settings?.addressValidation) {

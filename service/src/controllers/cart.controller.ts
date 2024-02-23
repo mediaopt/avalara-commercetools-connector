@@ -11,13 +11,13 @@ import { AvataxMerchantConfig } from '../types/index.types';
 
 export async function createUpdate(resource: Resource) {
   try {
-    const env = process.env.AVALARA_ENV || 'sandbox';
+    const env = process.env.AVALARA_ENV as string;
     const creds = {
       username: process.env.AVALARA_USERNAME as string,
       password: process.env.AVALARA_PASSWORD as string,
       companyCode: process.env.AVALARA_COMPANY_CODE as string,
     };
-    const settings = (await getData('avalara-commercetools-connector').then(
+    const settings = (await getData('avalara-settings').then(
       (res) => res?.settings
     )) as AvataxMerchantConfig;
 

@@ -49,7 +49,7 @@ export async function processOrder(
 
     taxDocument.currencyCode = order?.totalPrice?.currencyCode;
 
-    taxDocument.customerCode = customerInfo?.customerNumber || '';
+    taxDocument.customerCode = customerInfo?.customerNumber as string;
 
     taxDocument.addresses = {
       shipFrom: shipFrom,

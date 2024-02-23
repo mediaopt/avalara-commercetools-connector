@@ -9,6 +9,38 @@ deployAs:
       standardConfiguration:
         - key: CTP_REGION
           description: commercetools Composable Commerce API region
+        - key: CATEGORY_CUSTOM_TYPE_KEY
+          description: Custom type key for category
+          required: true
+          default: avalara-category
+        - key: CATEGORY_CUSTOM_TYPE_NAME
+          description: Custom type name for category
+          required: true
+          default: Additional field to store Avalara Tax codes for categories
+        - key: SHIPPING_METHOD_CUSTOM_TYPE_KEY
+          description: Custom type key for shipping method
+          required: true
+          default: avalara-shipping-method
+        - key: SHIPPING_METHOD_CUSTOM_TYPE_NAME
+          description: Custom type name for shipping method
+          required: true
+          default: Additional field to store Avalara Tax codes for shipping methods
+        - key: CUSTOMER_CUSTOM_TYPE_KEY
+          description: Custom type key for customer
+          required: true
+          default: avalara-customer
+        - key: CUSTOMER_CUSTOM_TYPE_NAME
+          description: Custom type name for customer
+          required: true
+          default: Additional field to store Avalara Entity Use (Exemption) codes for customers
+        - key: ORDER_CUSTOM_TYPE_KEY
+          description: Custom type key for order
+          required: true
+          default: avalara-order
+        - key: ORDER_CUSTOM_TYPE_NAME
+          description: Custom type name for order
+          required: true
+          default: Additional field to store cart hash
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key
@@ -30,7 +62,7 @@ deployAs:
         - key: AVALARA_ENV
           description: Avalara Backoffice Environment
           required: true
-        - key: AVALARA_FRONTEND_API_KEY
+        - key: FRONTEND_API_KEY
           description: Frontend API Key for address validation tool
           required: false
   - name: event
@@ -65,7 +97,7 @@ deployAs:
           description: Avalara Backoffice Environment
           required: true
   - name: mc-app
-    applicationType: mc-app
+    applicationType: merchant-center-custom-application
     endpoint: /
     configuration:
       standardConfiguration:
@@ -76,3 +108,6 @@ deployAs:
           description: The identifier of the cloud Region that the Custom Application uses to connect to Composable Commerce. The values map to the actual Merchant Center API URL for that Region
           required: true
           default: gcp-eu
+        - key: UNIQUE_IDENTIFIER
+          description: The unique identifier of the Custom Application
+          required: true

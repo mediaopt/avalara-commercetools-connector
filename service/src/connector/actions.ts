@@ -6,18 +6,31 @@ import {
   TypeRemoveFieldDefinitionAction,
 } from '@commercetools/platform-sdk';
 
-export const CART_UPDATE_EXTENSION_KEY =
-  'avalara-commercetools-connector-cartUpdateExtension';
+export const CART_UPDATE_EXTENSION_KEY = 'avalara-cartUpdateExtension';
 
-export const AVALARA_CATEGORY_TAX_CODE_KEY = 'avalara-category';
+export const CATEGORY_CUSTOM_TYPE_KEY = process.env
+  .CATEGORY_CUSTOM_TYPE_KEY as string;
 
-export const AVALARA_SHIPPING_TAX_CODE_KEY = 'avalara-shipping-method';
+export const CATEGORY_CUSTOM_TYPE_NAME = process.env
+  .CATEGORY_CUSTOM_TYPE_NAME as string;
 
-export const AVALARA_ENTITY_USE_CODE_KEY = 'avalara-customer';
+export const SHIPPING_METHOD_CUSTOM_TYPE_KEY = process.env
+  .SHIPPING_METHOD_CUSTOM_TYPE_KEY as string;
 
-export const AVALARA_HASHED_CART_KEY = 'avalara-order';
+export const SHIPPING_METHOD_CUSTOM_TYPE_NAME = process.env
+  .SHIPPING_METHOD_CUSTOM_TYPE_NAME as string;
 
-//const CART_DISCOUNT_TYPE_KEY = 'myconnector-cartDiscountType';
+export const CUSTOMER_CUSTOM_TYPE_KEY = process.env
+  .CUSTOMER_CUSTOM_TYPE_KEY as string;
+
+export const CUSTOMER_CUSTOM_TYPE_NAME = process.env
+  .CUSTOMER_CUSTOM_TYPE_NAME as string;
+
+export const ORDER_CUSTOM_TYPE_KEY = process.env
+  .ORDER_CUSTOM_TYPE_KEY as string;
+
+export const ORDER_CUSTOM_TYPE_NAME = process.env
+  .ORDER_CUSTOM_TYPE_NAME as string;
 
 async function addOrUpdateCustomType(
   apiRoot: ByProjectKeyRequestBuilder,
@@ -29,52 +42,46 @@ async function addOrUpdateCustomType(
     .types()
     .get({
       queryArgs: {
-        where: `resourceTypeIds contains all (${customType.resourceTypeIds
-          .map((x) => `"${x}", `)
-          .reduce((acc, curr) => acc + curr, '')
-          .slice(0, -2)})`,
+        where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
       },
     })
     .execute();
-  if (types.length > 0) {
-    for (const type of types) {
-      const updates = (customType.fieldDefinitions ?? [])
-        .filter(
-          (newFieldDefinition: FieldDefinition): boolean =>
-            !type.fieldDefinitions?.find(
-              (existingFieldDefinition: FieldDefinition): boolean =>
-                newFieldDefinition.name === existingFieldDefinition.name
-            )
-        )
-        .map(
-          (fieldDefinition: FieldDefinition): TypeAddFieldDefinitionAction => {
-            return {
-              action: 'addFieldDefinition',
-              fieldDefinition: fieldDefinition,
-            };
-          }
-        );
-      if (updates.length != 0) {
-        await apiRoot
-          .types()
-          .withKey({ key: type.key })
-          .post({
-            body: {
-              version: type.version,
-              actions: updates,
-            },
-          })
-          .execute();
-      }
+  for (const type of types) {
+    const updates = (customType.fieldDefinitions ?? [])
+      .filter(
+        (newFieldDefinition: FieldDefinition): boolean =>
+          !type.fieldDefinitions?.find(
+            (existingFieldDefinition: FieldDefinition): boolean =>
+              newFieldDefinition.name === existingFieldDefinition.name
+          )
+      )
+      .map((fieldDefinition: FieldDefinition): TypeAddFieldDefinitionAction => {
+        return {
+          action: 'addFieldDefinition',
+          fieldDefinition: fieldDefinition,
+        };
+      });
+    if (updates.length != 0) {
+      await apiRoot
+        .types()
+        .withKey({ key: type.key })
+        .post({
+          body: {
+            version: type.version,
+            actions: updates,
+          },
+        })
+        .execute();
     }
-    return;
   }
-  await apiRoot
-    .types()
-    .post({
-      body: customType,
-    })
-    .execute();
+  if (!types.find((type) => type.key === customType.key)) {
+    await apiRoot
+      .types()
+      .post({
+        body: customType,
+      })
+      .execute();
+  }
 }
 
 async function deleteOrUpdateCustomType(
@@ -87,46 +94,42 @@ async function deleteOrUpdateCustomType(
     .types()
     .get({
       queryArgs: {
-        where: `resourceTypeIds contains all (${customType.resourceTypeIds
-          .map((x) => `"${x}", `)
-          .reduce((acc, curr) => acc + curr, '')
-          .slice(0, -2)})`,
+        where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
       },
     })
     .execute();
 
-  if (types.length > 0) {
-    for (const type of types) {
-      if (type.key === customType.key) {
-        await apiRoot
-          .types()
-          .withKey({ key: AVALARA_ENTITY_USE_CODE_KEY })
-          .delete({
-            queryArgs: {
-              version: type.version,
-            },
-          })
-          .execute();
-      } else {
-        const updates = (customType.fieldDefinitions ?? [])
-          .filter(
-            (newFieldDefinition: FieldDefinition): boolean =>
-              !!type.fieldDefinitions?.find(
-                (existingFieldDefinition: FieldDefinition): boolean =>
-                  newFieldDefinition.name === existingFieldDefinition.name
-              )
+  for (const type of types) {
+    const updates = (customType.fieldDefinitions ?? [])
+      .filter(
+        (newFieldDefinition: FieldDefinition): boolean =>
+          !!type.fieldDefinitions?.find(
+            (existingFieldDefinition: FieldDefinition): boolean =>
+              newFieldDefinition.name === existingFieldDefinition.name
           )
-          .map(
-            (
-              fieldDefinition: FieldDefinition
-            ): TypeRemoveFieldDefinitionAction => {
-              return {
-                action: 'removeFieldDefinition',
-                fieldName: fieldDefinition.name,
-              };
-            }
-          );
-        if (updates.length != 0) {
+      )
+      .map(
+        (fieldDefinition: FieldDefinition): TypeRemoveFieldDefinitionAction => {
+          return {
+            action: 'removeFieldDefinition',
+            fieldName: fieldDefinition.name,
+          };
+        }
+      );
+    if (updates.length != 0) {
+      switch (type.fieldDefinitions?.length) {
+        case 1:
+          await apiRoot
+            .types()
+            .withKey({ key: type.key })
+            .delete({
+              queryArgs: {
+                version: type.version,
+              },
+            })
+            .execute();
+          break;
+        default:
           await apiRoot
             .types()
             .withKey({ key: type.key })
@@ -137,7 +140,6 @@ async function deleteOrUpdateCustomType(
               },
             })
             .execute();
-        }
       }
     }
   }
@@ -147,9 +149,9 @@ export async function createAvalaraEntityUseCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_ENTITY_USE_CODE_KEY,
+    key: CUSTOMER_CUSTOM_TYPE_KEY,
     name: {
-      en: 'Additional fields to store Avalara Entity Use Codes',
+      en: CUSTOMER_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['customer'],
     fieldDefinitions: [
@@ -173,7 +175,7 @@ export async function deleteAvalaraEntityUseCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_ENTITY_USE_CODE_KEY,
+    key: CUSTOMER_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['customer'],
     fieldDefinitions: [
       {
@@ -188,9 +190,9 @@ export async function createAvalaraHashedCartField(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_HASHED_CART_KEY,
+    key: ORDER_CUSTOM_TYPE_KEY,
     name: {
-      en: 'Additional field to store Avalara Cart Hash',
+      en: ORDER_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['order'],
     fieldDefinitions: [
@@ -214,7 +216,7 @@ export async function deleteAvalaraHashedCartField(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_HASHED_CART_KEY,
+    key: ORDER_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['order'],
     fieldDefinitions: [
       {
@@ -229,9 +231,9 @@ export async function createShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_SHIPPING_TAX_CODE_KEY,
+    key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
     name: {
-      en: 'Additional fields to store Avalara Tax codes for shipping methods',
+      en: SHIPPING_METHOD_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['shipping-method'],
     fieldDefinitions: [
@@ -255,7 +257,7 @@ export async function deleteShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_SHIPPING_TAX_CODE_KEY,
+    key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['shipping-method'],
     fieldDefinitions: [
       {
@@ -270,9 +272,9 @@ export async function createCategoryTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_CATEGORY_TAX_CODE_KEY,
+    key: CATEGORY_CUSTOM_TYPE_KEY,
     name: {
-      en: 'Additional fields to store Avalara Tax codes for categories',
+      en: CATEGORY_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['category'],
     fieldDefinitions: [
@@ -296,7 +298,7 @@ export async function deleteCategoryTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_CATEGORY_TAX_CODE_KEY,
+    key: CATEGORY_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['category'],
     fieldDefinitions: [
       {

@@ -11,10 +11,14 @@ import {
   deleteCategoryTaxCodeFields,
   deleteCartUpdateExtension,
   deleteAvalaraHashedCartField,
-  AVALARA_ENTITY_USE_CODE_KEY,
-  AVALARA_HASHED_CART_KEY,
-  AVALARA_CATEGORY_TAX_CODE_KEY,
-  AVALARA_SHIPPING_TAX_CODE_KEY,
+  CUSTOMER_CUSTOM_TYPE_KEY,
+  ORDER_CUSTOM_TYPE_KEY,
+  CATEGORY_CUSTOM_TYPE_KEY,
+  SHIPPING_METHOD_CUSTOM_TYPE_KEY,
+  CUSTOMER_CUSTOM_TYPE_NAME,
+  ORDER_CUSTOM_TYPE_NAME,
+  SHIPPING_METHOD_CUSTOM_TYPE_NAME,
+  CATEGORY_CUSTOM_TYPE_NAME,
 } from '../src/connector/actions';
 
 describe('Testing actions', () => {
@@ -98,9 +102,9 @@ describe('Testing actions', () => {
     {
       method: createAvalaraEntityUseCodeFields,
       customType: {
-        key: AVALARA_ENTITY_USE_CODE_KEY,
+        key: CUSTOMER_CUSTOM_TYPE_KEY,
         name: {
-          en: 'Additional fields to store Avalara Entity Use Codes',
+          en: CUSTOMER_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['customer'],
         fieldDefinitions: [
@@ -121,9 +125,9 @@ describe('Testing actions', () => {
     {
       method: createShippingTaxCodeFields,
       customType: {
-        key: AVALARA_SHIPPING_TAX_CODE_KEY,
+        key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
         name: {
-          en: 'Additional fields to store Avalara Tax codes for shipping methods',
+          en: SHIPPING_METHOD_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['shipping-method'],
         fieldDefinitions: [
@@ -144,9 +148,9 @@ describe('Testing actions', () => {
     {
       method: createCategoryTaxCodeFields,
       customType: {
-        key: AVALARA_CATEGORY_TAX_CODE_KEY,
+        key: CATEGORY_CUSTOM_TYPE_KEY,
         name: {
-          en: 'Additional fields to store Avalara Tax codes for categories',
+          en: CATEGORY_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['category'],
         fieldDefinitions: [
@@ -167,9 +171,9 @@ describe('Testing actions', () => {
     {
       method: createAvalaraHashedCartField,
       customType: {
-        key: AVALARA_HASHED_CART_KEY,
+        key: ORDER_CUSTOM_TYPE_KEY,
         name: {
-          en: 'Additional field to store Avalara Cart Hash',
+          en: ORDER_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['order'],
         fieldDefinitions: [
@@ -207,10 +211,7 @@ describe('Testing actions', () => {
     expect(apiRequest.execute).toBeCalledTimes(2);
     expect(apiRoot.get).toBeCalledWith({
       queryArgs: {
-        where: `resourceTypeIds contains all (${customType.resourceTypeIds
-          .map((x) => `"${x}", `)
-          .reduce((acc, curr) => acc + curr, '')
-          .slice(0, -2)})`,
+        where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
       },
     });
 
@@ -231,7 +232,7 @@ describe('Testing actions', () => {
     {
       method: deleteAvalaraEntityUseCodeFields,
       customType: {
-        key: AVALARA_ENTITY_USE_CODE_KEY,
+        key: CUSTOMER_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['customer'],
         fieldDefinitions: [
           {
@@ -243,7 +244,7 @@ describe('Testing actions', () => {
     {
       method: deleteShippingTaxCodeFields,
       customType: {
-        key: AVALARA_SHIPPING_TAX_CODE_KEY,
+        key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['shipping-method'],
         fieldDefinitions: [
           {
@@ -255,7 +256,7 @@ describe('Testing actions', () => {
     {
       method: deleteCategoryTaxCodeFields,
       customType: {
-        key: AVALARA_CATEGORY_TAX_CODE_KEY,
+        key: CATEGORY_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['category'],
         fieldDefinitions: [
           {
@@ -267,7 +268,7 @@ describe('Testing actions', () => {
     {
       method: deleteAvalaraHashedCartField,
       customType: {
-        key: AVALARA_HASHED_CART_KEY,
+        key: ORDER_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['order'],
         fieldDefinitions: [
           {
@@ -289,6 +290,7 @@ describe('Testing actions', () => {
     const apiRoot: any = {
       types: jest.fn(() => apiRoot),
       withKey: jest.fn(() => apiRoot),
+      delete: jest.fn(() => apiRequest),
       get: jest.fn(() => apiRequest),
       post: jest.fn(() => apiRequest),
     };
@@ -298,22 +300,13 @@ describe('Testing actions', () => {
 
     expect(apiRoot.get).toBeCalledWith({
       queryArgs: {
-        where: `resourceTypeIds contains all (${customType.resourceTypeIds
-          .map((x) => `"${x}", `)
-          .reduce((acc, curr) => acc + curr, '')
-          .slice(0, -2)})`,
+        where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
       },
     });
-    expect(apiRoot.post).toBeCalled();
-    expect(apiRoot.post).toBeCalledWith({
-      body: {
+    expect(apiRoot.withKey).toBeCalledWith({ key: customType.key });
+    expect(apiRoot.delete).toBeCalledWith({
+      queryArgs: {
         version: 1,
-        actions: [
-          {
-            action: 'removeFieldDefinition',
-            fieldName: customType.fieldDefinitions[0].name,
-          },
-        ],
       },
     });
   });
