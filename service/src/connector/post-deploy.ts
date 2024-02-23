@@ -6,7 +6,8 @@ import { assertError, assertString } from '../utils/assert.utils';
 import {
   createAvalaraEntityUseCodeFields,
   createAvalaraHashedCartField,
-  createTaxCodeFields,
+  createCategoryTaxCodeFields,
+  createShippingTaxCodeFields,
   createCartUpdateExtension,
 } from './actions';
 import { testConnectionController } from '../controllers/test.connection.controller';
@@ -22,7 +23,8 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
   const apiRoot = createApiRoot();
   await createCartUpdateExtension(apiRoot, applicationUrl);
   await createAvalaraEntityUseCodeFields(apiRoot);
-  await createTaxCodeFields(apiRoot);
+  await createShippingTaxCodeFields(apiRoot);
+  await createCategoryTaxCodeFields(apiRoot);
   await createAvalaraHashedCartField(apiRoot);
   const testConnection = await testConnectionController({
     logging: {

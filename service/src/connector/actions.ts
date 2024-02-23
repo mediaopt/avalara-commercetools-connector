@@ -9,11 +9,15 @@ import {
 export const CART_UPDATE_EXTENSION_KEY =
   'avalara-commercetools-connector-cartUpdateExtension';
 
-export const AVALARA_TAX_CODE_KEY = 'avalara-tax-code-entity';
+export const AVALARA_CATEGORY_TAX_CODE_KEY = 'avalara-category';
+
+export const AVALARA_SHIPPING_TAX_CODE_KEY = 'avalara-shipping-method';
 
 export const AVALARA_ENTITY_USE_CODE_KEY = 'avalara-customer';
 
 export const AVALARA_HASHED_CART_KEY = 'avalara-order';
+
+//const CART_DISCOUNT_TYPE_KEY = 'myconnector-cartDiscountType';
 
 async function addOrUpdateCustomType(
   apiRoot: ByProjectKeyRequestBuilder,
@@ -25,7 +29,7 @@ async function addOrUpdateCustomType(
     .types()
     .get({
       queryArgs: {
-        where: `resourceTypeIds contains any (${customType.resourceTypeIds
+        where: `resourceTypeIds contains all (${customType.resourceTypeIds
           .map((x) => `"${x}", `)
           .reduce((acc, curr) => acc + curr, '')
           .slice(0, -2)})`,
@@ -83,7 +87,7 @@ async function deleteOrUpdateCustomType(
     .types()
     .get({
       queryArgs: {
-        where: `resourceTypeIds contains any (${customType.resourceTypeIds
+        where: `resourceTypeIds contains all (${customType.resourceTypeIds
           .map((x) => `"${x}", `)
           .reduce((acc, curr) => acc + curr, '')
           .slice(0, -2)})`,
@@ -221,15 +225,15 @@ export async function deleteAvalaraHashedCartField(
   await deleteOrUpdateCustomType(apiRoot, customType);
 }
 
-export async function createTaxCodeFields(
+export async function createShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_TAX_CODE_KEY,
+    key: AVALARA_SHIPPING_TAX_CODE_KEY,
     name: {
-      en: 'Additional fields to store Avalara Tax Codes',
+      en: 'Additional fields to store Avalara Tax codes for shipping methods',
     },
-    resourceTypeIds: ['shipping-method', 'category'],
+    resourceTypeIds: ['shipping-method'],
     fieldDefinitions: [
       {
         name: 'avalaraTaxCode',
@@ -247,12 +251,53 @@ export async function createTaxCodeFields(
   addOrUpdateCustomType(apiRoot, customType);
 }
 
-export async function deleteTaxCodeFields(
+export async function deleteShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_TAX_CODE_KEY,
-    resourceTypeIds: ['shipping-method', 'category'],
+    key: AVALARA_SHIPPING_TAX_CODE_KEY,
+    resourceTypeIds: ['shipping-method'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraTaxCode',
+      },
+    ],
+  } as unknown as TypeDraft;
+  await deleteOrUpdateCustomType(apiRoot, customType);
+}
+
+export async function createCategoryTaxCodeFields(
+  apiRoot: ByProjectKeyRequestBuilder
+): Promise<void> {
+  const customType = {
+    key: AVALARA_CATEGORY_TAX_CODE_KEY,
+    name: {
+      en: 'Additional fields to store Avalara Tax codes for categories',
+    },
+    resourceTypeIds: ['category'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraTaxCode',
+        label: {
+          en: 'Avalara Tax code',
+        },
+        required: false,
+        type: {
+          name: 'String',
+        },
+        inputHint: 'SingleLine',
+      },
+    ],
+  } as TypeDraft;
+  await addOrUpdateCustomType(apiRoot, customType);
+}
+
+export async function deleteCategoryTaxCodeFields(
+  apiRoot: ByProjectKeyRequestBuilder
+): Promise<void> {
+  const customType = {
+    key: AVALARA_CATEGORY_TAX_CODE_KEY,
+    resourceTypeIds: ['category'],
     fieldDefinitions: [
       {
         name: 'avalaraTaxCode',
