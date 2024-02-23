@@ -2,7 +2,7 @@ import { entryPointUriPathToPermissionKeys } from '@commercetools-frontend/appli
 
 const entryPointUriPath = '${env:UNIQUE_IDENTIFIER}';
 
-export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
+const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
