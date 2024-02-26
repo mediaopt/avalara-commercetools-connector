@@ -30,17 +30,14 @@ export async function verifyJWT(
 ) {
   try {
     const token = (req.get('authorization') as string).split(' ')[1];
-    if (!req.get('origin')?.includes('commercetools.com')) {
+    const payload = jwt.decode(token) as any;
+    if (!MC_API_URLS.includes(payload.iss)) {
       const apiKey = process.env.FRONTEND_API_KEY as string;
       if (!apiKey) {
         throw new CustomError(401, 'No external communication allowed.');
       }
       jwt.verify(token, apiKey);
       return next();
-    }
-    const payload = jwt.decode(token) as any;
-    if (!MC_API_URLS.includes(payload.iss)) {
-      throw new CustomError(401, 'Non-trusted issuer.');
     }
     const client = jwksClient({
       jwksUri: `${payload.iss}/.well-known/jwks.json`,
