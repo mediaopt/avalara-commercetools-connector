@@ -12,7 +12,7 @@ deployAs:
         - key: CATEGORY_CUSTOM_TYPE_KEY
           description: Custom type key for category
           required: true
-          default: 'avalara-category'
+          default: 'avalara-connector-category'
         - key: CATEGORY_CUSTOM_TYPE_NAME
           description: Custom type name for category
           required: true
@@ -20,7 +20,7 @@ deployAs:
         - key: SHIPPING_METHOD_CUSTOM_TYPE_KEY
           description: Custom type key for shipping method
           required: true
-          default: 'avalara-shipping-method'
+          default: 'avalara-connector-shipping-method'
         - key: SHIPPING_METHOD_CUSTOM_TYPE_NAME
           description: Custom type name for shipping method
           required: true
@@ -28,7 +28,7 @@ deployAs:
         - key: CUSTOMER_CUSTOM_TYPE_KEY
           description: Custom type key for customer
           required: true
-          default: 'avalara-customer'
+          default: 'avalara-connector-customer'
         - key: CUSTOMER_CUSTOM_TYPE_NAME
           description: Custom type name for customer
           required: true
@@ -36,7 +36,7 @@ deployAs:
         - key: ORDER_CUSTOM_TYPE_KEY
           description: Custom type key for order
           required: true
-          default: 'avalara-order'
+          default: 'avalara-connector-order'
         - key: ORDER_CUSTOM_TYPE_NAME
           description: Custom type name for order
           required: true

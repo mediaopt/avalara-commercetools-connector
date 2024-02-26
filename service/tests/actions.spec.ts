@@ -11,14 +11,6 @@ import {
   deleteCategoryTaxCodeFields,
   deleteCartUpdateExtension,
   deleteAvalaraHashedCartField,
-  CUSTOMER_CUSTOM_TYPE_KEY,
-  ORDER_CUSTOM_TYPE_KEY,
-  CATEGORY_CUSTOM_TYPE_KEY,
-  SHIPPING_METHOD_CUSTOM_TYPE_KEY,
-  CUSTOMER_CUSTOM_TYPE_NAME,
-  ORDER_CUSTOM_TYPE_NAME,
-  SHIPPING_METHOD_CUSTOM_TYPE_NAME,
-  CATEGORY_CUSTOM_TYPE_NAME,
 } from '../src/connector/actions';
 
 describe('Testing actions', () => {
@@ -102,9 +94,9 @@ describe('Testing actions', () => {
     {
       method: createAvalaraEntityUseCodeFields,
       customType: {
-        key: CUSTOMER_CUSTOM_TYPE_KEY,
+        key: process.env.CUSTOMER_CUSTOM_TYPE_KEY,
         name: {
-          en: CUSTOMER_CUSTOM_TYPE_NAME,
+          en: process.env.CUSTOMER_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['customer'],
         fieldDefinitions: [
@@ -125,9 +117,9 @@ describe('Testing actions', () => {
     {
       method: createShippingTaxCodeFields,
       customType: {
-        key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
+        key: process.env.SHIPPING_METHOD_CUSTOM_TYPE_KEY,
         name: {
-          en: SHIPPING_METHOD_CUSTOM_TYPE_NAME,
+          en: process.env.SHIPPING_METHOD_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['shipping-method'],
         fieldDefinitions: [
@@ -148,9 +140,9 @@ describe('Testing actions', () => {
     {
       method: createCategoryTaxCodeFields,
       customType: {
-        key: CATEGORY_CUSTOM_TYPE_KEY,
+        key: process.env.CATEGORY_CUSTOM_TYPE_KEY,
         name: {
-          en: CATEGORY_CUSTOM_TYPE_NAME,
+          en: process.env.CATEGORY_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['category'],
         fieldDefinitions: [
@@ -171,9 +163,9 @@ describe('Testing actions', () => {
     {
       method: createAvalaraHashedCartField,
       customType: {
-        key: ORDER_CUSTOM_TYPE_KEY,
+        key: process.env.ORDER_CUSTOM_TYPE_KEY,
         name: {
-          en: ORDER_CUSTOM_TYPE_NAME,
+          en: process.env.ORDER_CUSTOM_TYPE_NAME,
         },
         resourceTypeIds: ['order'],
         fieldDefinitions: [
@@ -195,7 +187,7 @@ describe('Testing actions', () => {
     const apiRequest: any = {
       execute: jest.fn(() => ({
         body: {
-          results: [{ version: 1, fieldDefinitions: [] }],
+          results: [{ version: 1, key: customType.key, fieldDefinitions: [] }],
         },
       })),
     };
@@ -232,7 +224,7 @@ describe('Testing actions', () => {
     {
       method: deleteAvalaraEntityUseCodeFields,
       customType: {
-        key: CUSTOMER_CUSTOM_TYPE_KEY,
+        key: process.env.CUSTOMER_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['customer'],
         fieldDefinitions: [
           {
@@ -244,7 +236,7 @@ describe('Testing actions', () => {
     {
       method: deleteShippingTaxCodeFields,
       customType: {
-        key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
+        key: process.env.SHIPPING_METHOD_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['shipping-method'],
         fieldDefinitions: [
           {
@@ -256,7 +248,7 @@ describe('Testing actions', () => {
     {
       method: deleteCategoryTaxCodeFields,
       customType: {
-        key: CATEGORY_CUSTOM_TYPE_KEY,
+        key: process.env.CATEGORY_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['category'],
         fieldDefinitions: [
           {
@@ -268,7 +260,7 @@ describe('Testing actions', () => {
     {
       method: deleteAvalaraHashedCartField,
       customType: {
-        key: ORDER_CUSTOM_TYPE_KEY,
+        key: process.env.ORDER_CUSTOM_TYPE_KEY,
         resourceTypeIds: ['order'],
         fieldDefinitions: [
           {
@@ -282,7 +274,11 @@ describe('Testing actions', () => {
       execute: jest.fn(() => ({
         body: {
           results: [
-            { version: 1, fieldDefinitions: customType.fieldDefinitions },
+            {
+              version: 1,
+              key: customType.key,
+              fieldDefinitions: customType.fieldDefinitions,
+            },
           ],
         },
       })),

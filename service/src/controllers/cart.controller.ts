@@ -17,7 +17,7 @@ export async function createUpdate(resource: Resource) {
       password: process.env.AVALARA_PASSWORD as string,
       companyCode: process.env.AVALARA_COMPANY_CODE as string,
     };
-    const settings = (await getData('avalara-settings').then(
+    const settings = (await getData('avalara-connector-settings').then(
       (res) => res?.settings
     )) as AvataxMerchantConfig;
 

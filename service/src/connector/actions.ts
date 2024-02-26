@@ -6,31 +6,8 @@ import {
   TypeRemoveFieldDefinitionAction,
 } from '@commercetools/platform-sdk';
 
-export const CART_UPDATE_EXTENSION_KEY = 'avalara-cartUpdateExtension';
-
-export const CATEGORY_CUSTOM_TYPE_KEY = process.env
-  .CATEGORY_CUSTOM_TYPE_KEY as string;
-
-export const CATEGORY_CUSTOM_TYPE_NAME = process.env
-  .CATEGORY_CUSTOM_TYPE_NAME as string;
-
-export const SHIPPING_METHOD_CUSTOM_TYPE_KEY = process.env
-  .SHIPPING_METHOD_CUSTOM_TYPE_KEY as string;
-
-export const SHIPPING_METHOD_CUSTOM_TYPE_NAME = process.env
-  .SHIPPING_METHOD_CUSTOM_TYPE_NAME as string;
-
-export const CUSTOMER_CUSTOM_TYPE_KEY = process.env
-  .CUSTOMER_CUSTOM_TYPE_KEY as string;
-
-export const CUSTOMER_CUSTOM_TYPE_NAME = process.env
-  .CUSTOMER_CUSTOM_TYPE_NAME as string;
-
-export const ORDER_CUSTOM_TYPE_KEY = process.env
-  .ORDER_CUSTOM_TYPE_KEY as string;
-
-export const ORDER_CUSTOM_TYPE_NAME = process.env
-  .ORDER_CUSTOM_TYPE_NAME as string;
+export const CART_UPDATE_EXTENSION_KEY =
+  'avalara-connector-cartUpdateExtension';
 
 async function addOrUpdateCustomType(
   apiRoot: ByProjectKeyRequestBuilder,
@@ -149,9 +126,9 @@ export async function createAvalaraEntityUseCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: CUSTOMER_CUSTOM_TYPE_KEY,
+    key: process.env.CUSTOMER_CUSTOM_TYPE_KEY,
     name: {
-      en: CUSTOMER_CUSTOM_TYPE_NAME,
+      en: process.env.CUSTOMER_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['customer'],
     fieldDefinitions: [
@@ -175,7 +152,7 @@ export async function deleteAvalaraEntityUseCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: CUSTOMER_CUSTOM_TYPE_KEY,
+    key: process.env.CUSTOMER_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['customer'],
     fieldDefinitions: [
       {
@@ -190,9 +167,9 @@ export async function createAvalaraHashedCartField(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: ORDER_CUSTOM_TYPE_KEY,
+    key: process.env.ORDER_CUSTOM_TYPE_KEY,
     name: {
-      en: ORDER_CUSTOM_TYPE_NAME,
+      en: process.env.ORDER_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['order'],
     fieldDefinitions: [
@@ -216,7 +193,7 @@ export async function deleteAvalaraHashedCartField(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: ORDER_CUSTOM_TYPE_KEY,
+    key: process.env.ORDER_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['order'],
     fieldDefinitions: [
       {
@@ -231,9 +208,9 @@ export async function createShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
+    key: process.env.SHIPPING_METHOD_CUSTOM_TYPE_KEY,
     name: {
-      en: SHIPPING_METHOD_CUSTOM_TYPE_NAME,
+      en: process.env.SHIPPING_METHOD_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['shipping-method'],
     fieldDefinitions: [
@@ -257,7 +234,7 @@ export async function deleteShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: SHIPPING_METHOD_CUSTOM_TYPE_KEY,
+    key: process.env.SHIPPING_METHOD_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['shipping-method'],
     fieldDefinitions: [
       {
@@ -272,9 +249,9 @@ export async function createCategoryTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: CATEGORY_CUSTOM_TYPE_KEY,
+    key: process.env.CATEGORY_CUSTOM_TYPE_KEY,
     name: {
-      en: CATEGORY_CUSTOM_TYPE_NAME,
+      en: process.env.CATEGORY_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['category'],
     fieldDefinitions: [
@@ -298,7 +275,7 @@ export async function deleteCategoryTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: CATEGORY_CUSTOM_TYPE_KEY,
+    key: process.env.CATEGORY_CUSTOM_TYPE_KEY,
     resourceTypeIds: ['category'],
     fieldDefinitions: [
       {

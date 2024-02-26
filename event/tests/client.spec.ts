@@ -41,10 +41,10 @@ describe('test coco api client', () => {
   });
   test('get avalara merchant data method', async () => {
     apiRoot.execute = jest.fn(() => avalaraMerchantDataBody(false));
-    const data = await getData('avalara-settings');
+    const data = await getData('avalara-connector-settings');
     expect(apiRoot.customObjects).toBeCalledTimes(1);
     expect(apiRoot.withContainer).toBeCalledWith({
-      container: 'avalara-settings',
+      container: 'avalara-connector-settings',
     });
     expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
