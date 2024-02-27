@@ -51,9 +51,9 @@ export async function processCart(
       shipTo: shipTo,
     };
 
-    taxDocument.entityUseCode = await getCustomerEntityUseCode(
-      cart?.customerId as string
-    );
+    taxDocument.entityUseCode = cart?.customerId
+      ? await getCustomerEntityUseCode(cart?.customerId as string)
+      : '';
     taxDocument.lines = lines;
   }
 
