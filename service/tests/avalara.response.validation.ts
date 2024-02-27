@@ -63,9 +63,9 @@ export const actions = {
       externalTotalGross: { currencyCode: 'USD', centAmount: 71322 },
     },
     {
-      action: 'setCustomType',
-      type: { key: 'avalara-hashed-cart', typeId: 'type' },
-      fields: { avahash: '447bf31f9fc955c798d259ffb2b4d47a' },
+      action: 'setCustomField',
+      name: 'avalaraHash',
+      value: '447bf31f9fc955c798d259ffb2b4d47a',
     },
   ],
 };

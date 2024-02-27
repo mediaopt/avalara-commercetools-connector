@@ -5,7 +5,7 @@ import { getShipTaxCode } from '../../client/data.client';
 // Mapping CT LineItem Model to Avalara LineItem Model
 export async function shipItem(type: string, item: ShippingInfo) {
   const lineItem = new LineItemModel();
-  const taxCode = await getShipTaxCode(item.shippingMethod?.id || '');
+  const taxCode = await getShipTaxCode(item.shippingMethod?.id as string);
   lineItem.quantity = 1;
   lineItem.amount =
     ((type === 'refund' ? -1 : 1) * item.price.centAmount) / 100;

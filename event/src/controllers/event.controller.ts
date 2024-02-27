@@ -58,7 +58,7 @@ export const post = async (
       | OrderCreatedMessage
       | OrderStateChangedMessage;
 
-    const settings = await getData('avalara-commercetools-connector').then(
+    const settings = await getData('avalara-connector-settings').then(
       (res) => res?.settings
     );
     if (!settings) {

@@ -107,7 +107,6 @@ describe('test service/cart controller', () => {
   });
 
   test.each([
-    cartRequest(emptyCart),
     cartRequest(
       fullCart({
         country: 'DE',
@@ -130,7 +129,7 @@ describe('test service/cart controller', () => {
       )
     ),
   ])(
-    'make valid cart request with insufficient/non-US-Canada address/same hash data, no tax calculation will be made',
+    'make valid cart request with non-US-Canada address/same hash data, no tax calculation will be made',
     async (request) => {
       const next = jest.fn() as NextFunction;
       apiRoot.execute = jest

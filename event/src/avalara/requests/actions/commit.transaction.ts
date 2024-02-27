@@ -9,7 +9,7 @@ export async function commitTransaction(
   originAddress: AddressInfo,
   config: any
 ) {
-  if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'none')) {
+  if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'default')) {
     return undefined;
   }
   const client = new AvaTaxClient(config).withSecurity(creds);

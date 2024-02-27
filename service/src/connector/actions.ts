@@ -3,18 +3,11 @@ import {
   FieldDefinition,
   TypeAddFieldDefinitionAction,
   TypeDraft,
+  TypeRemoveFieldDefinitionAction,
 } from '@commercetools/platform-sdk';
 
 export const CART_UPDATE_EXTENSION_KEY =
-  'avalara-commercetools-connector-cartUpdateExtension';
-
-export const AVALARA_TAX_CODES_KEY = 'avalara-tax-codes';
-
-export const AVALARA_ENTITY_USE_CODES_KEY = 'avalara-entity-use-codes';
-
-export const AVALARA_HASHED_CART_KEY = 'avalara-hashed-cart';
-
-//const CART_DISCOUNT_TYPE_KEY = 'myconnector-cartDiscountType';
+  'avalara-connector-cartUpdateExtension';
 
 async function addOrUpdateCustomType(
   apiRoot: ByProjectKeyRequestBuilder,
@@ -26,12 +19,11 @@ async function addOrUpdateCustomType(
     .types()
     .get({
       queryArgs: {
-        where: `key = "${customType.key}"`,
+        where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
       },
     })
     .execute();
-  if (types.length > 0) {
-    const type = types[0];
+  for (const type of types) {
     const updates = (customType.fieldDefinitions ?? [])
       .filter(
         (newFieldDefinition: FieldDefinition): boolean =>
@@ -46,36 +38,97 @@ async function addOrUpdateCustomType(
           fieldDefinition: fieldDefinition,
         };
       });
-    if (updates.length === 0) {
-      return;
+    if (updates.length != 0) {
+      await apiRoot
+        .types()
+        .withKey({ key: type.key })
+        .post({
+          body: {
+            version: type.version,
+            actions: updates,
+          },
+        })
+        .execute();
     }
+  }
+  if (!types.find((type) => type.key === customType.key)) {
     await apiRoot
       .types()
-      .withKey({ key: customType.key })
       .post({
-        body: {
-          version: type.version,
-          actions: updates,
-        },
+        body: customType,
       })
       .execute();
-    return;
   }
-  await apiRoot
+}
+
+async function deleteOrUpdateCustomType(
+  apiRoot: ByProjectKeyRequestBuilder,
+  customType: TypeDraft
+): Promise<void> {
+  const {
+    body: { results: types },
+  } = await apiRoot
     .types()
-    .post({
-      body: customType,
+    .get({
+      queryArgs: {
+        where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
+      },
     })
     .execute();
+
+  for (const type of types) {
+    const updates = (customType.fieldDefinitions ?? [])
+      .filter(
+        (newFieldDefinition: FieldDefinition): boolean =>
+          !!type.fieldDefinitions?.find(
+            (existingFieldDefinition: FieldDefinition): boolean =>
+              newFieldDefinition.name === existingFieldDefinition.name
+          )
+      )
+      .map(
+        (fieldDefinition: FieldDefinition): TypeRemoveFieldDefinitionAction => {
+          return {
+            action: 'removeFieldDefinition',
+            fieldName: fieldDefinition.name,
+          };
+        }
+      );
+    if (updates.length != 0) {
+      switch (type.fieldDefinitions?.length) {
+        case 1:
+          await apiRoot
+            .types()
+            .withKey({ key: type.key })
+            .delete({
+              queryArgs: {
+                version: type.version,
+              },
+            })
+            .execute();
+          break;
+        default:
+          await apiRoot
+            .types()
+            .withKey({ key: type.key })
+            .post({
+              body: {
+                version: type.version,
+                actions: updates,
+              },
+            })
+            .execute();
+      }
+    }
+  }
 }
 
 export async function createAvalaraEntityUseCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_ENTITY_USE_CODES_KEY,
+    key: process.env.CUSTOMER_CUSTOM_TYPE_KEY,
     name: {
-      en: 'Additional field to store Avalara Entity Use codes',
+      en: process.env.CUSTOMER_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['customer'],
     fieldDefinitions: [
@@ -98,44 +151,30 @@ export async function createAvalaraEntityUseCodeFields(
 export async function deleteAvalaraEntityUseCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
-  const {
-    body: { results: types },
-  } = await apiRoot
-    .types()
-    .get({
-      queryArgs: {
-        where: `key = "${AVALARA_ENTITY_USE_CODES_KEY}"`,
+  const customType = {
+    key: process.env.CUSTOMER_CUSTOM_TYPE_KEY,
+    resourceTypeIds: ['customer'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraEntityUseCode',
       },
-    })
-    .execute();
-
-  if (types.length > 0) {
-    const type = types[0];
-
-    await apiRoot
-      .types()
-      .withKey({ key: AVALARA_ENTITY_USE_CODES_KEY })
-      .delete({
-        queryArgs: {
-          version: type.version,
-        },
-      })
-      .execute();
-  }
+    ],
+  } as unknown as TypeDraft;
+  await deleteOrUpdateCustomType(apiRoot, customType);
 }
 
 export async function createAvalaraHashedCartField(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_HASHED_CART_KEY,
+    key: process.env.ORDER_CUSTOM_TYPE_KEY,
     name: {
-      en: 'Additional field to store Avalara Cart Hash',
+      en: process.env.ORDER_CUSTOM_TYPE_NAME,
     },
     resourceTypeIds: ['order'],
     fieldDefinitions: [
       {
-        name: 'avahash',
+        name: 'avalaraHash',
         label: {
           en: 'Avalara Cart Hash',
         },
@@ -153,41 +192,27 @@ export async function createAvalaraHashedCartField(
 export async function deleteAvalaraHashedCartField(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
-  const {
-    body: { results: types },
-  } = await apiRoot
-    .types()
-    .get({
-      queryArgs: {
-        where: `key = "${AVALARA_HASHED_CART_KEY}"`,
+  const customType = {
+    key: process.env.ORDER_CUSTOM_TYPE_KEY,
+    resourceTypeIds: ['order'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraHash',
       },
-    })
-    .execute();
-
-  if (types.length > 0) {
-    const type = types[0];
-
-    await apiRoot
-      .types()
-      .withKey({ key: AVALARA_HASHED_CART_KEY })
-      .delete({
-        queryArgs: {
-          version: type.version,
-        },
-      })
-      .execute();
-  }
+    ],
+  } as unknown as TypeDraft;
+  await deleteOrUpdateCustomType(apiRoot, customType);
 }
 
-export async function createAvalaraTaxCodeFields(
+export async function createShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
   const customType = {
-    key: AVALARA_TAX_CODES_KEY,
+    key: process.env.SHIPPING_METHOD_CUSTOM_TYPE_KEY,
     name: {
-      en: 'Additional field to store Avalara Tax codes',
+      en: process.env.SHIPPING_METHOD_CUSTOM_TYPE_NAME,
     },
-    resourceTypeIds: ['category', 'shipping-method', 'cart-discount'],
+    resourceTypeIds: ['shipping-method'],
     fieldDefinitions: [
       {
         name: 'avalaraTaxCode',
@@ -205,33 +230,60 @@ export async function createAvalaraTaxCodeFields(
   addOrUpdateCustomType(apiRoot, customType);
 }
 
-export async function deleteAvalaraTaxCodeFields(
+export async function deleteShippingTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {
-  const {
-    body: { results: types },
-  } = await apiRoot
-    .types()
-    .get({
-      queryArgs: {
-        where: `key = "${AVALARA_TAX_CODES_KEY}"`,
+  const customType = {
+    key: process.env.SHIPPING_METHOD_CUSTOM_TYPE_KEY,
+    resourceTypeIds: ['shipping-method'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraTaxCode',
       },
-    })
-    .execute();
+    ],
+  } as unknown as TypeDraft;
+  await deleteOrUpdateCustomType(apiRoot, customType);
+}
 
-  if (types.length > 0) {
-    const type = types[0];
-
-    await apiRoot
-      .types()
-      .withKey({ key: AVALARA_TAX_CODES_KEY })
-      .delete({
-        queryArgs: {
-          version: type.version,
+export async function createCategoryTaxCodeFields(
+  apiRoot: ByProjectKeyRequestBuilder
+): Promise<void> {
+  const customType = {
+    key: process.env.CATEGORY_CUSTOM_TYPE_KEY,
+    name: {
+      en: process.env.CATEGORY_CUSTOM_TYPE_NAME,
+    },
+    resourceTypeIds: ['category'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraTaxCode',
+        label: {
+          en: 'Avalara Tax code',
         },
-      })
-      .execute();
-  }
+        required: false,
+        type: {
+          name: 'String',
+        },
+        inputHint: 'SingleLine',
+      },
+    ],
+  } as TypeDraft;
+  await addOrUpdateCustomType(apiRoot, customType);
+}
+
+export async function deleteCategoryTaxCodeFields(
+  apiRoot: ByProjectKeyRequestBuilder
+): Promise<void> {
+  const customType = {
+    key: process.env.CATEGORY_CUSTOM_TYPE_KEY,
+    resourceTypeIds: ['category'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraTaxCode',
+      },
+    ],
+  } as unknown as TypeDraft;
+  await deleteOrUpdateCustomType(apiRoot, customType);
 }
 
 export async function createCartUpdateExtension(
@@ -276,6 +328,8 @@ export async function createCartUpdateExtension(
           {
             resourceTypeId: 'cart',
             actions: ['Create', 'Update'],
+            condition:
+              'shippingAddress is defined AND shippingInfo is defined AND lineItems is not empty',
           },
         ],
       },
@@ -311,57 +365,3 @@ export async function deleteCartUpdateExtension(
       .execute();
   }
 }
-
-/*export async function createCustomCartDiscountType(
-  apiRoot: ByProjectKeyRequestBuilder
-): Promise<void> {
-  const {
-    body: { results: types },
-  } = await apiRoot
-    .types()
-    .get({
-      queryArgs: {
-        where: `key = "${CART_DISCOUNT_TYPE_KEY}"`,
-      },
-    })
-    .execute();
-
-  if (types.length > 0) {
-    const type = types[0];
-
-    await apiRoot
-      .types()
-      .withKey({ key: CART_DISCOUNT_TYPE_KEY })
-      .delete({
-        queryArgs: {
-          version: type.version,
-        },
-      })
-      .execute();
-  }
-
-  await apiRoot
-    .types()
-    .post({
-      body: {
-        key: CART_DISCOUNT_TYPE_KEY,
-        name: {
-          en: 'Custom type to store a string',
-        },
-        resourceTypeIds: ['cart-discount'],
-        fieldDefinitions: [
-          {
-            type: {
-              name: 'String',
-            },
-            name: 'customCartField',
-            label: {
-              en: 'Custom cart field',
-            },
-            required: false,
-          },
-        ],
-      },
-    })
-    .execute();
-}*/
