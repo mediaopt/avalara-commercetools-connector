@@ -1,6 +1,6 @@
 import { entryPointUriPathToPermissionKeys } from '@commercetools-frontend/application-shell/ssr';
 
-export const entryPointUriPath = '${env:UNIQUE_IDENTIFIER}';
+export const entryPointUriPath = 'avalara-connector';
 
 export const PERMISSIONS = entryPointUriPathToPermissionKeys(entryPointUriPath);
 
