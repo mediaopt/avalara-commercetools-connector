@@ -8,7 +8,9 @@ US/Canada sales tax calculation, external tax rates and tax amounts, calculated 
 - no AvaTax calculation will be applied if 
 a cart does not have line items, or shipping address, or shipping method specified, or if the shipping address country is not US/Canada. Otherwise, `taxMode` will be automatically set by the extension to `externalAmount`. Line items + shipping, and hence also cart external tax amounts and rates, collected from the AvaTax service, will be set in the cart via corresponding cart update actions `setLineItemTaxAmount`, `setShippingMethodTaxAmount`, `setCartTotalTax`.
 
-- the extension makes use of `avalara-tax-codes` custom type that extend `category`, `shipping method` and `discount` types, as well as `avalara-entity-use-codes` custom type that extend `customer` type. Those are parameters that must be specified by the merchant himself and are used within AvaTax service for a correct tax calculation. 
+- the extension needs to add custom fields to the following resource types: `customer`, `category`, `shipping-method` and `order`. Thus, upon deploying the connector, all custom types created beforehand will be updated with connector's custom fields, used to store Avalara-related data, such as entity use code for a customer, tax code for shipping method and category, and a cart hash for a cart, which is used to prevent unnecessary calls to Avalara service. Apart from that, connector-own custom types for these resource types will be also created with configurable keys and names in connect.yaml, on condition that for the configured key the custom type had not existed before. Otherwise no new type will be created. That allows the merchant to have only one custom type with configurable key for several connectors.
+
+- note that it is the responsibility of the merchant not to delete these custom fields himself (they always have the `avalara` prefix), and redeploy the connector in case the merchant has created a new type after the connector deployment and wishes to use it.
 
 - there is also a possibility for specifying product-level tax codes. To this edge, a product attribute with name `avatax-code` must be created. It can be either unique for every variant or the same for each variant. The type of this attribute must be set to `text`. 
 
@@ -54,6 +56,6 @@ a cart does not have line items, or shipping address, or shipping method specifi
 
 - this application provides a configuration window for the AvaTax service used within service and event applications. A merchant-specific data about configuration of this app can be found [here](https://projects.mediaopt.de/projects/mopt-ecomqe/wiki/User_manual). 
 
-- Merchant AvaTax service configuration properties and origin address data are saved as properties of a custom object with container `avalara-commercetools-connector`. Those are fetched by the mc-app when it loads and are saved/updated upon clicking `save data` button. 
+- Merchant AvaTax service configuration properties and origin address data are saved as properties of a custom object with container `avalara-connector-settings`. Those are fetched by the mc-app when it loads and are saved/updated upon clicking `save data` button. 
 
 - mc-app utilizes 2 endpoints of the service application as described above in the service application, `/test-connection` and `/check-address`. The corresponding extension base url is fetched from the commercetools composable API. 

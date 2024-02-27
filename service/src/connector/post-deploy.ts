@@ -6,8 +6,8 @@ import { assertError, assertString } from '../utils/assert.utils';
 import {
   createAvalaraEntityUseCodeFields,
   createAvalaraHashedCartField,
-  createAvalaraTaxCodeFields,
-  //createCustomCartDiscountType,
+  createCategoryTaxCodeFields,
+  createShippingTaxCodeFields,
   createCartUpdateExtension,
 } from './actions';
 import { testConnectionController } from '../controllers/test.connection.controller';
@@ -23,7 +23,8 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
   const apiRoot = createApiRoot();
   await createCartUpdateExtension(apiRoot, applicationUrl);
   await createAvalaraEntityUseCodeFields(apiRoot);
-  await createAvalaraTaxCodeFields(apiRoot);
+  await createShippingTaxCodeFields(apiRoot);
+  await createCategoryTaxCodeFields(apiRoot);
   await createAvalaraHashedCartField(apiRoot);
   const testConnection = await testConnectionController({
     logging: {
@@ -36,7 +37,6 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
     : logger.warn(
         'Your Avalara credentials are invalid! Please check your credentials and redeploy.'
       );
-  //await createCustomCartDiscountType(apiRoot);
 }
 
 async function run(): Promise<void> {
