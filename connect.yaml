@@ -9,6 +9,7 @@ deployAs:
       standardConfiguration:
         - key: CTP_REGION
           description: commercetools Composable Commerce API region
+          required: true
         - key: CATEGORY_CUSTOM_TYPE_KEY
           description: Custom type key for category
           required: true
@@ -44,12 +45,16 @@ deployAs:
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key
+          required: true
         - key: CTP_CLIENT_ID
           description: commercetools Composable Commerce client ID
+          required: true
         - key: CTP_CLIENT_SECRET
           description: commercetools Composable Commerce client secret
+          required: true
         - key: CTP_SCOPE
           description: commercetools Composable Commerce client scope
+          required: true
         - key: AVALARA_USERNAME
           description: Avalara Backoffice Account Number
           required: true
@@ -78,12 +83,16 @@ deployAs:
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key
+          required: true
         - key: CTP_CLIENT_ID
           description: commercetools Composable Commerce client ID
+          required: true
         - key: CTP_CLIENT_SECRET
           description: commercetools Composable Commerce client secret
+          required: true
         - key: CTP_SCOPE
           description: commercetools Composable Commerce client scope
+          required: true
         - key: AVALARA_USERNAME
           description: Avalara Backoffice Account Number
           required: true
@@ -98,13 +107,15 @@ deployAs:
           required: true
   - name: mc-app
     applicationType: merchant-center-custom-application
-    endpoint: /
     configuration:
       standardConfiguration:
-        - key: APPLICATION_ID
+        - key: CUSTOM_APPLICATION_ID
           description: The Custom Application ID is provided when you add a Custom Application in the Merchant Center
           required: true
         - key: CLOUD_IDENTIFIER
           description: The identifier of the cloud Region that the Custom Application uses to connect to Composable Commerce. The values map to the actual Merchant Center API URL for that Region
           required: true
           default: gcp-eu
+        - key: ENTRY_POINT_URI_PATH
+          description: The URI path that the Custom Application uses to connect to Composable Commerce
+          required: true
