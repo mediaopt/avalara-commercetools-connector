@@ -9,6 +9,7 @@ deployAs:
       standardConfiguration:
         - key: CTP_REGION
           description: commercetools Composable Commerce API region
+          required: true
         - key: CATEGORY_CUSTOM_TYPE_KEY
           description: Custom type key for category
           required: true
@@ -44,12 +45,16 @@ deployAs:
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key
+          required: true
         - key: CTP_CLIENT_ID
           description: commercetools Composable Commerce client ID
+          required: true
         - key: CTP_CLIENT_SECRET
           description: commercetools Composable Commerce client secret
+          required: true
         - key: CTP_SCOPE
           description: commercetools Composable Commerce client scope
+          required: true
         - key: AVALARA_USERNAME
           description: Avalara Backoffice Account Number
           required: true
@@ -78,12 +83,16 @@ deployAs:
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key
+          required: true
         - key: CTP_CLIENT_ID
           description: commercetools Composable Commerce client ID
+          required: true
         - key: CTP_CLIENT_SECRET
           description: commercetools Composable Commerce client secret
+          required: true
         - key: CTP_SCOPE
           description: commercetools Composable Commerce client scope
+          required: true
         - key: AVALARA_USERNAME
           description: Avalara Backoffice Account Number
           required: true
