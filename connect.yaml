@@ -100,7 +100,7 @@ deployAs:
     applicationType: merchant-center-custom-application
     configuration:
       standardConfiguration:
-        - key: APPLICATION_ID
+        - key: CUSTOM_APPLICATION_ID
           description: The Custom Application ID is provided when you add a Custom Application in the Merchant Center
           required: true
         - key: ENTRY_POINT_URI_PATH
