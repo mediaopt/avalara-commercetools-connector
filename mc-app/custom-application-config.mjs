@@ -1,4 +1,4 @@
-import {PERMISSIONS, entryPointUriPath} from './src/constants';
+import {PERMISSIONS} from './src/constants';
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
@@ -6,14 +6,14 @@ import {PERMISSIONS, entryPointUriPath} from './src/constants';
 const config = {
   name: 'Avalara Tax Provider',
   description: 'Sales tax solution',
-  entryPointUriPath,
+  entryPointUriPath: '${env:ENTRY_POINT_URI_PATH}',
   cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
     development: {
       initialProjectKey: 'avalara-demo',
     },
     production: {
-      applicationId: '${env:APPLICATION_ID}',
+      applicationId: '${env:CUSTOM_APPLICATION_ID}',
       url: '${env:APPLICATION_URL}',
     },
   },
