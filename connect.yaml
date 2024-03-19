@@ -98,7 +98,6 @@ deployAs:
           required: true
   - name: mc-app
     applicationType: merchant-center-custom-application
-    endpoint: /
     configuration:
       standardConfiguration:
         - key: APPLICATION_ID
