@@ -1,10 +1,51 @@
-import { Cart, UpdateAction } from '@commercetools/platform-sdk';
+import { Cart, LineItem, UpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { hashCart } from '../../../utils/hash.utils';
 
+function getLineItemTaxAmountAction(
+  cart: Cart,
+  item: LineItem,
+  taxCentAmount: number,
+  taxRate: number,
+  pricesIncludesTax: boolean
+) {
+  return {
+    action: 'setLineItemTaxAmount',
+    lineItemId: item.id,
+    externalTaxAmount: {
+      totalGross: {
+        currencyCode: cart?.totalPrice?.currencyCode,
+        centAmount:
+          item?.totalPrice?.centAmount +
+          (pricesIncludesTax ? 0 : taxCentAmount),
+      },
+      taxRate: {
+        name: 'avaTaxRate',
+        amount: taxCentAmount ? taxRate : 0,
+        country: cart?.country || cart?.shippingAddress?.country,
+        includedInPrice: pricesIncludesTax,
+      },
+    },
+  };
+}
+
+function getTaxRate(taxResponse: TransactionModel) {
+  const taxRate =
+    taxResponse?.summary
+      ?.map((x) => x.rate)
+      .reduce((acc, curr) => (acc || 0) + (curr || 0), 0) ?? 0;
+
+  return taxRate;
+}
+
+function extractTaxCentAmount(lines: any, itemCode?: string) {
+  return lines.find((x: any) => x.itemCode === itemCode)?.tax * 100;
+}
+
 export function postProcessing(
   cart: Cart,
-  taxResponse: TransactionModel
+  taxResponse: TransactionModel,
+  pricesIncludesTax: boolean
 ): Array<UpdateAction> {
   const actions = [];
 
@@ -13,55 +54,43 @@ export function postProcessing(
     taxMode: 'ExternalAmount',
   });
 
-  const taxRate = taxResponse?.summary
-    ?.map((x) => x.rate)
-    .reduce((acc, curr) => (acc || 0) + (curr || 0), 0);
-
-  let totalTax = 0;
+  const taxRate = getTaxRate(taxResponse);
 
   const lines: any = taxResponse?.lines;
+  const shipTaxCentAmount = extractTaxCentAmount(lines, 'Shipping');
+  let totalTax = shipTaxCentAmount;
 
   for (const item of cart?.lineItems || []) {
-    const taxCentAmount =
-      lines.find((x: any) => x.itemCode === item?.variant?.sku)?.tax * 100;
+    const taxCentAmount = extractTaxCentAmount(lines, item?.variant?.sku);
 
     totalTax += taxCentAmount;
 
-    actions.push({
-      action: 'setLineItemTaxAmount',
-      lineItemId: item.id,
-      externalTaxAmount: {
-        totalGross: {
-          currencyCode: cart?.totalPrice?.currencyCode,
-          centAmount: item?.totalPrice?.centAmount + taxCentAmount,
-        },
-        taxRate: {
-          name: 'avaTaxRate',
-          amount: taxCentAmount ? taxRate : 0,
-          country: cart?.country || cart?.shippingAddress?.country,
-        },
-      },
-    });
+    actions.push(
+      getLineItemTaxAmountAction(
+        cart,
+        item,
+        taxCentAmount,
+        taxRate,
+        pricesIncludesTax
+      )
+    );
   }
 
-  const shipTaxCentAmount =
-    lines.find((x: any) => x.itemCode === 'Shipping')?.tax * 100;
-
   const shipPrice = cart?.shippingInfo?.price?.centAmount || 0;
-  totalTax += shipTaxCentAmount;
 
   actions.push({
     action: 'setShippingMethodTaxAmount',
     shippingKey: cart?.shippingKey,
     externalTaxAmount: {
       totalGross: {
-        centAmount: shipPrice + shipTaxCentAmount,
+        centAmount: shipPrice + (pricesIncludesTax ? 0 : shipTaxCentAmount),
         currencyCode: cart?.totalPrice?.currencyCode,
       },
       taxRate: {
         name: 'avaTaxRate',
         amount: shipTaxCentAmount ? taxRate : 0,
         country: cart?.country || cart?.shippingAddress?.country,
+        includedInPrice: pricesIncludesTax,
       },
     },
   });
@@ -70,7 +99,9 @@ export function postProcessing(
     action: 'setCartTotalTax',
     externalTotalGross: {
       currencyCode: cart?.totalPrice?.currencyCode,
-      centAmount: cart?.totalPrice?.centAmount + totalTax,
+      centAmount:
+        cart?.totalPrice?.centAmount +
+        (pricesIncludesTax ? shipPrice : totalTax),
     },
   });
 

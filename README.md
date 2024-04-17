@@ -17,7 +17,7 @@ It follows the folder structure to ensure certification & deployment from commer
 * insert commercetools credentials to `.env` file
 * run `./bin/ngrok.sh` or `ngrok http 8080` to start ngrok and insert the dynamic url in the `.env` file as specified in post-deploy script
 * run `yarn connector:post-deploy` to register the extension with the public ngrok url
-* run `ỳarn start:dev` to build the application
+* run `yarn start:dev` to build the application
 
 ## Architecture principles for building an connect application 
 
@@ -25,6 +25,6 @@ It follows the folder structure to ensure certification & deployment from commer
 * Connector solutions should follow test driven development. Unit , Integration (& E2E) tests should be included and successfully passed to be used
 * No hardcoding of customer related config. If needed, values in an environment file which should not be maintained in repository
 * Connector solution should be supported with detailed documentation
-* Connectors should be point to point in nature, currently doesnt support any persistence capabilities apart from in memory persistence
+* Connectors should be point to point in nature, currently doesn't support any persistence capabilities apart from in memory persistence
 * Connector solution should use open source technologies, although connector itself can be private for specific customer(s)
 * Code should not contain console.log statements, use [the included logger](https://github.com/commercetools/merchant-center-application-kit/tree/main/packages-backend/loggers#readme) instead.

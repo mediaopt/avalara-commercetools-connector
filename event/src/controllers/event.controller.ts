@@ -11,6 +11,8 @@ import { setUpAvaTax } from '../utils/avatax.utils';
 import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
 import { voidTransaction } from '../avalara/requests/actions/void.transaction';
 import { refundTransaction } from '../avalara/requests/actions/refund.transaction';
+import { postProcessing as commitPostProcessing } from '../avalara/requests/postprocess/postprocess.order.commit';
+import { postProcessing as refundPostProcessing } from '../avalara/requests/postprocess/postprocess.order.refund';
 
 /**
  * Exposed event POST endpoint.
@@ -49,7 +51,7 @@ export const post = async (
 ) => {
   try {
     const env = process.env.AVALARA_ENV || 'sandbox';
-    const creds = {
+    const credentials = {
       username: process.env.AVALARA_USERNAME as string,
       password: process.env.AVALARA_PASSWORD as string,
       companyCode: process.env.AVALARA_COMPANY_CODE as string,
@@ -77,10 +79,20 @@ export const post = async (
         }
         await commitTransaction(
           messagePayload.order,
-          creds,
+          credentials,
           originAddress,
-          avataxConfig
-        ).catch((error) => logger.error(error));
+          avataxConfig,
+          settings.displayPricesWithTax
+        )
+          .then(
+            async (transaction) =>
+              await commitPostProcessing(
+                messagePayload.order.id,
+                messagePayload.order.version,
+                transaction
+              )
+          )
+          .catch((error) => logger.error(error));
         response.status(200).send();
         break;
       case 'OrderStateChanged':
@@ -90,17 +102,27 @@ export const post = async (
         ) {
           await voidTransaction(
             messagePayload.resource.id,
-            creds,
+            credentials,
             avataxConfig
           ).catch(async (error) => {
             logger.error(error);
             if (error?.code === 'CannotModifyLockedTransaction') {
               await refundTransaction(
                 messagePayload.resource.id,
-                creds,
+                credentials,
                 originAddress,
-                avataxConfig
-              ).catch((error) => logger.error(error));
+                avataxConfig,
+                settings.displayPricesWithTax
+              )
+                .then(
+                  async (transaction) =>
+                    await refundPostProcessing(
+                      messagePayload.resource.id,
+                      messagePayload.version,
+                      transaction
+                    )
+                )
+                .catch((error) => logger.error(error));
             }
           });
         }

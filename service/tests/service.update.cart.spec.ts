@@ -1,14 +1,20 @@
 import { describe, expect, test, jest, afterEach } from '@jest/globals';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { NextFunction, Request, Response } from 'express';
-import { fullCart, emptyCart, cartRequest } from './carts';
+import { fullCart, emptyCart, cartRequest, cartWithTaxIncludedPrices } from './carts';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
 import { post } from '../src/controllers/service.controller';
 import * as http from 'node:https';
 import CustomError from '../src/errors/custom.error';
-import { actions, expectAvaTaxReturn } from './avalara.response.validation';
+import {
+  actions,
+  actionsWithTaxIncludedPrices,
+  expectAvaTaxReturn,
+  expectAvaTaxReturnWithTaxIncludedPrices,
+} from './avalara.response.validation';
 import {
   avalaraMerchantDataBody,
+  avalaraMerchantDataBodyWithPriceIncludedTaxConfig,
   bulkCategoryTaxCodeBody,
   bulkProductCategoriesBody,
   entityUseCodeBody,
@@ -192,6 +198,48 @@ describe('test service/cart controller', () => {
     expect(response.status).toBeCalledWith(200);
     expect(response.json).toBeCalledTimes(1);
     expect(response.json).toBeCalledWith(actions);
+  });
+
+  test('make valid cart request with sufficient data and new cart hash, tax calculation will be made, and prices will be included by tax', async () => {
+    const next = jest.fn() as NextFunction;
+    apiRoot.execute = jest
+      .fn()
+      .mockReturnValueOnce(avalaraMerchantDataBodyWithPriceIncludedTaxConfig)
+      .mockReturnValueOnce(shipTaxCodeBody)
+      .mockReturnValueOnce(bulkProductCategoriesBody)
+      .mockReturnValueOnce(bulkCategoryTaxCodeBody)
+      .mockReturnValueOnce(entityUseCodeBody);
+    const spyGetTax = jest.spyOn(
+      moduleAvaTax.default.prototype,
+      'createTransaction'
+    );
+    const spyCreds = jest.spyOn(moduleAvaTax.default.prototype, 'withSecurity');
+    await post(
+      cartRequest(
+        cartWithTaxIncludedPrices({
+          country: 'US',
+          city: 'Irvine',
+          streetName: 'Main St',
+          streetNumber: '2000',
+          postalCode: '92614',
+        })
+      ),
+      response,
+      next
+    );
+    expect(spyGetTax).toBeCalledTimes(1);
+    expect(spyCreds).toBeCalledWith({
+      username: process.env.AVALARA_USERNAME,
+      password: process.env.AVALARA_PASSWORD,
+      companyCode: process.env.AVALARA_COMPANY_CODE,
+    });
+    const getTaxResult = (): Promise<TransactionModel> =>
+      spyGetTax.mock.results[0].value as Promise<TransactionModel>;
+    expectAvaTaxReturnWithTaxIncludedPrices(await getTaxResult());
+    expect(next).toBeCalledTimes(0);
+    expect(response.status).toBeCalledWith(200);
+    expect(response.json).toBeCalledTimes(1);
+    expect(response.json).toBeCalledWith(actionsWithTaxIncludedPrices);
   });
 
   test('valid cart request is made with an expected AvaTax configuration', async () => {

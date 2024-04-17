@@ -3,32 +3,35 @@ import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
 import { getOrder } from '../../../client/data.client';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { processOrder } from '../preprocess/preprocess.order';
+import { TaxOverrideType } from 'avatax/lib/enums/TaxOverrideType';
 
 export async function refundTransaction(
   orderId: string,
-  creds: { [key: string]: string },
+  credentials: { [key: string]: string },
   originAddress: AddressInfo,
-  config: any
+  config: any,
+  pricesIncludesTax: boolean
 ) {
   const order = await getOrder(orderId);
 
   if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'default')) {
     return undefined;
   }
-  const client = new AvaTaxClient(config).withSecurity(creds);
+  const client = new AvaTaxClient(config).withSecurity(credentials);
 
   const taxDocument = await processOrder(
     'refund',
     order,
-    creds?.companyCode,
-    originAddress
+    credentials?.companyCode,
+    originAddress,
+    pricesIncludesTax
   );
 
   taxDocument.referenceCode = 'Refund';
 
   const taxModel = new TaxOverrideModel();
   taxModel.taxDate = new Date(order.createdAt);
-  taxModel.type = 3;
+  taxModel.type = TaxOverrideType.TaxDate;
   taxModel.reason = 'Refund';
   taxDocument.taxOverride = taxModel;
 

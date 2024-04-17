@@ -1,18 +1,24 @@
 import { LineItem, Order } from '@commercetools/platform-sdk';
-import { getCustomerEntityUseCode } from '../../../client/data.client';
+import {
+  getCustomerEntityUseCode,
+  getCustomerVatId,
+} from '../../../client/data.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
+import { DocumentType } from 'avatax/lib/enums/DocumentType';
+import { TransactionParameterModel } from 'avatax/lib/models/TransactionParameterModel';
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
   type: string,
   order: Order,
   companyCode: string,
-  originAddress: AddressInfo
+  originAddress: AddressInfo,
+  pricesIncludesTax: boolean
 ): Promise<CreateTransactionModel> {
   const taxDocument = new CreateTransactionModel();
 
@@ -21,13 +27,18 @@ export async function processOrder(
 
     const shipTo = shippingAddress(order?.shippingAddress);
 
-    const shippingInfo = await shipItem(type, order?.shippingInfo);
+    const shippingInfo = await shipItem(
+      type,
+      order?.shippingInfo,
+      pricesIncludesTax
+    );
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(order?.lineItems);
 
     const lines = await Promise.all(
       order?.lineItems.map(
-        async (x: LineItem) => await lineItem(type, x, itemCategoryTaxCodes)
+        async (x: LineItem) =>
+          await lineItem(type, x, itemCategoryTaxCodes, pricesIncludesTax)
       )
     );
 
@@ -45,7 +56,10 @@ export async function processOrder(
 
     taxDocument.companyCode = companyCode;
 
-    taxDocument.type = type === 'refund' ? 5 : 1;
+    taxDocument.type =
+      type === 'refund'
+        ? DocumentType.ReturnInvoice
+        : DocumentType.SalesInvoice;
 
     taxDocument.currencyCode = order?.totalPrice?.currencyCode;
 
@@ -57,6 +71,18 @@ export async function processOrder(
     };
     taxDocument.entityUseCode = customerInfo?.exemptCode;
     taxDocument.lines = lines;
+
+    taxDocument.businessIdentificationNo = await getCustomerVatId(
+      order?.customerId
+    );
+    taxDocument.parameters = [
+      {
+        name: 'Transport',
+        value:
+          taxDocument.type === DocumentType.SalesInvoice ? 'Seller' : 'Buyer',
+        unit: '',
+      } as TransactionParameterModel,
+    ];
   }
 
   return taxDocument;
