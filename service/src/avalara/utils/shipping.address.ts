@@ -5,7 +5,7 @@ import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 export function shippingAddress(address: Address) {
   const shipTo = new AddressInfo();
 
-  shipTo.line1 = (address?.streetNumber + ' ' + address?.streetName) as string;
+  shipTo.line1 = address?.streetNumber + ' ' + address?.streetName;
 
   shipTo.line2 = address?.additionalStreetInfo as string;
 

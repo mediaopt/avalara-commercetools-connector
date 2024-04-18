@@ -94,29 +94,27 @@ async function deleteOrUpdateCustomType(
         }
       );
     if (updates.length != 0) {
-      switch (type.fieldDefinitions?.length) {
-        case 1:
-          await apiRoot
-            .types()
-            .withKey({ key: type.key })
-            .delete({
-              queryArgs: {
-                version: type.version,
-              },
-            })
-            .execute();
-          break;
-        default:
-          await apiRoot
-            .types()
-            .withKey({ key: type.key })
-            .post({
-              body: {
-                version: type.version,
-                actions: updates,
-              },
-            })
-            .execute();
+      if (type.fieldDefinitions?.length === 1) {
+        await apiRoot
+          .types()
+          .withKey({ key: type.key })
+          .delete({
+            queryArgs: {
+              version: type.version,
+            },
+          })
+          .execute();
+      } else {
+        await apiRoot
+          .types()
+          .withKey({ key: type.key })
+          .post({
+            body: {
+              version: type.version,
+              actions: updates,
+            },
+          })
+          .execute();
       }
     }
   }

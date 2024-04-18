@@ -25,34 +25,29 @@ export const post = async (
     return next(new CustomError(400, 'Bad request - Missing body parameters.'));
   }
 
-  // Identify the type of resource in order to redirect
-  // to the correct controller
-  switch (resource.typeId) {
-    case 'cart':
-      try {
-        const data = await cartController(action, resource);
-        if (data?.statusCode === 200) {
-          apiSuccess(200, data?.actions, response);
-          return;
-        } else if (data?.error) {
-          throw new CustomError(data.statusCode, data.error);
-        }
-      } catch (error) {
-        if (error instanceof Error) {
-          logger.error(error.message);
-          next(new CustomError(500, error.message));
-        } else {
-          next(error);
-        }
+  if (resource.typeId === 'cart') {
+    try {
+      const data = await cartController(action, resource);
+      if (data?.statusCode === 200) {
+        apiSuccess(200, data?.actions, response);
+        return;
+      } else if (data?.error) {
+        throw new CustomError(data.statusCode, data.error);
       }
-      break;
-
-    default:
-      next(
-        new CustomError(
-          500,
-          `Internal Server Error - Resource not recognized. Allowed values are 'cart'.`
-        )
-      );
+    } catch (error) {
+      if (error instanceof Error) {
+        logger.error(error.message);
+        next(new CustomError(500, error.message));
+      } else {
+        next(error);
+      }
+    }
+  } else {
+    next(
+      new CustomError(
+        500,
+        `Internal Server Error - Resource not recognized. Allowed values are 'cart'.`
+      )
+    );
   }
 };

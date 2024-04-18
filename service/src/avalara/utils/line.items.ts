@@ -21,11 +21,11 @@ export async function lineItem(
 
   const discounted: any = item?.discountedPricePerQuantity;
 
-  const discountedPrice = discounted?.discountedPrice?.value?.centAmount / 100;
+  const discountedPrice = discounted?.discountedPrice?.value?.centAmount;
 
   lineItem.quantity = item?.quantity;
 
-  lineItem.amount = discountedPrice || item?.totalPrice?.centAmount / 100;
+  lineItem.amount = (discountedPrice ?? item?.totalPrice?.centAmount) / 100;
 
   lineItem.itemCode = item?.variant?.sku;
 

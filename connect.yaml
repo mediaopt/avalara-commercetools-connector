@@ -80,6 +80,7 @@ deployAs:
       standardConfiguration:
         - key: CTP_REGION
           description: commercetools Composable Commerce API region
+          required: true
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key

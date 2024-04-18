@@ -8,4 +8,4 @@ coverage
 .vscode
 build/
 .env
-mc_app.md
+avalara_installation_guide.md
