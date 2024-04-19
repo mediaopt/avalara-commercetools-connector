@@ -21,13 +21,14 @@ export async function lineItem(
 
   const discounted: any = item?.discountedPricePerQuantity;
 
-  const discountedPrice = discounted?.discountedPrice?.value?.centAmount / 100;
+  const discountedPrice = discounted?.discountedPrice?.value?.centAmount;
 
   lineItem.quantity = item?.quantity;
 
   lineItem.amount =
-    (type === 'refund' ? -1 : 1) *
-    (discountedPrice || item?.totalPrice?.centAmount / 100);
+    ((type === 'refund' ? -1 : 1) *
+      (discountedPrice ?? item?.totalPrice?.centAmount)) /
+    100;
 
   lineItem.description = item?.name?.en;
 

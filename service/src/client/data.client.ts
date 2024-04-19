@@ -17,12 +17,6 @@ export const getShipTaxCode = async (id: string) => {
   )?.body?.custom?.fields?.avalaraTaxCode as string;
 };
 
-/*export const getDiscountTaxCode = async (id: string) => {
-  return (
-    await createApiRoot().cartDiscounts().withId({ ID: id }).get().execute()
-  )?.body?.custom?.fields?.avalaraTaxCode;
-};*/
-
 export const getCustomerEntityUseCode = async (id: string) => {
   return (await createApiRoot().customers().withId({ ID: id }).get().execute())
     ?.body?.custom?.fields?.avalaraEntityUseCode as string;

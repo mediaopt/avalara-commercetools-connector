@@ -8,7 +8,9 @@ export async function shipItem(type: string, item: ShippingInfo) {
   const taxCode = await getShipTaxCode(item.shippingMethod?.id as string);
   lineItem.quantity = 1;
   lineItem.amount =
-    ((type === 'refund' ? -1 : 1) * item.price.centAmount) / 100;
+    ((type === 'refund' ? -1 : 1) *
+      (item.discountedPrice?.value?.centAmount ?? item.price.centAmount)) /
+    100;
   lineItem.description = item.shippingMethodName;
   lineItem.itemCode = 'Shipping';
   lineItem.taxIncluded = item.taxRate?.includedInPrice;

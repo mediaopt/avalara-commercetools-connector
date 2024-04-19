@@ -35,7 +35,8 @@ export async function createUpdate(resource: Resource) {
 
     if (
       taxCalculationAllowed &&
-      hashCart(cart) !== cart?.custom?.fields?.avalaraHash
+      (hashCart(cart) !== cart?.custom?.fields?.avalaraHash ||
+        !cart?.taxedPrice)
     ) {
       const updateActions = await getTax(
         cart,

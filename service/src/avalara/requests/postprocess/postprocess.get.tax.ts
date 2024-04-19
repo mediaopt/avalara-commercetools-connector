@@ -47,7 +47,9 @@ export function postProcessing(
   const shipTaxCentAmount =
     lines.find((x: any) => x.itemCode === 'Shipping')?.tax * 100;
 
-  const shipPrice = cart?.shippingInfo?.price?.centAmount || 0;
+  const shipPrice =
+    cart?.shippingInfo?.discountedPrice?.value?.centAmount ??
+    (cart?.shippingInfo?.price?.centAmount as number);
   totalTax += shipTaxCentAmount;
 
   actions.push({

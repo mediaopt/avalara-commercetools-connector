@@ -10,7 +10,8 @@ export async function shipItem(item: ShippingInfo) {
 
   lineItem.quantity = 1;
 
-  lineItem.amount = item.price.centAmount / 100;
+  lineItem.amount =
+    (item.discountedPrice?.value?.centAmount ?? item.price.centAmount) / 100;
 
   lineItem.itemCode = 'Shipping';
 
