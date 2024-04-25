@@ -56,6 +56,75 @@ export const fullCart = (address: Address, hash = '123') => {
         },
       },
     ],
+    customLineItems: [
+      {
+        id: '641649e5-2337-4871-90ab-164fd3e919b3',
+        key: '12345678909',
+        name: {
+          en: 'Name EN',
+          de: 'Name DE',
+        },
+        money: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 4200,
+          fractionDigits: 2,
+        },
+        slug: 'mySlug',
+        quantity: 1,
+        discountedPricePerQuantity: [],
+        taxCategory: {
+          typeId: 'tax-category',
+          id: 'ba448eff-36c7-460e-81c6-32cca03b6cf7',
+        },
+        taxRate: {
+          name: 'avaTaxRate',
+          amount: 0.0725,
+          includedInPrice: false,
+          country: 'US',
+          subRates: [],
+        },
+        state: [
+          {
+            quantity: 1,
+            state: {
+              typeId: 'state',
+              id: 'cd0eacbb-9f15-4a28-9e7e-eaa67e137118',
+            },
+          },
+        ],
+        totalPrice: {
+          type: 'centPrecision',
+          currencyCode: 'USD',
+          centAmount: 4200,
+          fractionDigits: 2,
+        },
+        taxedPrice: {
+          totalNet: {
+            type: 'centPrecision',
+            currencyCode: 'USD',
+            centAmount: 4200,
+            fractionDigits: 2,
+          },
+          totalGross: {
+            type: 'centPrecision',
+            currencyCode: 'USD',
+            centAmount: 4505,
+            fractionDigits: 2,
+          },
+          taxPortions: [],
+          totalTax: {
+            type: 'centPrecision',
+            currencyCode: 'USD',
+            centAmount: 305,
+            fractionDigits: 2,
+          },
+        },
+        taxedPricePortions: [],
+        perMethodTaxRate: [],
+        priceMode: 'Standard',
+      },
+    ],
     custom: {
       type: 'custom-type',
       fields: {

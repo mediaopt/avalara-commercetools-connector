@@ -1,4 +1,4 @@
-import { LineItem, Order } from '@commercetools/platform-sdk';
+import { CustomLineItem, LineItem, Order } from '@commercetools/platform-sdk';
 import { getCustomerEntityUseCode } from '../../../client/data.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
@@ -6,6 +6,7 @@ import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
+import { customLineItem } from '../../utils/custom.line.items';
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
@@ -29,6 +30,14 @@ export async function processOrder(
       order?.lineItems.map(
         async (x: LineItem) => await lineItem(type, x, itemCategoryTaxCodes)
       )
+    ).then((x) =>
+      order?.customLineItems
+        ? x.concat(
+            order?.customLineItems.map((x: CustomLineItem) =>
+              customLineItem(type, x)
+            )
+          )
+        : x
     );
 
     const customerInfo = order?.customerId
