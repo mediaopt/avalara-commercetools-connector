@@ -59,14 +59,14 @@ scope template. You will need:
     - CUSTOMER_CUSTOM_TYPE_NAME
     - ORDER_CUSTOM_TYPE_KEY
     - ORDER_CUSTOM_TYPE_NAME
+    - CUSTOM_LINE_ITEM_CUSTOM_TYPE_KEY
+    - CUSTOM_LINE_ITEM_CUSTOM_TYPE_NAME
     
 For your mc-app (custom application), you will need to specify a `CUSTOM_APPLICATION_ID` and `ENTRY_POINT_URI_PATH` from the step 3 for the mc-app standard configuration.
 5. Copy your deployed mc-app application url to the configuration page of a corresponding custom application, install it to desired projects and put its state to ready. The app should become visible in your merchant center.
 6. Now all connector functionalities should be available to you. Configure your Avalara setting in the custom application and feel free to explore the connector functionalities. Make sure you test all features with a sandbox Avalara account before going live. 
 
-For more information, extensive documentation and details, please have a look at this [page](https://projects.mediaopt.de/projects/mopt-ecomqe/wiki). The important manuals are especially the [Avalara user manual](https://projects.mediaopt.de/projects/mopt-ecomqe/wiki/Avalara_user_manual), the [commercetools documentation](https://projects.mediaopt.de/projects/mopt-ecomqe/wiki/Commercetools_documentation) and the [frontend integration guide](https://projects.mediaopt.de/projects/mopt-ecomqe/wiki/Frontend_integration).
-
-Note: the connector repository is at present **private**. If you wish to see the repository, please contact our support team, and we will grant you access to it.
+For more information, extensive documentation and details, please have a look at this [page](https://github.com/mediaopt/avalara-commercetools-connector/tree/main/docs). The important manuals are especially the [Avalara user manual](https://github.com/mediaopt/avalara-commercetools-connector/blob/main/docs/mc_app_configuration_manual.pdf), the [commercetools documentation](https://github.com/mediaopt/avalara-commercetools-connector/blob/main/docs/README.md) and the [frontend integration guide](https://github.com/mediaopt/avalara-commercetools-cofe-integration).
 
 Support E-Mail Address: support@mediaopt.de 
 
