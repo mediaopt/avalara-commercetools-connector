@@ -10,9 +10,9 @@ const expectGeneralAvaTaxReturn = (
   expect(taxResponse.currencyCode).toEqual('USD');
   expect(taxResponse.entityUseCode).toEqual('B');
   expect(taxResponse.customerCode).toEqual('123');
-  expect(taxResponse.totalAmount).toEqual(coef * 124.23);
-  expect(taxResponse.totalTax).toEqual(coef * 9);
-  expect(taxResponse.lines).toHaveLength(2);
+  expect(taxResponse.totalAmount).toEqual(coef * 166.23);
+  expect(taxResponse.totalTax).toEqual(coef * 12.05);
+  expect(taxResponse.lines).toHaveLength(3);
   const item: TransactionLineModel =
     taxResponse.lines?.find((line) => line.itemCode === 'sku123') ??
     ({} as TransactionLineModel);

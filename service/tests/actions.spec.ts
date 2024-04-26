@@ -6,11 +6,13 @@ import {
   createCategoryTaxCodeFields,
   createCartUpdateExtension,
   createAvalaraHashedCartField,
+  createCustomLineItemTaxCodeFields,
   deleteAvalaraEntityUseCodeFields,
   deleteShippingTaxCodeFields,
   deleteCategoryTaxCodeFields,
   deleteCartUpdateExtension,
   deleteAvalaraHashedCartField,
+  deleteCustomLineItemTaxCodeFields,
 } from '../src/connector/actions';
 
 describe('Testing actions', () => {
@@ -183,6 +185,29 @@ describe('Testing actions', () => {
         ],
       },
     },
+    {
+      method: createCustomLineItemTaxCodeFields,
+      customType: {
+        key: process.env.CUSTOM_LINE_ITEM_CUSTOM_TYPE_KEY,
+        name: {
+          en: process.env.CUSTOM_LINE_ITEM_CUSTOM_TYPE_NAME,
+        },
+        resourceTypeIds: ['custom-line-item'],
+        fieldDefinitions: [
+          {
+            name: 'avalaraTaxCode',
+            label: {
+              en: 'Avalara Tax code',
+            },
+            required: false,
+            type: {
+              name: 'String',
+            },
+            inputHint: 'SingleLine',
+          },
+        ],
+      },
+    },
   ])('$method', async ({ method, customType }) => {
     const apiRequest: any = {
       execute: jest.fn(() => ({
@@ -265,6 +290,18 @@ describe('Testing actions', () => {
         fieldDefinitions: [
           {
             name: 'avalaraHash',
+          },
+        ],
+      },
+    },
+    {
+      method: deleteCustomLineItemTaxCodeFields,
+      customType: {
+        key: process.env.CUSTOM_LINE_ITEM_CUSTOM_TYPE_KEY,
+        resourceTypeIds: ['custom-line-item'],
+        fieldDefinitions: [
+          {
+            name: 'avalaraTaxCode',
           },
         ],
       },

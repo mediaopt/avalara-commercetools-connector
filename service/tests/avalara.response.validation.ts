@@ -10,9 +10,9 @@ export const expectAvaTaxReturn = (taxResponse: TransactionModel) => {
   expect(taxResponse.currencyCode).toEqual('USD');
   expect(taxResponse.entityUseCode).toEqual('B');
   expect(taxResponse.customerCode).toEqual('0');
-  expect(taxResponse.totalAmount).toEqual(665);
-  expect(taxResponse.totalTax).toEqual(48.22);
-  expect(taxResponse.lines).toHaveLength(2);
+  expect(taxResponse.totalAmount).toEqual(707);
+  expect(taxResponse.totalTax).toEqual(51.27);
+  expect(taxResponse.lines).toHaveLength(3);
   const item: TransactionLineModel =
     taxResponse.lines?.find((line) => line.itemCode === 'sku123') ??
     ({} as TransactionLineModel);
@@ -52,6 +52,21 @@ export const actions = {
       },
     },
     {
+      action: 'setCustomLineItemTaxAmount',
+      customLineItemId: '641649e5-2337-4871-90ab-164fd3e919b3',
+      externalTaxAmount: {
+        totalGross: {
+          currencyCode: 'USD',
+          centAmount: 4505,
+        },
+        taxRate: {
+          name: 'avaTaxRate',
+          amount: 0.0725,
+          country: 'US',
+        },
+      },
+    },
+    {
       action: 'setShippingMethodTaxAmount',
       externalTaxAmount: {
         totalGross: { centAmount: 1073, currencyCode: 'USD' },
@@ -60,7 +75,7 @@ export const actions = {
     },
     {
       action: 'setCartTotalTax',
-      externalTotalGross: { currencyCode: 'USD', centAmount: 71322 },
+      externalTotalGross: { currencyCode: 'USD', centAmount: 71627 },
     },
     {
       action: 'setCustomField',

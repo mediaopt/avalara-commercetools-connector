@@ -9,6 +9,7 @@ import {
   deleteCategoryTaxCodeFields,
   deleteShippingTaxCodeFields,
   deleteCartUpdateExtension,
+  deleteCustomLineItemTaxCodeFields,
 } from './actions';
 
 async function preUndeploy(): Promise<void> {
@@ -18,6 +19,7 @@ async function preUndeploy(): Promise<void> {
   await deleteShippingTaxCodeFields(apiRoot);
   await deleteCategoryTaxCodeFields(apiRoot);
   await deleteAvalaraHashedCartField(apiRoot);
+  await deleteCustomLineItemTaxCodeFields(apiRoot);
 }
 
 async function run(): Promise<void> {

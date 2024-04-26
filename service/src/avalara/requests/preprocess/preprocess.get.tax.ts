@@ -1,7 +1,8 @@
-import { Cart, LineItem } from '@commercetools/platform-sdk';
+import { Cart, CustomLineItem, LineItem } from '@commercetools/platform-sdk';
 import { getCustomerEntityUseCode } from '../../../client/data.client';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
+import { customLineItem } from '../../utils/custom.line.items';
 import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
@@ -24,11 +25,13 @@ export async function processCart(
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems);
 
-    const lines = await Promise.all(
-      cart?.lineItems.map(
-        async (x: LineItem) => await lineItem(x, itemCategoryTaxCodes)
-      )
-    );
+    const lines = cart?.lineItems
+      .map((x: LineItem) => lineItem(x, itemCategoryTaxCodes))
+      .concat(
+        cart?.customLineItems
+          ? cart?.customLineItems.map((x: CustomLineItem) => customLineItem(x))
+          : []
+      );
 
     lines.push(shippingInfo);
 
