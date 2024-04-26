@@ -12,7 +12,7 @@ function itemTaxCode(item: LineItem) {
   return productTaxCode;
 }
 
-export async function lineItem(
+export function lineItem(
   type: string,
   item: LineItem,
   catTaxCodes: [{ [key: string]: string }]

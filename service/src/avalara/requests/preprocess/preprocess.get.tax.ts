@@ -25,17 +25,13 @@ export async function processCart(
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems);
 
-    const lines = await Promise.all(
-      cart?.lineItems.map(
-        async (x: LineItem) => await lineItem(x, itemCategoryTaxCodes)
-      )
-    ).then((x) =>
-      cart?.customLineItems
-        ? x.concat(
-            cart?.customLineItems.map((x: CustomLineItem) => customLineItem(x))
-          )
-        : x
-    );
+    const lines = cart?.lineItems
+      .map((x: LineItem) => lineItem(x, itemCategoryTaxCodes))
+      .concat(
+        cart?.customLineItems
+          ? cart?.customLineItems.map((x: CustomLineItem) => customLineItem(x))
+          : []
+      );
 
     lines.push(shippingInfo);
 

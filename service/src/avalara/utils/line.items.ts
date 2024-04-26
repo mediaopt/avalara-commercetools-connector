@@ -13,7 +13,7 @@ function itemTaxCode(item: LineItem) {
   return productTaxCode;
 }
 
-export async function lineItem(
+export function lineItem(
   item: LineItem,
   catTaxCodes: { sku: any; taxCode: any }[]
 ) {

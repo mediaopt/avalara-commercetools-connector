@@ -26,19 +26,15 @@ export async function processOrder(
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(order?.lineItems);
 
-    const lines = await Promise.all(
-      order?.lineItems.map(
-        async (x: LineItem) => await lineItem(type, x, itemCategoryTaxCodes)
-      )
-    ).then((x) =>
-      order?.customLineItems
-        ? x.concat(
-            order?.customLineItems.map((x: CustomLineItem) =>
+    const lines = order?.lineItems
+      .map((x: LineItem) => lineItem(type, x, itemCategoryTaxCodes))
+      .concat(
+        order?.customLineItems
+          ? order?.customLineItems.map((x: CustomLineItem) =>
               customLineItem(type, x)
             )
-          )
-        : x
-    );
+          : []
+      );
 
     const customerInfo = order?.customerId
       ? await getCustomerEntityUseCode(order?.customerId)
