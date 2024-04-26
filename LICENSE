@@ -25,5 +25,5 @@ SOFTWARE.
 mediaopt's additional condition to use the Software:
 
 The permission to use the Software is granted only under the additional condition that
-mediaopt's Partner ID [represented by `appVersion` in `service/src/avalara/utils/avatax.config.ts` and in `event/src/avalara/utils/avatax.config.ts`] is kept not only at the Copyright Notice
+mediaopt's Partner ID `a0o5a000008TO2qAAG` (represented by `appVersion` in `service/src/avalara/utils/avatax.config.ts` and in `event/src/avalara/utils/avatax.config.ts`) is kept not only at the Copyright Notice
 but is forwarded at each deployment of the Avalara Commercetools connector. 
