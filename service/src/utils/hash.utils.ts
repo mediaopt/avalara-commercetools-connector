@@ -56,6 +56,14 @@ export function hashCart(cart: Cart) {
       totalPrice: lineItem?.totalPrice,
       includedInPrice: lineItem?.taxRate?.includedInPrice,
     })),
+    customLineItems: cart?.customLineItems.map((customLineItem) => ({
+      avalaraTaxCode: customLineItem?.custom?.fields?.avalaraTaxCode,
+      sku: customLineItem?.name,
+      quantity: customLineItem?.quantity,
+      discounted: customLineItem?.discountedPricePerQuantity,
+      totalPrice: customLineItem?.totalPrice,
+      includedInPrice: customLineItem?.taxRate?.includedInPrice,
+    })),
     shippingInfo: {
       id: cart?.shippingInfo?.shippingMethod?.id,
       price: cart?.shippingInfo?.price,

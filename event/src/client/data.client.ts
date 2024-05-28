@@ -37,7 +37,7 @@ export const getBulkCategoryTaxCode = async (cats: Array<string>) => {
   const taxCodes = (
     await createApiRoot()
       .categories()
-      .get({ queryArgs: { where: `id in (${cs})` } })
+      .get({ queryArgs: { where: `id in (${cs})`, limit: 500 } })
       .execute()
   )?.body?.results.map((x) => ({
     id: x.id,
@@ -57,7 +57,7 @@ export const getBulkProductCategories = async (
     await createApiRoot()
       .productProjections()
       .search()
-      .get({ queryArgs: { filter: ps } })
+      .get({ queryArgs: { filter: ps, limit: 500 } })
       .execute()
   )?.body?.results;
   const result: any = keys.map((x) => ({

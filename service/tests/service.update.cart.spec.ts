@@ -125,7 +125,7 @@ describe('test service/cart controller', () => {
           streetNumber: '2000',
           postalCode: '92614',
         },
-        'fbd553eec940799f2b23fcd40d5cd36e'
+        '9952a1641782875e8e868a11c421ae0b'
       )
     ),
   ])(
@@ -228,7 +228,7 @@ describe('test service/cart controller', () => {
         logRequestAndResponseInfo: true,
       },
       machineName: 'v1',
-      timeout: 5000,
+      timeout: 10000,
     });
 
     SpyAvatax.mockRestore();

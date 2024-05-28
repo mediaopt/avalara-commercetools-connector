@@ -24,7 +24,7 @@ const app: Express = express();
 app.disable('x-powered-by');
 
 // Define configurations
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '16mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({ origin: '*.commercetools.com' }));

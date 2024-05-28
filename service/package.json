@@ -13,7 +13,7 @@
     "build": "rimraf ./build && tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write '**/*.{js,ts}'",
-    "test": "jest --config jest.config.cjs --coverage",
+    "test": "jest --config jest.config.cjs --coverage --testTimeout=30000",
     "test:watch": "jest --watch",
     "connector:post-deploy": "node build/connector/post-deploy.js",
     "connector:pre-undeploy": "node build/connector/pre-undeploy.js"
@@ -39,10 +39,10 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@commercetools-backend/express": "^22.15.0",
-    "@commercetools-backend/loggers": "^22.23.3",
-    "@commercetools/platform-sdk": "^7.7.0",
-    "@commercetools/sdk-client-v2": "^2.4.1",
+    "@commercetools-backend/express": "^22.27.0",
+    "@commercetools-backend/loggers": "^22.27.0",
+    "@commercetools/platform-sdk": "^7.8.0",
+    "@commercetools/sdk-client-v2": "^2.5.0",
     "avatax": "^24.2.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",

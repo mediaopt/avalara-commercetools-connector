@@ -106,7 +106,7 @@ describe('test check address controller', () => {
           logRequestAndResponseInfo: true,
         },
         machineName: 'v1',
-        timeout: 5000,
+        timeout: 10000,
       });
     }
   );
