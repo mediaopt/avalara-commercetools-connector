@@ -7,7 +7,7 @@ export function avaTaxConfig(env: string, enabled?: boolean, level?: string) {
     appVersion: 'a0o5a000008TO2qAAG',
     machineName: 'v1',
     environment: env,
-    timeout: 5000,
+    timeout: 10000,
     customHttpAgent: new http.Agent({ keepAlive: true }),
     logOptions: {
       logEnabled: !!enabled, // toggle logging on or off, by default its off.

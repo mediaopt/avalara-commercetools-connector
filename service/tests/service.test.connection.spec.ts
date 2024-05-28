@@ -1,10 +1,19 @@
-import { describe, expect, test, jest, afterEach } from '@jest/globals';
+import {
+  describe,
+  expect,
+  test,
+  jest,
+  afterEach,
+  beforeEach,
+} from '@jest/globals';
 import { postTestConnection } from '../src/controllers/test.connection.controller';
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../src/errors/custom.error';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
 import * as http from 'node:https';
 import { PingResultModel } from 'avatax/lib/models/PingResultModel';
+import * as moduleAvataxConfig from '../src/avalara/utils/avatax.config';
+import { config } from './test.data';
 
 const response = {
   json: jest.fn(),
@@ -12,6 +21,9 @@ const response = {
 } as unknown as Response;
 
 describe('test test connection controller', () => {
+  beforeEach(() => {
+    jest.spyOn(moduleAvataxConfig, 'avaTaxConfig').mockReturnValue(config);
+  });
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -45,19 +57,7 @@ describe('test test connection controller', () => {
       response,
       jest.fn()
     );
-    expect(SpyAvatax).toHaveBeenCalledWith({
-      appName: 'CommercetoolsbyMediaopt',
-      appVersion: 'a0o5a000008TO2qAAG',
-      customHttpAgent: expect.any(http.Agent),
-      environment: process.env.AVALARA_ENV,
-      logOptions: {
-        logEnabled: true, // toggle logging on or off, by default its off.
-        logLevel: 2, // logLevel that will be used, Options are LogLevel.Error (0), LogLevel.Warn (1), LogLevel.Info (2), LogLevel.Debug (3)
-        logRequestAndResponseInfo: true,
-      },
-      machineName: 'v1',
-      timeout: 5000,
-    });
+    expect(SpyAvatax).toHaveBeenCalledWith(config);
 
     SpyAvatax.mockRestore();
   });

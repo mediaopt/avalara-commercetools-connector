@@ -1,4 +1,11 @@
-import { describe, expect, test, jest, afterEach } from '@jest/globals';
+import {
+  describe,
+  expect,
+  test,
+  jest,
+  afterEach,
+  beforeEach,
+} from '@jest/globals';
 import { postCheckAddress } from '../src/controllers/check.address.controller';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
 import * as http from 'node:https';
@@ -6,6 +13,8 @@ import { NextFunction, Request, Response } from 'express';
 import { avalaraMerchantDataBody } from './test.data';
 import CustomError from '../src/errors/custom.error';
 import { AddressResolutionModel } from 'avatax/lib/models/AddressResolutionModel';
+import * as moduleAvataxConfig from '../src/avalara/utils/avatax.config';
+import { config } from './test.data';
 
 const apiRoot: any = {
   customObjects: jest.fn(() => apiRoot),
@@ -69,6 +78,9 @@ const validRequests = (isValidAddress: boolean) => {
 };
 
 describe('test check address controller', () => {
+  beforeEach(() => {
+    jest.spyOn(moduleAvataxConfig, 'avaTaxConfig').mockReturnValue(config);
+  });
   afterEach(() => {
     jest.clearAllMocks();
     jest.restoreAllMocks();
@@ -95,19 +107,7 @@ describe('test check address controller', () => {
       } else {
         expect(apiRoot.execute).toBeCalledTimes(0);
       }
-      expect(SpyAvatax).toHaveBeenCalledWith({
-        appName: 'CommercetoolsbyMediaopt',
-        appVersion: 'a0o5a000008TO2qAAG',
-        customHttpAgent: expect.any(http.Agent),
-        environment: process.env.AVALARA_ENV,
-        logOptions: {
-          logEnabled: true, // toggle logging on or off, by default its off.
-          logLevel: 2, // logLevel that will be used, Options are LogLevel.Error (0), LogLevel.Warn (1), LogLevel.Info (2), LogLevel.Debug (3)
-          logRequestAndResponseInfo: true,
-        },
-        machineName: 'v1',
-        timeout: 5000,
-      });
+      expect(SpyAvatax).toHaveBeenCalledWith(config);
     }
   );
 

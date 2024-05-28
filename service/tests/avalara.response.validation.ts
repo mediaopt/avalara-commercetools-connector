@@ -80,7 +80,7 @@ export const actions = {
     {
       action: 'setCustomField',
       name: 'avalaraHash',
-      value: '447bf31f9fc955c798d259ffb2b4d47a',
+      value: 'ae6a3c3af8b7caeb6ff3e397ea552afd',
     },
   ],
 };

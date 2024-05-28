@@ -190,7 +190,7 @@ describe('test event controller', () => {
           logRequestAndResponseInfo: true,
         },
         machineName: 'v1',
-        timeout: 5000,
+        timeout: 10000,
       });
     }
   );

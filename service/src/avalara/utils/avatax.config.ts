@@ -1,13 +1,18 @@
 // set up avatax client configuration to be used in all calls to avalara
 import * as http from 'node:https';
 
-export function avaTaxConfig(env: string, enabled?: boolean, level?: string) {
+export function avaTaxConfig(
+  env: string,
+  enabled?: boolean,
+  level?: string,
+  timeout = 5000
+) {
   return {
     appName: 'CommercetoolsbyMediaopt',
     appVersion: 'a0o5a000008TO2qAAG',
     machineName: 'v1',
     environment: env,
-    timeout: 5000,
+    timeout,
     customHttpAgent: new http.Agent({ keepAlive: true }),
     logOptions: {
       logEnabled: !!enabled, // toggle logging on or off, by default its off.

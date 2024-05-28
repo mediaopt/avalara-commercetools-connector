@@ -78,7 +78,7 @@ describe('test coco api client', () => {
     expect(apiRoot.productProjections).toBeCalledTimes(1);
     expect(apiRoot.search).toBeCalledTimes(1);
     expect(apiRoot.get).toBeCalledWith({
-      queryArgs: { filter: `variants.sku:"sku123","sku456"` },
+      queryArgs: { filter: `variants.sku:"sku123","sku456"`, limit: 500 },
     });
     expect(apiRoot.execute).toBeCalledTimes(1);
 
@@ -94,7 +94,7 @@ describe('test coco api client', () => {
     const data = await getBulkCategoryTaxCode(['123', '456']);
     expect(apiRoot.categories).toBeCalledTimes(1);
     expect(apiRoot.get).toBeCalledWith({
-      queryArgs: { where: `id in ("123", "456")` },
+      queryArgs: { where: `id in ("123", "456")`, limit: 500 },
     });
     expect(apiRoot.execute).toBeCalledTimes(1);
 

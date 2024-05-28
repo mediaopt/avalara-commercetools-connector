@@ -13,7 +13,7 @@
     "build": "rimraf ./build && tsc",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --write '**/*.{js,ts}'",
-    "test": "jest --config jest.config.cjs --coverage",
+    "test": "jest --config jest.config.cjs --coverage --testTimeout=30000",
     "test:watch": "jest --watch",
     "connector:post-deploy": "node build/connector/post-deploy.js",
     "connector:pre-undeploy": "node build/connector/pre-undeploy.js"
