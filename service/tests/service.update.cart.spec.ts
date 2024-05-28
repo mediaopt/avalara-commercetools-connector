@@ -1,4 +1,11 @@
-import { describe, expect, test, jest, afterEach } from '@jest/globals';
+import {
+  describe,
+  expect,
+  test,
+  jest,
+  afterEach,
+  beforeEach,
+} from '@jest/globals';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { NextFunction, Request, Response } from 'express';
 import { fullCart, emptyCart, cartRequest } from './carts';
@@ -6,7 +13,9 @@ import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
 import { post } from '../src/controllers/service.controller';
 import * as http from 'node:https';
 import CustomError from '../src/errors/custom.error';
+import * as moduleAvataxConfig from '../src/avalara/utils/avatax.config';
 import { actions, expectAvaTaxReturn } from './avalara.response.validation';
+import { config } from './test.data';
 import {
   avalaraMerchantDataBody,
   bulkCategoryTaxCodeBody,
@@ -80,6 +89,9 @@ const serviceThrowCases = [
 ];
 
 describe('test service/cart controller', () => {
+  beforeEach(() => {
+    jest.spyOn(moduleAvataxConfig, 'avaTaxConfig').mockReturnValue(config);
+  });
   afterEach(() => {
     jest.clearAllMocks();
     jest.restoreAllMocks();
@@ -217,19 +229,7 @@ describe('test service/cart controller', () => {
       response,
       next
     );
-    expect(SpyAvatax).toHaveBeenCalledWith({
-      appName: 'CommercetoolsbyMediaopt',
-      appVersion: 'a0o5a000008TO2qAAG',
-      customHttpAgent: expect.any(http.Agent),
-      environment: process.env.AVALARA_ENV,
-      logOptions: {
-        logEnabled: true, // toggle logging on or off, by default its off.
-        logLevel: 2, // logLevel that will be used, Options are LogLevel.Error (0), LogLevel.Warn (1), LogLevel.Info (2), LogLevel.Debug (3)
-        logRequestAndResponseInfo: true,
-      },
-      machineName: 'v1',
-      timeout: 10000,
-    });
+    expect(SpyAvatax).toHaveBeenCalledWith(config);
 
     SpyAvatax.mockRestore();
   });

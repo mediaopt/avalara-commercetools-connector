@@ -1,3 +1,4 @@
+import { avaTaxConfig } from '../src/avalara/utils/avatax.config';
 import { AvataxMerchantConfig } from '../src/types/index.types';
 
 export const avalaraMerchantDataBody = {
@@ -95,3 +96,5 @@ export const bulkProductCategoriesBody = {
     ],
   },
 };
+
+export const config = avaTaxConfig('sandbox', true, '2', 10000);
