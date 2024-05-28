@@ -5,7 +5,7 @@ export function avaTaxConfig(
   env: string,
   enabled?: boolean,
   level?: string,
-  timeout = 2000
+  timeout = 5000
 ) {
   return {
     appName: 'CommercetoolsbyMediaopt',
