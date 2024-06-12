@@ -11,7 +11,6 @@ import { NextFunction, Request, Response } from 'express';
 import { fullCart, emptyCart, cartRequest } from './carts';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
 import { post } from '../src/controllers/service.controller';
-import * as http from 'node:https';
 import CustomError from '../src/errors/custom.error';
 import * as moduleAvataxConfig from '../src/avalara/utils/avatax.config';
 import { actions, expectAvaTaxReturn } from './avalara.response.validation';

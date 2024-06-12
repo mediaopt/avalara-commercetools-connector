@@ -46,5 +46,8 @@
     "express": "^4.19.2",
     "listr2": "^6.6.1",
     "validator": "^13.11.0"
+  },
+  "resolutions": {
+    "braces": "^3.0.3"
   }
 }

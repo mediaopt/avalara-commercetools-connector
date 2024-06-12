@@ -8,7 +8,6 @@ import {
 } from '@jest/globals';
 import { postCheckAddress } from '../src/controllers/check.address.controller';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
-import * as http from 'node:https';
 import { NextFunction, Request, Response } from 'express';
 import { avalaraMerchantDataBody } from './test.data';
 import CustomError from '../src/errors/custom.error';

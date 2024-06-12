@@ -51,5 +51,8 @@
     "express": "^4.19.2",
     "ts-node": "^10.9.1",
     "validator": "^13.11.0"
+  },
+  "resolutions": {
+    "braces": "^3.0.3"
   }
 }

@@ -10,7 +10,6 @@ import { postTestConnection } from '../src/controllers/test.connection.controlle
 import { NextFunction, Request, Response } from 'express';
 import CustomError from '../src/errors/custom.error';
 import * as moduleAvaTax from 'avatax/lib/AvaTaxClient';
-import * as http from 'node:https';
 import { PingResultModel } from 'avatax/lib/models/PingResultModel';
 import * as moduleAvataxConfig from '../src/avalara/utils/avatax.config';
 import { config } from './test.data';
