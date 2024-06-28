@@ -371,15 +371,4 @@ describe('test event controller', () => {
     );
     expect(response.send).toBeCalledTimes(0);
   });
-
-  test('api Root throws an error', async () => {
-    const next = jest.fn() as NextFunction;
-    apiRoot.execute = jest.fn(() => {
-      throw new Error('apiRoot error');
-    });
-    await post(commitRequest('US'), response, next);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(new CustomError(400, 'apiRoot error'));
-    expect(response.send).toBeCalledTimes(0);
-  });
 });
