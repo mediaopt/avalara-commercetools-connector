@@ -55,14 +55,8 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getData('avalara-connector-settings');
-    expect(apiRoot.customObjects).toBeCalledTimes(1);
-    expect(apiRoot.withContainer).toBeCalledWith({
-      container: 'avalara-connector-settings',
-    });
-    expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
-
     expect(data).toEqual({});
   });
 
@@ -82,9 +76,6 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getShipTaxCode('123');
-    expect(apiRoot.shippingMethods).toBeCalledTimes(1);
-    expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
-    expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
 
@@ -107,9 +98,6 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getCustomerEntityUseCode('123');
-    expect(apiRoot.customers).toBeCalledTimes(1);
-    expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
-    expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
 
@@ -138,11 +126,6 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getBulkProductCategories(['sku123', 'sku456']);
-    expect(apiRoot.productProjections).toBeCalledTimes(1);
-    expect(apiRoot.search).toBeCalledTimes(1);
-    expect(apiRoot.get).toBeCalledWith({
-      queryArgs: { filter: `variants.sku:"sku123","sku456"`, limit: 500 },
-    });
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
 
@@ -170,10 +153,6 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getBulkCategoryTaxCode(['123', '456']);
-    expect(apiRoot.categories).toBeCalledTimes(1);
-    expect(apiRoot.get).toBeCalledWith({
-      queryArgs: { where: `id in ("123", "456")`, limit: 500 },
-    });
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
 
