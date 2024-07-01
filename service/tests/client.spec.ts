@@ -60,7 +60,7 @@ describe('test coco api client', () => {
     expect(data).toBeUndefined();
   });
 
-  test('get shipping tax code method', async () => {
+  test('get shipping tax code method succeeds', async () => {
     apiRoot.execute = jest.fn(() => shipTaxCodeBody);
     const data = await getShipTaxCode('123');
     expect(apiRoot.shippingMethods).toBeCalledTimes(1);
@@ -82,7 +82,7 @@ describe('test coco api client', () => {
     expect(data).toBeUndefined();
   });
 
-  test('get customer entity use code method', async () => {
+  test('get customer entity use code method succeeds', async () => {
     apiRoot.execute = jest.fn(() => entityUseCodeBody);
     const data = await getCustomerEntityUseCode('123');
     expect(apiRoot.customers).toBeCalledTimes(1);
@@ -104,7 +104,7 @@ describe('test coco api client', () => {
     expect(data).toBeUndefined();
   });
 
-  test('get all categories of a list of products', async () => {
+  test('get all categories of a list of products succeeds', async () => {
     apiRoot.execute = jest.fn(() => bulkProductCategoriesBody);
     const data = await getBulkProductCategories(['sku123', 'sku456']);
     expect(apiRoot.productProjections).toBeCalledTimes(1);
@@ -132,7 +132,7 @@ describe('test coco api client', () => {
     expect(data).toEqual([]);
   });
 
-  test('get all tax codes of a list of categories', async () => {
+  test('get all tax codes of a list of categories succeeds', async () => {
     apiRoot.execute = jest.fn(() => bulkCategoryTaxCodeBody);
     const data = await getBulkCategoryTaxCode(['123', '456']);
     expect(apiRoot.categories).toBeCalledTimes(1);
