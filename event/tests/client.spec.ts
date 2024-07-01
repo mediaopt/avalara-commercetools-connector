@@ -59,7 +59,7 @@ describe('test coco api client', () => {
     const data = await getData('avalara-connector-settings');
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
-    expect(data).toEqual({});
+    expect(data).toBeUndefined();
   });
 
   test('get shipping tax code method', async () => {
@@ -79,7 +79,7 @@ describe('test coco api client', () => {
     const data = await getShipTaxCode('123');
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
-    expect(data).toBe('');
+    expect(data).toBeUndefined();
   });
 
   test('get customer entity use code method', async () => {
@@ -90,8 +90,8 @@ describe('test coco api client', () => {
     expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
 
-    expect(data.customerNumber).toBe('123');
-    expect(data.exemptCode).toBe('B');
+    expect(data?.customerNumber).toBe('123');
+    expect(data?.exemptCode).toBe('B');
   });
 
   test('get customer entity use code method fails', async () => {
@@ -101,8 +101,8 @@ describe('test coco api client', () => {
     const data = await getCustomerEntityUseCode('123');
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
-    expect(data.customerNumber).toBe('123');
-    expect(data.exemptCode).toBe('');
+    expect(data?.customerNumber).toBe('123');
+    expect(data?.exemptCode).toBeUndefined();
   });
 
   test('get all categories of a list of products', async () => {

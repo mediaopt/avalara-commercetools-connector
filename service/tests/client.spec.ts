@@ -57,7 +57,7 @@ describe('test coco api client', () => {
     const data = await getData('avalara-connector-settings');
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
-    expect(data).toEqual({});
+    expect(data).toBeUndefined();
   });
 
   test('get shipping tax code method', async () => {
@@ -79,7 +79,7 @@ describe('test coco api client', () => {
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
 
-    expect(data).toEqual('');
+    expect(data).toBeUndefined();
   });
 
   test('get customer entity use code method', async () => {
@@ -101,7 +101,7 @@ describe('test coco api client', () => {
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(apiRoot.execute).toThrowError();
 
-    expect(data).toEqual('');
+    expect(data).toBeUndefined();
   });
 
   test('get all categories of a list of products', async () => {

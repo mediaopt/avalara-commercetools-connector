@@ -15,7 +15,7 @@ export const getData = async (container: string) => {
       .reduce((acc, curr) => Object.assign(acc, curr), {});
   } catch (e) {
     logger.error(e);
-    return {};
+    return undefined;
   }
 };
 
@@ -26,7 +26,7 @@ export const getShipTaxCode = async (id: string) => {
     )?.body?.custom?.fields?.avalaraTaxCode as string;
   } catch (e) {
     logger.error(e);
-    return '';
+    return undefined;
   }
 };
 
@@ -41,7 +41,7 @@ export const getCustomerEntityUseCode = async (id: string) => {
     };
   } catch (e) {
     logger.error(e);
-    return { customerNumber: id, exemptCode: '' };
+    return { customerNumber: id, exemptCode: undefined };
   }
 };
 
@@ -74,6 +74,7 @@ export const getBulkCategoryTaxCode = async (categories: Array<string>) => {
 export const getBulkProductCategories = async (
   keys: Array<string | undefined>
 ) => {
+  if (!keys.length) return [];
   try {
     const data = (
       await createApiRoot()
