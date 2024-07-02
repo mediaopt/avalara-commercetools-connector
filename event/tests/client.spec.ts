@@ -39,7 +39,7 @@ describe('test coco api client', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  test('get avalara merchant data method', async () => {
+  test('get avalara merchant data method succeeds', async () => {
     apiRoot.execute = jest.fn(() => avalaraMerchantDataBody(false));
     const data = await getData('avalara-connector-settings');
     expect(apiRoot.customObjects).toBeCalledTimes(1);
@@ -48,23 +48,41 @@ describe('test coco api client', () => {
     });
     expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
-
     expect(data).toBeDefined();
     expect(Object.keys(data?.settings).length).toBe(12);
   });
 
-  test('get shipping tax code method', async () => {
+  test('get avalara merchant data method fails', async () => {
+    apiRoot.execute = jest.fn(() => {
+      throw new Error('error');
+    });
+    const data = await getData('avalara-connector-settings');
+    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toThrowError();
+    expect(data).toBeUndefined();
+  });
+
+  test('get shipping tax code method succeeds', async () => {
     apiRoot.execute = jest.fn(() => shipTaxCodeBody('PC030000'));
     const data = await getShipTaxCode('123');
     expect(apiRoot.shippingMethods).toBeCalledTimes(1);
     expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
     expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
-
     expect(data).toBe('PC030000');
   });
 
-  test('get customer entity use code method', async () => {
+  test('get shipping tax code method fails', async () => {
+    apiRoot.execute = jest.fn(() => {
+      throw new Error('error');
+    });
+    const data = await getShipTaxCode('123');
+    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toThrowError();
+    expect(data).toBeUndefined();
+  });
+
+  test('get customer entity use code method succeeds', async () => {
     apiRoot.execute = jest.fn(() => entityUseCodeBody('B'));
     const data = await getCustomerEntityUseCode('123');
     expect(apiRoot.customers).toBeCalledTimes(1);
@@ -72,11 +90,22 @@ describe('test coco api client', () => {
     expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
 
-    expect(data.customerNumber).toBe('123');
-    expect(data.exemptCode).toBe('B');
+    expect(data?.customerNumber).toBe('123');
+    expect(data?.exemptCode).toBe('B');
   });
 
-  test('get all categories of a list of products', async () => {
+  test('get customer entity use code method fails', async () => {
+    apiRoot.execute = jest.fn(() => {
+      throw new Error('error');
+    });
+    const data = await getCustomerEntityUseCode('123');
+    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toThrowError();
+    expect(data?.customerNumber).toBe('123');
+    expect(data?.exemptCode).toBeUndefined();
+  });
+
+  test('get all categories of a list of products succeeds', async () => {
     apiRoot.execute = jest.fn(() => bulkProductCategoriesBody);
     const data = await getBulkProductCategories(['sku123', 'sku456']);
     expect(apiRoot.productProjections).toBeCalledTimes(1);
@@ -93,7 +122,17 @@ describe('test coco api client', () => {
     expect(data[1]?.categories[0]).toBe('456');
   });
 
-  test('get all tax codes of a list of categories', async () => {
+  test('get all categories of a list of products fails', async () => {
+    apiRoot.execute = jest.fn(() => {
+      throw new Error('error');
+    });
+    const data = await getBulkProductCategories(['sku123', 'sku456']);
+    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toThrowError();
+    expect(data).toEqual([]);
+  });
+
+  test('get all tax codes of a list of categories succeeds', async () => {
     apiRoot.execute = jest.fn(() =>
       bulkCategoryTaxCodeBody(['PS081282', 'PS080101'])
     );
@@ -111,7 +150,17 @@ describe('test coco api client', () => {
     expect(data[1]?.avalaraTaxCode).toBe('PS080101');
   });
 
-  test('get order', async () => {
+  test('get all tax codes of a list of categories fails', async () => {
+    apiRoot.execute = jest.fn(() => {
+      throw new Error('error');
+    });
+    const data = await getBulkCategoryTaxCode(['123', '456']);
+    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toThrowError();
+    expect(data).toEqual([]);
+  });
+
+  test('get order succeeds', async () => {
     apiRoot.execute = jest.fn(() => orderRequest('123', 'US'));
     const data = await getOrder('123');
     expect(apiRoot.orders).toBeCalledTimes(1);
@@ -122,5 +171,15 @@ describe('test coco api client', () => {
     expect(data).toBeDefined();
     expect(data?.id).toBe('123');
     expect(data?.shippingAddress?.country).toBe('US');
+  });
+
+  test('get order fails', async () => {
+    apiRoot.execute = jest.fn(() => {
+      throw new Error('error');
+    });
+    const data = await getOrder('123');
+    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toThrowError();
+    expect(data).toEqual({});
   });
 });

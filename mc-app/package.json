@@ -102,7 +102,8 @@
     "react-redux": "7.2.9",
     "react-router-dom": "5.3.4",
     "redux": "4.2.1",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "ws": "8.17.1"
   },
   "resolutions": {
     "@emotion/react": "11.11.4",
@@ -112,6 +113,7 @@
     "@types/react-dom": "<18",
     "@types/react-router": "<6",
     "@types/react-router-dom": "<6",
-    "braces": "^3.0.3"
+    "braces": "^3.0.3",
+    "ws": "^8.17.1"
   }
 }
