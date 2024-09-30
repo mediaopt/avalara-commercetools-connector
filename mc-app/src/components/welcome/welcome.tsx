@@ -4,7 +4,7 @@ import Constraints from '@commercetools-uikit/constraints';
 import Grid from '@commercetools-uikit/grid';
 import Text from '@commercetools-uikit/text';
 import messages from './messages';
-import PrimaryButton from '@commercetools-uikit/primary-button';
+import SecondaryButton from '@commercetools-uikit/secondary-button';
 import Link from '@commercetools-uikit/link';
 
 type TWrapWithProps = {
@@ -29,7 +29,7 @@ const Welcome = () => {
       >
         <Grid.Item>
           <Text.Headline as="h1" intlMessage={messages.title} />
-          <PrimaryButton
+          <SecondaryButton
             as={Link}
             isExternal={false}
             to={`${match.url}/settings`}

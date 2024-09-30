@@ -66,7 +66,8 @@ export const post = async (
       throw new CustomError(400, 'No Avalara merchant data is present.');
     }
     if (settings?.disableDocRec) {
-      return response.status(200).send();
+      response.status(200).send();
+      return next();
     }
     const { originAddress, avataxConfig } = setUpAvaTax(settings, env);
 
