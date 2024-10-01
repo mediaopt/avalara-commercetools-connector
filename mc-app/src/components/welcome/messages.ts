@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   title: {
     id: 'Welcome.title',
-    defaultMessage: 'Avalara Tax calculation',
+    defaultMessage: 'Avalara Tax Calculation 💼',
   },
   info: {
     id: 'Welcome.info',
@@ -12,7 +12,7 @@ export default defineMessages({
   },
   documentation: {
     id: 'Welcome.documentation',
-    defaultMessage: 'For more information, check the {link}.',
+    defaultMessage: 'For more information, check our documentation.',
   },
   documentationLink: {
     id: 'Welcome.documentationLink',
@@ -21,7 +21,7 @@ export default defineMessages({
   },
   support: {
     id: 'Welcome.support',
-    defaultMessage: 'If you need help, please contact {link}.',
+    defaultMessage: 'If you need help, please contact support@mediaopt.de.',
   },
   supportLink: {
     id: 'Welcome.supportLink',

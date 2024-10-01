@@ -22,34 +22,43 @@ const Welcome = () => {
 
   return (
     <Constraints.Horizontal max={16}>
-      <Grid
-        gridGap="16px"
-        gridAutoRows='1fr'
-        gridTemplateRows="1fr 3fr 2fr"
-      >
-        <Grid.Item alignSelf='stretch'>
-          <Text.Headline as="h1" intlMessage={messages.title}/>
+      <Grid gridGap="16px" gridAutoRows="1fr" gridTemplateRows="1fr 3fr 2fr">
+        <Grid.Item alignSelf="stretch">
+          <Text.Headline as="h1" intlMessage={messages.title} />
         </Grid.Item>
 
-        <Grid.Item alignSelf='center'>
-          <Text.Body intlMessage={messages.info}/>
+        <Grid.Item alignSelf="center">
+          <Text.Body intlMessage={messages.info} />
         </Grid.Item>
 
-        <Grid.Item alignSelf='center'>
-          <Text.Body intlMessage={messages.documentation}/>
-          <Link isExternal={true} to={messages.documentationLink.defaultMessage}>GitHub Documentation</Link>
+        <Grid.Item alignSelf="center">
+          <Text.Body intlMessage={messages.documentation} />
+          <Link
+            isExternal={true}
+            to={messages.documentationLink.defaultMessage}
+          >
+            GitHub Documentation
+          </Link>
         </Grid.Item>
 
-        <Grid.Item alignSelf='center'>
-          <Link isExternal={true} to={messages.supportLink.defaultMessage} intlMessage={messages.support}/>
+        <Grid.Item alignSelf="center">
+          <Link
+            isExternal={true}
+            to={messages.supportLink.defaultMessage}
+            intlMessage={messages.support}
+          />
         </Grid.Item>
 
-        <Grid.Item alignSelf='center'>
-          <Text.Body intlMessage={messages.avalara}/>
-          <Link isExternal={true} to={messages.avalaraHelpLink.defaultMessage} intlMessage={messages.avalaraHelp}/>
+        <Grid.Item alignSelf="center">
+          <Text.Body intlMessage={messages.avalara} />
+          <Link
+            isExternal={true}
+            to={messages.avalaraHelpLink.defaultMessage}
+            intlMessage={messages.avalaraHelp}
+          />
         </Grid.Item>
 
-        <Grid.Item alignSelf='center'>
+        <Grid.Item alignSelf="center">
           <SecondaryButton
             as={Link}
             isExternal={false}
