@@ -1,3 +1,4 @@
+import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { avaTaxConfig } from '../avalara/utils/avatax.config';
 import { AvataxMerchantConfig } from '../types/index.types';
 
@@ -19,3 +20,19 @@ export const setUpAvaTax = (settings: AvataxMerchantConfig, env: string) => {
 
   return { originAddress, avataxConfig };
 };
+
+function sanitizeString(str: string | undefined, sql_key: string) {
+  if (str?.toLowerCase().startsWith(sql_key.toLowerCase())) {
+    str = str.replace(sql_key, `\\ ${sql_key}`);
+    str = str.replace(sql_key.toLowerCase(), `\\ ${sql_key.toLowerCase()}`);
+  }
+  return str;
+}
+
+export function sanitizeAddress(address: AddressInfo) {
+  address.city = sanitizeString(address.city, 'Union');
+  address.line1 = sanitizeString(address.line1, 'Union');
+  address.line2 = sanitizeString(address.line2, 'Union');
+  address.line3 = sanitizeString(address.line3, 'Union');
+  return address;
+}
