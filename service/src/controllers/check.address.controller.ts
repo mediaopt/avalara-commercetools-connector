@@ -5,7 +5,6 @@ import { NextFunction, Request, Response } from 'express';
 import CustomError from '../errors/custom.error';
 import { ValidatedAddressInfo } from 'avatax/lib/models/ValidatedAddressInfo';
 import { getData } from '../client/data.client';
-import { sanitizeAddress } from '../utils/avatax.utils';
 
 export const checkAddressController = async (data: {
   mcApp?: boolean;
@@ -48,8 +47,7 @@ export const checkAddressController = async (data: {
       data?.logging?.level ?? settings?.logLevel
     )
   ).withSecurity(creds);
-  const address = sanitizeAddress(data?.address);
-  const validation = await client.resolveAddress(address);
+  const validation = await client.resolveAddress(data?.address);
   const validatedAddress = validation?.validatedAddresses;
   const error = validation?.messages?.find(
     (message) => message.severity === 'Error'

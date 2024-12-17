@@ -1215,55 +1215,55 @@
     "@babel/runtime" "^7.17.9"
     "@babel/runtime-corejs3" "^7.17.9"
 
-"@commercetools-frontend/actions-global@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/actions-global/-/actions-global-22.33.0.tgz#2866736cb25768ea43d1d0ec29ed3ac9be0a57da"
-  integrity sha512-zDyVscQCjkZMYRebg0KqCQj6jEyv5/YAaAAltnhOFaF5XPBFrE+6yuKGJKjAGDsrBsEX/TNLvQCRrKG6ibDbUQ==
+"@commercetools-frontend/actions-global@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/actions-global/-/actions-global-22.37.0.tgz#a0dad51f61f6171af647bca44d06f279722f5706"
+  integrity sha512-TybZ51rQmZ0XM0ev2APhWvD1x7SjunyiRff4PpeS3Zzq3sUEtyzXJUOAyTW6EcUoUgOcZWz60kADrOZ92pl9gA==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/browser-history" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
-    "@commercetools-frontend/notifications" "22.33.0"
-    "@commercetools-frontend/sentry" "22.33.0"
+    "@commercetools-frontend/browser-history" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
+    "@commercetools-frontend/notifications" "22.37.0"
+    "@commercetools-frontend/sentry" "22.37.0"
     "@types/lodash" "^4.14.198"
     "@types/react" "^17.0.80"
     "@types/react-redux" "^7.1.26"
     lodash "4.17.21"
     redux-thunk "2.4.2"
 
-"@commercetools-frontend/application-components@22.33.0", "@commercetools-frontend/application-components@^22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-components/-/application-components-22.33.0.tgz#ce8d57a9e9be797d8ae5cd73b2875eae716b6458"
-  integrity sha512-0tIDsdGJ8ZlD/sFSb0rfzwJemTk/YC2HTicWBVqZds7lTOTDrNUUZOdd+nmOAYwcz6RsmPN7x4YkjLCuUkimGw==
+"@commercetools-frontend/application-components@22.37.0", "@commercetools-frontend/application-components@^22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-components/-/application-components-22.37.0.tgz#f1c01867ab753982ab8eaa9ddafb200ebdd80d38"
+  integrity sha512-Xv7V0/Mck+ArwqDokiubtJjAsB6o5lGRorvAcv8C2jsgivsOVgTrKAmdGntXxvpbq0x4hHniEAuSrN2j0k6Y5A==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/actions-global" "22.33.0"
-    "@commercetools-frontend/application-config" "22.33.0"
-    "@commercetools-frontend/application-shell-connectors" "22.33.0"
-    "@commercetools-frontend/assets" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
-    "@commercetools-frontend/i18n" "22.33.0"
-    "@commercetools-frontend/l10n" "22.33.0"
-    "@commercetools-frontend/sentry" "22.33.0"
-    "@commercetools-uikit/accessible-button" "^19.9.0"
-    "@commercetools-uikit/card" "^19.9.0"
-    "@commercetools-uikit/constraints" "^19.9.0"
-    "@commercetools-uikit/design-system" "^19.9.0"
-    "@commercetools-uikit/flat-button" "^19.9.0"
-    "@commercetools-uikit/hooks" "^19.9.0"
-    "@commercetools-uikit/icon-button" "^19.9.0"
-    "@commercetools-uikit/icons" "^19.9.0"
-    "@commercetools-uikit/label" "^19.9.0"
-    "@commercetools-uikit/messages" "^19.9.0"
-    "@commercetools-uikit/primary-button" "^19.9.0"
-    "@commercetools-uikit/secondary-button" "^19.9.0"
-    "@commercetools-uikit/secondary-icon-button" "^19.9.0"
-    "@commercetools-uikit/spacings" "^19.9.0"
-    "@commercetools-uikit/stamp" "^19.9.0"
-    "@commercetools-uikit/text" "^19.9.0"
-    "@commercetools-uikit/utils" "^19.9.0"
+    "@commercetools-frontend/actions-global" "22.37.0"
+    "@commercetools-frontend/application-config" "22.37.0"
+    "@commercetools-frontend/application-shell-connectors" "22.37.0"
+    "@commercetools-frontend/assets" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
+    "@commercetools-frontend/i18n" "22.37.0"
+    "@commercetools-frontend/l10n" "22.37.0"
+    "@commercetools-frontend/sentry" "22.37.0"
+    "@commercetools-uikit/accessible-button" "^19.17.1"
+    "@commercetools-uikit/card" "^19.17.1"
+    "@commercetools-uikit/constraints" "^19.17.1"
+    "@commercetools-uikit/design-system" "^19.17.1"
+    "@commercetools-uikit/flat-button" "^19.17.1"
+    "@commercetools-uikit/hooks" "^19.17.1"
+    "@commercetools-uikit/icon-button" "^19.17.1"
+    "@commercetools-uikit/icons" "^19.17.1"
+    "@commercetools-uikit/label" "^19.17.1"
+    "@commercetools-uikit/messages" "^19.17.1"
+    "@commercetools-uikit/primary-button" "^19.17.1"
+    "@commercetools-uikit/secondary-button" "^19.17.1"
+    "@commercetools-uikit/secondary-icon-button" "^19.17.1"
+    "@commercetools-uikit/spacings" "^19.17.1"
+    "@commercetools-uikit/stamp" "^19.17.1"
+    "@commercetools-uikit/text" "^19.17.1"
+    "@commercetools-uikit/utils" "^19.17.1"
     "@emotion/react" "^11.11.4"
     "@emotion/styled" "^11.11.0"
     "@flopflip/react-broadcast" "14.0.2"
@@ -1282,39 +1282,39 @@
     raf-schd "^4.0.3"
     react-modal "3.16.1"
 
-"@commercetools-frontend/application-config@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-config/-/application-config-22.33.0.tgz#bc8c4b40f40f7d9fa15914a46f966b812dd7c238"
-  integrity sha512-ISX0JC6p5GC4u7lWtudXt+mKJvOpjlGUnr8kTFSkvlMpsPSTWtT6eDuY+lNR2i/8R06RX30GmhDlzPNtktF5MQ==
+"@commercetools-frontend/application-config@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-config/-/application-config-22.37.0.tgz#762199d91113e8cfbd9c50ff8b2b53531fbebe29"
+  integrity sha512-UNCCkc54pc9Fw9k/1b2DK93cbquXuaz1XyN937mA/Ahe11jZLyiM8YYtd1eHnOzcHd7Fro5zfRB3IPKTnGDgxA==
   dependencies:
     "@babel/core" "^7.22.17"
     "@babel/register" "^7.22.15"
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/babel-preset-mc-app" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
+    "@commercetools-frontend/constants" "22.37.0"
     "@types/dompurify" "^2.4.0"
     "@types/lodash" "^4.14.198"
     "@types/react" "^17.0.80"
     ajv "8.16.0"
     core-js "^3.32.2"
-    cosmiconfig "7.1.0"
+    cosmiconfig "9.0.0"
+    cosmiconfig-typescript-loader "6.1.0"
     dompurify "^2.4.7"
     jsdom "^21.1.2"
     lodash "4.17.21"
     omit-empty-es "1.2.0"
 
-"@commercetools-frontend/application-shell-connectors@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-shell-connectors/-/application-shell-connectors-22.33.0.tgz#060670049f2f5ba932ecd92a785da9a93fd461d8"
-  integrity sha512-wk2bBWIRvUEvh8Npj+nsq0cnT2Tophi5Z6jrj0TIr2KV4nXe4bOXxtA7NFmelPoPDcZUod8X0Uy1dShvpV4tzg==
+"@commercetools-frontend/application-shell-connectors@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-shell-connectors/-/application-shell-connectors-22.37.0.tgz#4f10607054dc01b57d732a67755c5906442239b1"
+  integrity sha512-/GLUv9+8uXxdGAjNBh3hWj/EKbeU1WOdcLsN1EBSruFskd8+GBkkoVogs5sA9RmlaXvW10n/tU4uBHfbTEWn1Q==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/application-config" "22.33.0"
-    "@commercetools-frontend/browser-history" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
-    "@commercetools-frontend/sentry" "22.33.0"
+    "@commercetools-frontend/application-config" "22.37.0"
+    "@commercetools-frontend/browser-history" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
+    "@commercetools-frontend/sentry" "22.37.0"
     "@commercetools/http-user-agent" "3.0.0"
     "@emotion/react" "^11.11.4"
     "@types/lodash" "^4.14.198"
@@ -1330,44 +1330,43 @@
     uuid "9.0.1"
     wait-for-observables "1.0.3"
 
-"@commercetools-frontend/application-shell@^22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-shell/-/application-shell-22.33.0.tgz#427a34953f1b850ea4f1ad31dc60f519a41043b0"
-  integrity sha512-w8Ub/+RqpBmJWeWvklko+lz6FTxfiynZbVZH/VdgZQJa6MheCbjg8q/SE0Ten9KlM4omgahggoG6D7zCb0tdlA==
+"@commercetools-frontend/application-shell@^22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/application-shell/-/application-shell-22.37.0.tgz#5c13931efd2c2b455ced28894bf83a6576bddd02"
+  integrity sha512-OfOhCjG/1dj5wDa0KEULWbc0Ip2cf8VoehijJ5v/n1p9hEsx8y51CymnN6s0A+7mtMFDyzvLaLrQtDon16CoMg==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/actions-global" "22.33.0"
-    "@commercetools-frontend/application-components" "22.33.0"
-    "@commercetools-frontend/application-config" "22.33.0"
-    "@commercetools-frontend/application-shell-connectors" "22.33.0"
-    "@commercetools-frontend/assets" "22.33.0"
-    "@commercetools-frontend/browser-history" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
-    "@commercetools-frontend/i18n" "22.33.0"
-    "@commercetools-frontend/l10n" "22.33.0"
-    "@commercetools-frontend/notifications" "22.33.0"
-    "@commercetools-frontend/permissions" "22.33.0"
-    "@commercetools-frontend/react-notifications" "22.33.0"
-    "@commercetools-frontend/sdk" "22.33.0"
-    "@commercetools-frontend/sentry" "22.33.0"
-    "@commercetools-frontend/url-utils" "22.33.0"
-    "@commercetools-uikit/accessible-hidden" "^19.9.0"
-    "@commercetools-uikit/avatar" "^19.9.0"
-    "@commercetools-uikit/card" "^19.9.0"
-    "@commercetools-uikit/constraints" "^19.9.0"
-    "@commercetools-uikit/design-system" "^19.9.0"
-    "@commercetools-uikit/flat-button" "^19.9.0"
-    "@commercetools-uikit/icon-button" "^19.9.0"
-    "@commercetools-uikit/icons" "^19.9.0"
-    "@commercetools-uikit/loading-spinner" "^19.9.0"
-    "@commercetools-uikit/notifications" "^19.9.0"
-    "@commercetools-uikit/primary-button" "^19.9.0"
-    "@commercetools-uikit/secondary-button" "^19.9.0"
-    "@commercetools-uikit/select-input" "^19.9.0"
-    "@commercetools-uikit/spacings" "^19.9.0"
-    "@commercetools-uikit/text" "^19.9.0"
-    "@commercetools-uikit/tooltip" "^19.9.0"
+    "@commercetools-frontend/actions-global" "22.37.0"
+    "@commercetools-frontend/application-components" "22.37.0"
+    "@commercetools-frontend/application-config" "22.37.0"
+    "@commercetools-frontend/application-shell-connectors" "22.37.0"
+    "@commercetools-frontend/assets" "22.37.0"
+    "@commercetools-frontend/browser-history" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
+    "@commercetools-frontend/i18n" "22.37.0"
+    "@commercetools-frontend/l10n" "22.37.0"
+    "@commercetools-frontend/notifications" "22.37.0"
+    "@commercetools-frontend/permissions" "22.37.0"
+    "@commercetools-frontend/react-notifications" "22.37.0"
+    "@commercetools-frontend/sdk" "22.37.0"
+    "@commercetools-frontend/sentry" "22.37.0"
+    "@commercetools-frontend/url-utils" "22.37.0"
+    "@commercetools-uikit/accessible-hidden" "^19.17.1"
+    "@commercetools-uikit/avatar" "^19.17.1"
+    "@commercetools-uikit/card" "^19.17.1"
+    "@commercetools-uikit/constraints" "^19.17.1"
+    "@commercetools-uikit/design-system" "^19.17.1"
+    "@commercetools-uikit/flat-button" "^19.17.1"
+    "@commercetools-uikit/icon-button" "^19.17.1"
+    "@commercetools-uikit/icons" "^19.17.1"
+    "@commercetools-uikit/loading-spinner" "^19.17.1"
+    "@commercetools-uikit/notifications" "^19.17.1"
+    "@commercetools-uikit/primary-button" "^19.17.1"
+    "@commercetools-uikit/secondary-button" "^19.17.1"
+    "@commercetools-uikit/select-input" "^19.17.1"
+    "@commercetools-uikit/spacings" "^19.17.1"
+    "@commercetools-uikit/text" "^19.17.1"
     "@emotion/react" "^11.11.4"
     "@emotion/styled" "^11.11.0"
     "@flopflip/combine-adapters" "14.0.2"
@@ -1412,15 +1411,15 @@
     unfetch "4.2.0"
     uuid "9.0.1"
 
-"@commercetools-frontend/assets@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/assets/-/assets-22.33.0.tgz#6f200c52137fa3bfe710bf510e1c4a9d07ad6f01"
-  integrity sha512-dwuXG659qAFjbk/OpQv0OM2+LtV9PN4iVnnMj6gwI2CA2xTZGfcuOjXLYBFk9a+oXh1R2UY4v7b6cF/5qVYV2A==
+"@commercetools-frontend/assets@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/assets/-/assets-22.37.0.tgz#935f5258b541d8efc7d2cf472142b45dd0971a93"
+  integrity sha512-MxWRhhzCxVsqoZjm/DWJiCIUUloCqgq4CnPBmaC87H41x8g6KUo7+C7O/GxOmKANXC5KlcM8lSe0IjDsn5LDxQ==
 
-"@commercetools-frontend/babel-preset-mc-app@22.33.0", "@commercetools-frontend/babel-preset-mc-app@^22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/babel-preset-mc-app/-/babel-preset-mc-app-22.33.0.tgz#e4f8d68c4021b58f871a2c31b2661916c72d14f7"
-  integrity sha512-F/0z++RoOIyRyciSZUHWSspFJhocxDdLRDSUD3t6iOenj90Er6QVY0Z4Lxzr7+TqzhpuRKHpMrjYRNNldAwPXw==
+"@commercetools-frontend/babel-preset-mc-app@22.37.0", "@commercetools-frontend/babel-preset-mc-app@^22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/babel-preset-mc-app/-/babel-preset-mc-app-22.37.0.tgz#3c19ef5de3148f072fb36214582fe0522fe75325"
+  integrity sha512-XrIDYnQt8XgWFlFCvd2oZhcQnuQQr28LndA/6nvo93j4/2ap9ZkkBDDGMhYyqABvn5c1ZBPLQ32TvYFFgYxOYA==
   dependencies:
     "@babel/core" "^7.22.17"
     "@babel/plugin-proposal-do-expressions" "^7.22.5"
@@ -1448,10 +1447,10 @@
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
     core-js "^3.32.2"
 
-"@commercetools-frontend/browser-history@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/browser-history/-/browser-history-22.33.0.tgz#3b88bbe77961c38b4a4a8b05857bded1ca42adc2"
-  integrity sha512-LVAbQ4+QFhTFRd3Dyln7K91waYuXZV6TWinepN5x7mMcO//mRYYeJkPuJL8XmSSghlCJ+NDocLqXhTM1c/4cOg==
+"@commercetools-frontend/browser-history@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/browser-history/-/browser-history-22.37.0.tgz#e4ca68265c2c3d7fdb7eb58a1cfa6e8fb393fe45"
+  integrity sha512-BHOJRbSTSDOXKoRX03yqg9n+0pXYCkX0EflKM1ePCcT5ad//AAIRuzJEmPjV27FZgJ3RXAUYCCV6+BFkvpJ1IA==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
@@ -1460,22 +1459,22 @@
     history-query-enhancer "1.0.4"
     qss "2.0.3"
 
-"@commercetools-frontend/constants@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/constants/-/constants-22.33.0.tgz#23de8787fab0d2d62e188172c79fba34c6dcf929"
-  integrity sha512-a1Ud+BLzEkz7SbYpQ1RbRlgFc108wdumU7IMvzwEasnQjQi+DuVZ3bSwLFuUR4zaRp/6m3LB+f0ohWrtHAEMRA==
+"@commercetools-frontend/constants@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/constants/-/constants-22.37.0.tgz#57f32af9e5f891861a386fe0ea48c3e51940ebe1"
+  integrity sha512-ID9CcepB2zD28N2nXsRt+Gi9WuglPQwJt0fgu09qogQURP3epVyy5STn4+iHUNCcu3JVrVjny5qeZx5Ka6EKsw==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
 
-"@commercetools-frontend/eslint-config-mc-app@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/eslint-config-mc-app/-/eslint-config-mc-app-22.33.0.tgz#d57aefd0d17782be71a7cb39081156784928c11e"
-  integrity sha512-G1ev1w7DQz80Awd3fsYpo4qW9mUp29C63P4c23mX1uaA5E1/A4dnD+TGTDR5bdZNHVLEcmJ4XoxGkOaHpyp9pQ==
+"@commercetools-frontend/eslint-config-mc-app@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/eslint-config-mc-app/-/eslint-config-mc-app-22.37.0.tgz#311b602ca419d3f5f033af60c06f9d6de87c39a7"
+  integrity sha512-E3ml/tmVrF4t//awYMM0Dzb53eZVpRpO2fiey8Reu62tLiQ8mdIi8EjOwSoSmGFS6CkobGuYPdQP+knYTgRP5A==
   dependencies:
     "@babel/core" "^7.22.17"
     "@babel/eslint-parser" "^7.22.15"
-    "@commercetools-frontend/babel-preset-mc-app" "^22.33.0"
+    "@commercetools-frontend/babel-preset-mc-app" "^22.37.0"
     "@rushstack/eslint-patch" "^1.3.3"
     "@typescript-eslint/eslint-plugin" "^5.62.0"
     "@typescript-eslint/parser" "^5.62.0"
@@ -1494,16 +1493,16 @@
     prettier "^2.8.4"
     typescript "^5.2.2"
 
-"@commercetools-frontend/i18n@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/i18n/-/i18n-22.33.0.tgz#0aa159f288ceceb4c63442a358ec858b8605d6e6"
-  integrity sha512-OnleSnOluUMbG5nKF3DwegqDbL5PAjCjIU4nNVcVqzdNWs9hNcCXx1PV8TCW9X18LgCzWRYKfur37ikgvAGl5g==
+"@commercetools-frontend/i18n@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/i18n/-/i18n-22.37.0.tgz#cfc7597499bdbbbbac0f04ad0f32a91d6ff9bf5f"
+  integrity sha512-K4LGTikpTw5VJXSEx5dNNwR4RlQHyB5ouA/NQ5Y6a34ldG1TNF8ntjEGMzlbtsTbA/uG23f7B3FJNhchuWp81A==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
     "@commercetools-community-kit/i18n" "^0.3.0"
-    "@commercetools-frontend/sentry" "22.33.0"
-    "@commercetools-uikit/i18n" "^19.9.0"
+    "@commercetools-frontend/sentry" "22.37.0"
+    "@commercetools-uikit/i18n" "^19.17.1"
     "@emotion/react" "^11.11.4"
     "@formatjs/icu-messageformat-parser" "2.7.8"
     "@types/prop-types" "^15.7.5"
@@ -1511,13 +1510,13 @@
     moment "^2.29.4"
     prop-types "15.8.1"
 
-"@commercetools-frontend/jest-preset-mc-app@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/jest-preset-mc-app/-/jest-preset-mc-app-22.33.0.tgz#c41c79bc6c5a33c6f3347522661764a8d80d8482"
-  integrity sha512-gZu8s7YyWDOfpT9E7U/kkSZ3fWh3Lq1RGLUp+l7uK7PuLT3NBrmz/l4xVA58jkZ4mp+ro7XsEBbuIdDOnj5m0A==
+"@commercetools-frontend/jest-preset-mc-app@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/jest-preset-mc-app/-/jest-preset-mc-app-22.37.0.tgz#c42b85a9604d0ec4149d2b769f2d6cbccf15db9d"
+  integrity sha512-fFV7QrNWDoe810JiEfwHVX0nst4MbqE5c2OiT7EtRatJrRWKxgwApUMRLJeh4RiNBmmzERuWjEf9WLtbQ61fQA==
   dependencies:
     "@babel/core" "^7.22.17"
-    "@commercetools-frontend/babel-preset-mc-app" "22.33.0"
+    "@commercetools-frontend/babel-preset-mc-app" "22.37.0"
     "@formatjs/intl-getcanonicallocales" "^2.2.1"
     "@formatjs/intl-listformat" "^7.4.1"
     "@formatjs/intl-locale" "^3.3.3"
@@ -1528,7 +1527,7 @@
     babel-jest "29.7.0"
     babel-preset-jest "29.6.3"
     colors "1.4.0"
-    cosmiconfig "7.1.0"
+    cosmiconfig "9.0.0"
     graphql "16.8.2"
     graphql-tag "^2.12.6"
     identity-obj-proxy "3.0.0"
@@ -1542,14 +1541,14 @@
     setimmediate "1.0.5"
     unfetch "4.2.0"
 
-"@commercetools-frontend/l10n@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/l10n/-/l10n-22.33.0.tgz#7200383ee020924f09a9253e9ea2789534706caa"
-  integrity sha512-2LJ9XY+qwD/aW57meCAv8y0RMIipG6qt7IofUxkuFeX2XZx+33Dp3hGFnooW5j/3dakhO1tNlR++s9z/UyI1UQ==
+"@commercetools-frontend/l10n@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/l10n/-/l10n-22.37.0.tgz#42d4aa261fe94030b61a8632f310df746d6e3afd"
+  integrity sha512-hhym6HgyBfXmmcb2sET3hfrTczqJ7rcr0StLzSb6xwisdA1yYi/cXgPDhycI7Si0ydxBP2j36NDG5FqFBsiHbg==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/sentry" "22.33.0"
+    "@commercetools-frontend/sentry" "22.37.0"
     "@emotion/react" "^11.11.4"
     "@types/lodash" "^4.14.198"
     "@types/prop-types" "^15.7.5"
@@ -1559,42 +1558,42 @@
     moment-timezone "^0.5.40"
     prop-types "15.8.1"
 
-"@commercetools-frontend/mc-dev-authentication@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/mc-dev-authentication/-/mc-dev-authentication-22.33.0.tgz#a560002bc7d7d7ea2bb6896bcf358facf8ecd7b2"
-  integrity sha512-EwFLERcCgExUgZBJoV8raQdEM1T8mGvJW/6V0rewI5zpcnYU1XJBp6p1oE8M4xKuChsB+aDzNaG4Ev948Joldg==
+"@commercetools-frontend/mc-dev-authentication@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/mc-dev-authentication/-/mc-dev-authentication-22.37.0.tgz#67af3b49f38a3978296c5cccc7d35a69cb10a48a"
+  integrity sha512-/n8m0HJotzmx/Q3QcDM1yKXPeQHTiv6oGlCW/slifvbwnilyKTeNWWvVanuvlJk/gs/bw/59hH+D4jGrM+MJYg==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
 
-"@commercetools-frontend/mc-html-template@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/mc-html-template/-/mc-html-template-22.33.0.tgz#d988ab60ae2c57f2137a448ecf634798abd76d1e"
-  integrity sha512-vlnTQ+67fH4ulaQkY3HAzQ7aX+5gV1YW1KnesHH79/ADMbkcI6GpBEjpbntfdEA0++Cd1KEKoWgmHuPswC09Jw==
+"@commercetools-frontend/mc-html-template@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/mc-html-template/-/mc-html-template-22.37.0.tgz#bbde4ec8d818d9409f2de6dcb4de4d1c6d4ce3a7"
+  integrity sha512-RyIt5O1aR5O9wL5/7wWmWrw5j2GkCEK08U+HZyoOEyvbSV/3WjIH5ipXGktR074GW9qE7YnHjjRn4wqgpiC2VQ==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/application-config" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
+    "@commercetools-frontend/application-config" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
     serialize-javascript "6.0.2"
     uglify-js "3.18.0"
     uglifycss "0.0.29"
 
-"@commercetools-frontend/mc-scripts@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/mc-scripts/-/mc-scripts-22.33.0.tgz#face785523a1c348018e3d234f62fec888154d56"
-  integrity sha512-a6aKssogCSA4TAd/xS54TUnDx/OVs3F0sv+IpMU5aYY3UjLuAAezOU4tvILaIQwCpO1lJ3h8WcWyukdW75OD8A==
+"@commercetools-frontend/mc-scripts@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/mc-scripts/-/mc-scripts-22.37.0.tgz#569207ae2dd61fe2b997d79a8589a64ca92ee7ce"
+  integrity sha512-koREqafQvZcrjOsYfnaHZV3nGt0VCdC0e1vP/cpZozTjKuSVD9mHmydtBpF11CNydoSPgOm94IqkcvYCC2mmeA==
   dependencies:
     "@babel/core" "^7.22.17"
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/application-components" "22.33.0"
-    "@commercetools-frontend/application-config" "22.33.0"
-    "@commercetools-frontend/assets" "22.33.0"
-    "@commercetools-frontend/babel-preset-mc-app" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
-    "@commercetools-frontend/mc-dev-authentication" "22.33.0"
-    "@commercetools-frontend/mc-html-template" "22.33.0"
+    "@commercetools-frontend/application-components" "22.37.0"
+    "@commercetools-frontend/application-config" "22.37.0"
+    "@commercetools-frontend/assets" "22.37.0"
+    "@commercetools-frontend/babel-preset-mc-app" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
+    "@commercetools-frontend/mc-dev-authentication" "22.37.0"
+    "@commercetools-frontend/mc-html-template" "22.37.0"
     "@commercetools/http-user-agent" "3.0.0"
     "@formatjs/cli-lib" "^6.3.8"
     "@pmmmwh/react-refresh-webpack-plugin" "0.5.15"
@@ -1640,6 +1639,7 @@
     querystring-es3 "^0.2.1"
     react-dev-utils "12.0.1"
     react-refresh "0.14.2"
+    rollup-plugin-visualizer "^5.12.0"
     serve-handler "6.1.5"
     shelljs "0.8.5"
     style-loader "3.3.4"
@@ -1648,28 +1648,29 @@
     thread-loader "3.0.4"
     url "^0.11.0"
     vite "~4.5.3"
+    vite-bundle-analyzer "0.12.1"
     webpack "5.94.0"
     webpack-bundle-analyzer "4.10.2"
     webpack-dev-server "4.15.2"
     webpackbar "5.0.2"
 
-"@commercetools-frontend/notifications@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/notifications/-/notifications-22.33.0.tgz#81ed39620edf1ce178874347c466023b30d97172"
-  integrity sha512-o1vDqgiPUzgZDD6zb6NZc8Nlpp0vOqoPA+bEfD5i6Dmny1fGd2uvqyMbkbHn8WYoWmpmMaanKsG15ZA9T2ufVg==
+"@commercetools-frontend/notifications@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/notifications/-/notifications-22.37.0.tgz#e85fa36068a9086ddc6755e5e14c31e72bcabe03"
+  integrity sha512-Ry5r/aIrG6Vokz0Cygaoo4r7wC1nlHWbPZt+mks2JeFO43wNQgTvumixo0v3p/jq5P9ORd4NwCk+Ceqa20ky2g==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
 
-"@commercetools-frontend/permissions@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/permissions/-/permissions-22.33.0.tgz#3c04995844a5f67e54ceadbf389ab3a56357fe1f"
-  integrity sha512-MPeM2OqIYn/mZmAd4C9uICRmsK6ZFVJ+j2yuBnuDcU1Sio3KeWNGZMd1KXSAVmV78iQbw9FWSelR/oaHfXx3tQ==
+"@commercetools-frontend/permissions@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/permissions/-/permissions-22.37.0.tgz#4bd596fad4d0d8ba1dff1a601e69c899dd30f9c1"
+  integrity sha512-kox2a36b8uSXIZZBV6EC0EoP16veHxZo6G56HlW3IjdeDUT4JG7k5IELhbhix8XiGure2HfGhNgO22HZDiHVpQ==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/application-shell-connectors" "22.33.0"
-    "@commercetools-frontend/sentry" "22.33.0"
+    "@commercetools-frontend/application-shell-connectors" "22.37.0"
+    "@commercetools-frontend/sentry" "22.37.0"
     "@emotion/react" "^11.11.4"
     "@types/lodash" "^4.14.198"
     "@types/prop-types" "^15.7.5"
@@ -1679,25 +1680,25 @@
     tiny-invariant "1.3.3"
     tiny-warning "1.0.3"
 
-"@commercetools-frontend/react-notifications@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/react-notifications/-/react-notifications-22.33.0.tgz#bab7e1be74f5e53c1f9c7c4a50d03f0f26888ed9"
-  integrity sha512-BNaG7oZLj76MOlCMCdMWug+C/myRzdhvF7Hr3QYy/XCcIsQlDM1a7729R6SJ/kCh6Nyw6oMRBH3QAHC0Rb7R/A==
+"@commercetools-frontend/react-notifications@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/react-notifications/-/react-notifications-22.37.0.tgz#9bef450d5bf9f2ad883beb7fa88ff43f54460ac4"
+  integrity sha512-ATw5QVxrMsM/QcsUWW/C3z2psUAF8HQJD8lJ00UK5RQhS3WncL/NNJ38oTMHdhFpXtz4RIE73r9m6bSWytkmdg==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/actions-global" "22.33.0"
-    "@commercetools-frontend/application-components" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
-    "@commercetools-frontend/notifications" "22.33.0"
-    "@commercetools-frontend/sentry" "22.33.0"
-    "@commercetools-uikit/design-system" "^19.9.0"
-    "@commercetools-uikit/hooks" "^19.9.0"
-    "@commercetools-uikit/icon-button" "^19.9.0"
-    "@commercetools-uikit/icons" "^19.9.0"
-    "@commercetools-uikit/secondary-icon-button" "^19.9.0"
-    "@commercetools-uikit/spacings" "^19.9.0"
-    "@commercetools-uikit/utils" "^19.9.0"
+    "@commercetools-frontend/actions-global" "22.37.0"
+    "@commercetools-frontend/application-components" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
+    "@commercetools-frontend/notifications" "22.37.0"
+    "@commercetools-frontend/sentry" "22.37.0"
+    "@commercetools-uikit/design-system" "^19.17.1"
+    "@commercetools-uikit/hooks" "^19.17.1"
+    "@commercetools-uikit/icon-button" "^19.17.1"
+    "@commercetools-uikit/icons" "^19.17.1"
+    "@commercetools-uikit/secondary-icon-button" "^19.17.1"
+    "@commercetools-uikit/spacings" "^19.17.1"
+    "@commercetools-uikit/utils" "^19.17.1"
     "@emotion/react" "^11.11.4"
     "@emotion/styled" "^11.11.0"
     "@types/history" "^4.7.11"
@@ -1714,14 +1715,14 @@
     prop-types "15.8.1"
     reselect "4.1.8"
 
-"@commercetools-frontend/sdk@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/sdk/-/sdk-22.33.0.tgz#00165f36678272898a2af2306f549d8a7e91967b"
-  integrity sha512-YauYEWK9vCzdVa3nN9Q5ZSMmR+6simEo9b2ShYuZ1O/AT42U6X17GWvlgV0VJMvO0AI2NWR/cuYaJCJ3OxHTSA==
+"@commercetools-frontend/sdk@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/sdk/-/sdk-22.37.0.tgz#d8a3801b63ef4e855018b6fbeb25df2a5812379b"
+  integrity sha512-Ay2tx1BrJOMoD1YNNaovL5DP9EmbGL5izFxXKAb9BWYfEUpBuuRUTsGcVo3XRR4d8HurA/J1Sb9/ecU4DODZ8A==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/constants" "22.33.0"
+    "@commercetools-frontend/constants" "22.37.0"
     "@commercetools/api-request-builder" "6.0.0"
     "@commercetools/http-user-agent" "3.0.0"
     "@commercetools/sdk-client" "3.0.0"
@@ -1739,26 +1740,26 @@
     unfetch "4.2.0"
     uuid "9.0.1"
 
-"@commercetools-frontend/sentry@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/sentry/-/sentry-22.33.0.tgz#1a32c4dde9562ee7d67ddecc95fb8722991f15c0"
-  integrity sha512-yHYkVhq0jyUHmtCzou7XvXCY80HQFfnvRJzIaE5xC79u2q5TnU8hvTPZJcz+armvBhA0FC7v1G15GkCvykcr8w==
+"@commercetools-frontend/sentry@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/sentry/-/sentry-22.37.0.tgz#95b5012168375bb507b5e393c814663a15fbf889"
+  integrity sha512-qSNqI49+fEiOAuv8J/WU6RHf+SgS9MAw/EzvKk3V37yrqoht3xPzUCGgmVaQokpQoTbrOnhUcVDag5K/AT7IYQ==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
-    "@commercetools-frontend/browser-history" "22.33.0"
-    "@commercetools-frontend/constants" "22.33.0"
-    "@sentry/browser" "7.117.0"
+    "@commercetools-frontend/browser-history" "22.37.0"
+    "@commercetools-frontend/constants" "22.37.0"
+    "@sentry/browser" "7.119.1"
     "@sentry/react" "7.117.0"
     "@sentry/types" "7.117.0"
     "@types/prop-types" "^15.7.5"
     "@types/react" "^17.0.80"
     prop-types "15.8.1"
 
-"@commercetools-frontend/url-utils@22.33.0":
-  version "22.33.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-frontend/url-utils/-/url-utils-22.33.0.tgz#b2825a5c99fd8525060eac595c6dfed18fbea46f"
-  integrity sha512-/OYKMVL8sBAMUpIolyyM7It1JngFMGAnPD4MqZ53pVN+/iugX5/kv7G+TNU9PwdImmFMl4j39zshPLyQYmcbsg==
+"@commercetools-frontend/url-utils@22.37.0":
+  version "22.37.0"
+  resolved "https://registry.yarnpkg.com/@commercetools-frontend/url-utils/-/url-utils-22.37.0.tgz#e9d235131244392c0359d57c91253008114747ef"
+  integrity sha512-fupThY7/H72zQgMT0kvUPqwt/Nwn1dDalx+vRvLtU09o/5zWcd7sIKYnX+IMFsFtc/OH10W2lJDdA4oxd5jeBw==
   dependencies:
     "@babel/runtime" "^7.22.15"
     "@babel/runtime-corejs3" "^7.22.15"
@@ -1826,22 +1827,6 @@
     prop-types "15.8.1"
     react-is "17.0.2"
 
-"@commercetools-uikit/accessible-button@19.11.0", "@commercetools-uikit/accessible-button@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/accessible-button/-/accessible-button-19.11.0.tgz#db30eb0de359a945f5b86093dd73a58328848d41"
-  integrity sha512-ONKqFD6u3+DfmMpPuUkW5eemYV+N8pqHgrsm4o0/7anl+d+T7JA+fX5lI6jFPlSeYwyjFr9m7BaPJ7ac74lLPw==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@emotion/react" "^11.10.5"
-    "@emotion/styled" "^11.10.5"
-    "@types/react-is" "^17.0.3"
-    lodash "4.17.21"
-    prop-types "15.8.1"
-    react-is "17.0.2"
-
 "@commercetools-uikit/accessible-button@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/accessible-button/-/accessible-button-19.12.0.tgz#449abbbb7e05156f00e7410afa041dc588dfd29b"
@@ -1851,6 +1836,22 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "19.12.0"
     "@commercetools-uikit/utils" "19.12.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "@types/react-is" "^17.0.3"
+    lodash "4.17.21"
+    prop-types "15.8.1"
+    react-is "17.0.2"
+
+"@commercetools-uikit/accessible-button@19.20.1", "@commercetools-uikit/accessible-button@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/accessible-button/-/accessible-button-19.20.1.tgz#da4008e5e042dbb91eafbe7d9abb42a97d5b787d"
+  integrity sha512-IvRjqFkzp9+w+s/r438XAqnNwETH1BkxMTMSvZbjDq2R5HWvRhA9Foqdyst3oRrpvbIWDOo1xoBhTkzjPC+wWQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "@types/react-is" "^17.0.3"
@@ -1868,10 +1869,10 @@
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
-"@commercetools-uikit/accessible-hidden@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/accessible-hidden/-/accessible-hidden-19.11.0.tgz#c464d119bf11867adc3e46d8bd89692ddff54ee1"
-  integrity sha512-iarELsLFte4BIK0fIqszs3wjXdllv69hMPUaTAqdhrsjjfxsBK7kvP6q/zFSJm2uLDIdT/Vw1kezNL0nUOzsSw==
+"@commercetools-uikit/accessible-hidden@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/accessible-hidden/-/accessible-hidden-19.20.1.tgz#510aa99bdb2452973ecbc0770d7647d834fc8cfd"
+  integrity sha512-/o//cwaw/pmdFR6c0dee/i4mwLqi9MTGMhzpQ+A1HCLCx3mvc3VpzkH/hZ9m5NmIXnWwt9OiBL4z3d78eHiR8g==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
@@ -1899,15 +1900,15 @@
     prop-types "15.8.1"
     react-select "5.8.0"
 
-"@commercetools-uikit/avatar@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/avatar/-/avatar-19.11.0.tgz#272df5d1a4c9dea52c987200b47de08d3267e9d4"
-  integrity sha512-TcWUlRBtGXjN+MFNioarcM3idMO/5GlD6W0CgJyB9gMzmYApvKuYEolMVCEwEtWGi+WES3ft0QIIqtvZ8RUL0A==
+"@commercetools-uikit/avatar@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/avatar/-/avatar-19.20.1.tgz#42e8364ec558da9741a5bf61e8f522add177d4cb"
+  integrity sha512-Z0XY948U80B5i7aqBKL43XL0cuVtVQaPfZCAeFIgbIu2H2I6WJBA9zundu4mYBXNnErgNUMCPbPehJuXPTfMSA==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     lodash "4.17.21"
@@ -1928,16 +1929,16 @@
     "@types/react-router-dom" "^5.3.3"
     prop-types "15.8.1"
 
-"@commercetools-uikit/card@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/card/-/card-19.11.0.tgz#df6aa66a1eae6d497c5fe68ba868f80e428fc3d8"
-  integrity sha512-FVl1ydcij8z0jU+Po8guaOs2qT+KQCjl+KYockcprlEgaeX4buH3YMqWOhgkxMcIkTvxEokG6cLpjgpDWyIEAA==
+"@commercetools-uikit/card@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/card/-/card-19.20.1.tgz#89b0ba2d578a331c99325f7fa36655f349bfb83e"
+  integrity sha512-pETqHIeod7D1vJCpB8xHG894lQ5zDXT83I++5Klu4d3s4k60KW3058fN7oOVfJ0t7xI/bhNFamjDy+yRF3Tj0A==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings-inset" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings-inset" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     "@types/react-router-dom" "^5.3.3"
@@ -1960,6 +1961,23 @@
     prop-types "15.8.1"
     react-intl "^6.3.2"
 
+"@commercetools-uikit/checkbox-input@19.20.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/checkbox-input/-/checkbox-input-19.20.1.tgz#69d9dcc8d697e9b044de5d20705ae98879229849"
+  integrity sha512-91j675PucRZ1yu43UuMl1uqMfXmd1HcXTFCD5xqF6FAk7xKr/ndpEv4dJ5kAHuLzYDp8sGMMNtI15xNwZwJttQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/icons" "19.20.1"
+    "@commercetools-uikit/input-utils" "19.20.1"
+    "@commercetools-uikit/select-utils" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    prop-types "15.8.1"
+    react-intl "^6.3.2"
+
 "@commercetools-uikit/collapsible-motion@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/collapsible-motion/-/collapsible-motion-19.12.0.tgz#04a702398dbecc61c3db0d832e0c234ba04d839e"
@@ -1974,19 +1992,6 @@
     lodash "4.17.21"
     prop-types "15.8.1"
 
-"@commercetools-uikit/constraints@19.11.0", "@commercetools-uikit/constraints@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/constraints/-/constraints-19.11.0.tgz#dc0330ce4613311425a106887117a14f3378ab46"
-  integrity sha512-kRcWy0sVMWy4mWALYRBMLIPAFwAqMnrEI5QwwirC8zjnRbsMskfwLyxyrybm1hbKlfaAxtxHMekKog35MvTl3Q==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@emotion/react" "^11.10.5"
-    "@emotion/styled" "^11.10.5"
-    prop-types "15.8.1"
-
 "@commercetools-uikit/constraints@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/constraints/-/constraints-19.12.0.tgz#a00dcfa0accd6bb3b09f658e9e34e25c4f3d91ca"
@@ -1996,6 +2001,19 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "19.12.0"
     "@commercetools-uikit/utils" "19.12.0"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    prop-types "15.8.1"
+
+"@commercetools-uikit/constraints@19.20.1", "@commercetools-uikit/constraints@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/constraints/-/constraints-19.20.1.tgz#9c91ab61d6ccc382f84be4b5d550e7e48aa40a4c"
+  integrity sha512-OVebqQ1Rcqmgxy1ejApyKKz4Q7FuT1OFxQAd+DW09Oh5N2LvwIItGK+zJPGlsuZ3G8NmLdU577DL4/TH7or8aQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     prop-types "15.8.1"
@@ -2069,19 +2087,6 @@
     prop-types "15.8.1"
     react "17.0.2"
 
-"@commercetools-uikit/design-system@19.11.0", "@commercetools-uikit/design-system@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/design-system/-/design-system-19.11.0.tgz#7a9c3a99c88f57a9833fe5b9d1ae2664e5950d2f"
-  integrity sha512-mQglrE3sh37FlQ997rbkpWV9HakS4503Vr2PhFpY/i1EjEeGqJwwjake3iNl7ReVq9yEQs8G6ZvJBTwfqzin5Q==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/hooks" "19.11.0"
-    "@emotion/react" "^11.10.5"
-    lodash "4.17.21"
-    prop-types "15.8.1"
-    react "17.0.2"
-
 "@commercetools-uikit/design-system@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/design-system/-/design-system-19.12.0.tgz#38d6636516d78a24784641d3265d1561bad64032"
@@ -2090,6 +2095,19 @@
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/hooks" "19.12.0"
+    "@emotion/react" "^11.10.5"
+    lodash "4.17.21"
+    prop-types "15.8.1"
+    react "17.0.2"
+
+"@commercetools-uikit/design-system@19.20.1", "@commercetools-uikit/design-system@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/design-system/-/design-system-19.20.1.tgz#b0a2f3b9fdf68cb335c12b670941e7ac12457a1e"
+  integrity sha512-AVtdulOkX+mQKZynRNfOOZSkNcGOaC668pWjXWwM1bH4T+kqnMqnAAMgxHd3P6/Xi5cQy6+ul+lJ1HkJWywcyA==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/hooks" "19.20.1"
     "@emotion/react" "^11.10.5"
     lodash "4.17.21"
     prop-types "15.8.1"
@@ -2179,18 +2197,18 @@
     prop-types "15.8.1"
     react-intl "^6.3.2"
 
-"@commercetools-uikit/flat-button@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/flat-button/-/flat-button-19.11.0.tgz#715b219d38b6808a3bd08df26fd84c092d652046"
-  integrity sha512-3YNxT2VY0QeDxEORv+aUHTMxHti+q2sXJZXGoFXFIOro/rgGMLrXbSOA+j9+LnZcE5zawjIfUABAeEyz9ST5lA==
+"@commercetools-uikit/flat-button@19.20.1", "@commercetools-uikit/flat-button@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/flat-button/-/flat-button-19.20.1.tgz#a1d3e104add9c2e979dd5af8a0cef8a0229587e2"
+  integrity sha512-tWv8Wbf/Cs2SzRdSPhvsf5wf/Bt85krgQ+F86EcBflFYR70gkOcmWL5XVB0EmTv/EDsFttde0RdvwquYHhjnCw==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings-inline" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/accessible-button" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings-inline" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     lodash "4.17.21"
@@ -2220,18 +2238,6 @@
     lodash "4.17.21"
     raf-schd "^4.0.3"
 
-"@commercetools-uikit/hooks@19.11.0", "@commercetools-uikit/hooks@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/hooks/-/hooks-19.11.0.tgz#5cf9ce2fb9597b9f5912bc09e44dd8034f06e422"
-  integrity sha512-ZRdmVadjNovS/rIKnSOZN5l9RG1PUA4UNeMQmSDNHUNgqarUwXk/6e64lMOCvBDWQwtVYhFAfjd4cX1S83xCJw==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@types/raf-schd" "^4.0.1"
-    lodash "4.17.21"
-    raf-schd "^4.0.3"
-
 "@commercetools-uikit/hooks@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/hooks/-/hooks-19.12.0.tgz#168cf32ebcea02a2134b7bc18e991538702e83d9"
@@ -2244,10 +2250,22 @@
     lodash "4.17.21"
     raf-schd "^4.0.3"
 
-"@commercetools-uikit/i18n@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/i18n/-/i18n-19.11.0.tgz#394132ceeb12c1fb82c269709e67844d10c286c0"
-  integrity sha512-oJtq6++OwCvw/yYB/gKyCbZuy9vvJncUsaLImrGXlmhhcvGyA2lXhB8S8rTQWwy9k7sqILas2/czf3KdYAUheA==
+"@commercetools-uikit/hooks@19.20.1", "@commercetools-uikit/hooks@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/hooks/-/hooks-19.20.1.tgz#d40f99af7ce06a84174f5d6529741fb23bed5f62"
+  integrity sha512-A4sfyW2Sj3RFjhIf/4yz2hh0JUPT2mKQ50pJx/XV4wpIFxsL5i4v8iPIlO20m806EVUVIjT31u2zV++ICUHs/w==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/utils" "19.20.1"
+    "@types/raf-schd" "^4.0.1"
+    lodash "4.17.21"
+    raf-schd "^4.0.3"
+
+"@commercetools-uikit/i18n@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/i18n/-/i18n-19.20.1.tgz#2720b15f986c19657a326a9a4c36e14a2b5721bb"
+  integrity sha512-Tz5h3Y5r/x/A2pzRGaSZ4o1sPl5l7JGSaiCERLyW+UIiJzE9phbQTG2QFBe7h6K77GqDUBoU6iRQAfAN6Pr+aA==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
@@ -2270,39 +2288,23 @@
     prop-types "15.8.1"
     react-intl "^6.3.2"
 
-"@commercetools-uikit/icon-button@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/icon-button/-/icon-button-19.11.0.tgz#5a13ea3506382ac83d16316c9c2512ed716900a9"
-  integrity sha512-J2WGUB0MTZXdNDrfDMZqZzMmGBIoFXMsEBWUUzz2pE0bkm9/bPL10BfCkO82JXioOY03qHxjMr+ImJdtpOKm4g==
+"@commercetools-uikit/icon-button@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/icon-button/-/icon-button-19.20.1.tgz#ba39ad9e7028f16f358b40f8e9b4946a8a237d93"
+  integrity sha512-A6RhY7dj3jMl/joh+cusshxb1EZJ+J1agWxAbQNcpmv4CKg2eiw1GMVg/6NSonaekvjxYmcYXUCMX+CmYIV4Ig==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/accessible-button" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     lodash "4.17.21"
     prop-types "15.8.1"
     react-intl "^6.3.2"
-
-"@commercetools-uikit/icons@19.11.0", "@commercetools-uikit/icons@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/icons/-/icons-19.11.0.tgz#7b1158594e2746e900203249aa98231fd5380906"
-  integrity sha512-saLqG8ujWMjMZow7pysXMsFyvn6OlYGcsNPcnhWXJ9XcqgV8Nf58MzR7U9iNQGUgSI+E9OUmAfLZZjO1oMeKiA==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@emotion/react" "^11.10.5"
-    "@emotion/styled" "^11.10.5"
-    "@types/dompurify" "^2.4.0"
-    dompurify "2.5.5"
-    prop-types "15.8.1"
-    react-from-dom "0.6.2"
 
 "@commercetools-uikit/icons@19.12.0":
   version "19.12.0"
@@ -2317,6 +2319,22 @@
     "@emotion/styled" "^11.10.5"
     "@types/dompurify" "^2.4.0"
     dompurify "2.5.5"
+    prop-types "15.8.1"
+    react-from-dom "0.6.2"
+
+"@commercetools-uikit/icons@19.20.1", "@commercetools-uikit/icons@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/icons/-/icons-19.20.1.tgz#9109e6d11d49bebe3af63059fb8e92c9954e782f"
+  integrity sha512-+GfO+QPsKDwKUyuhV90e49KqA3beQsFFfrIBGiybN5Fc6DT08q8tSYOXmFj9zhPNkg1coNiCEX9U7WmXHMJgBQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    "@types/dompurify" "^2.4.0"
+    dompurify "2.5.8"
     prop-types "15.8.1"
     react-from-dom "0.6.2"
 
@@ -2335,6 +2353,21 @@
     prop-types "15.8.1"
     react-textarea-autosize "8.4.0"
 
+"@commercetools-uikit/input-utils@19.20.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/input-utils/-/input-utils-19.20.1.tgz#ffb79fe7de8e68cf872507ad2692190ad9e8ba06"
+  integrity sha512-5dNh3DHtKwGccliCNzagHxBav0mCgFdGM+tD22tUoDEwvstY2E3xIPBWRIhZt0MatdMrE5sKcd/k/EqlD4PGyQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/flat-button" "19.20.1"
+    "@commercetools-uikit/icons" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
+    "@emotion/react" "^11.10.5"
+    prop-types "15.8.1"
+    react-textarea-autosize "8.4.0"
+
 "@commercetools-uikit/label@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/label/-/label-19.12.0.tgz#634bb76441f096bd3ebdf368345d2be761e54bf6"
@@ -2349,16 +2382,16 @@
     "@emotion/styled" "^11.10.5"
     prop-types "15.8.1"
 
-"@commercetools-uikit/label@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/label/-/label-19.11.0.tgz#a3699064fcdb109fdb6fbb215113494844d871fc"
-  integrity sha512-VDV6PQ9FQ24rrS+U6Y0QY3HEVIYAje+AU3XEwMm7TPD5JFs/TWQEbqkd3F9kRmD5zyNDo48XNgZM/V44oltnuA==
+"@commercetools-uikit/label@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/label/-/label-19.20.1.tgz#7e94ab2a30fc76d3ea5c82c62bb9ad50e5bba15f"
+  integrity sha512-sX4rixFzUjt/RMBkvP50ZgDQ6Q727QRVjVNg8HNsT9VxsYao38YozF22LO3o1Hj4BukL+vepK1+gtyfk9b/cWg==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     prop-types "15.8.1"
@@ -2396,17 +2429,17 @@
     prop-types "15.8.1"
     react-intl "^6.3.2"
 
-"@commercetools-uikit/loading-spinner@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/loading-spinner/-/loading-spinner-19.11.0.tgz#3f4ea7b0314c69747dc94db1aff99b1120615da1"
-  integrity sha512-q6r8/S3nD4j4Afef1Sod/hgmSiAFaoWjzQNM2KC5QuxvdpGI3vVVEMOyrplcq1mpbTEiugnSB9foPQibNPe+Tg==
+"@commercetools-uikit/loading-spinner@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/loading-spinner/-/loading-spinner-19.20.1.tgz#5d702b9b762906cf47dee5a4c6690b3959e3f0ac"
+  integrity sha512-cN9h7uW9096SNYVeLP3Z20qlIUm9aRyXtzNh/Eu6c6bAlqbgY8yeEXZnnf3oVZcZwwUFr0VJWS9Q9xXQWwPcbg==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings-inline" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings-inline" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
     react-intl "^6.3.2"
@@ -2478,15 +2511,15 @@
     prop-types "15.8.1"
     react-intl "^6.3.2"
 
-"@commercetools-uikit/messages@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/messages/-/messages-19.11.0.tgz#3382c64555386873ee85915fb8af9dd0b3fecc2c"
-  integrity sha512-L0+nFrAbV5M3bKTmcqJOONxCBXPnrGJD4yVnEN36JAMo7UW+oE+a9uppf4IQ6b3YsWBIcyCgiAKDoo8OVEY21Q==
+"@commercetools-uikit/messages@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/messages/-/messages-19.20.1.tgz#06a46d4e2eda0b7e1cfd5925bc71cc5edfbbe7da"
+  integrity sha512-x4RVQDrSBt/W/HD+C3+JaxXcEVRrwyTGyamNcLfES7uQWaW6d1AZ3gSKNf/58xnZ3biMEQLC+RWvdEpg39lpag==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     prop-types "15.8.1"
@@ -2506,17 +2539,17 @@
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
-"@commercetools-uikit/notifications@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/notifications/-/notifications-19.11.0.tgz#27f7201144f299b4057c7f0ff24f4bf1a646137b"
-  integrity sha512-eSxrh/dBQ+ImHtQcsmaIMC0naakn7lrXgw6XzxH5If+/RdecslTQRUk7SQ6PVcJxx9eeoJUs+towHQUZeyyK6A==
+"@commercetools-uikit/notifications@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/notifications/-/notifications-19.20.1.tgz#3f8b4670a2c3ee9da7c73bcc98de4c7d47f0f6f3"
+  integrity sha512-ouYmCDDaCezY1umTiHFJUJBqEYmaN38na+AiBF0/r0kd6k/QUgl6Vd9AYtV0x2tIPAQf548TVx6GXQPgE861Tg==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/icons" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/accessible-button" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/icons" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
@@ -2594,18 +2627,18 @@
     prop-types "15.8.1"
     react-intl "^6.3.2"
 
-"@commercetools-uikit/primary-button@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/primary-button/-/primary-button-19.11.0.tgz#eaf1aca9e68c21ad0cbd4d3061c7af64d443e0a0"
-  integrity sha512-EOierP+F+cOsp0dacIBACX0QA6N4tmPAg5sRy5DLgRPPWIfxhzqxjYUDGzFp3cXH01kCRSdPDWQJHu/D0iN2Gw==
+"@commercetools-uikit/primary-button@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/primary-button/-/primary-button-19.20.1.tgz#9fa99e6375761dc34e0a8ff63ba727924a746512"
+  integrity sha512-v/xEbCz55wxpOf7eeXxMKl4JMCMjBPchU+ta9M4UW/eda2FMxjNn8pNG/xzzXy7ET/49Nlcz/eRq6XTTMm35nA==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings-inline" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/accessible-button" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings-inline" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     lodash "4.17.21"
@@ -2686,18 +2719,18 @@
     lodash "4.17.21"
     prop-types "15.8.1"
 
-"@commercetools-uikit/secondary-button@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/secondary-button/-/secondary-button-19.11.0.tgz#0489e6aba0c3c3907049e50e46079a81c13e0b5f"
-  integrity sha512-LmiPwJeekJyA8ezRBuHsXqeTpthvL0lNyussP8aAp5tfu9vKPIAh4mvOv/+RGUg6OMdp0N/UqoxUxg/s9dttIA==
+"@commercetools-uikit/secondary-button@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/secondary-button/-/secondary-button-19.20.1.tgz#11e8aeff35a0e76ffbaed4f66b3a633891d150ef"
+  integrity sha512-Hf3aHwKAicFLCHfhLfcrHm8Zm6zTjHtLXy54uKplI3UmmMs6MDqmAPJra85X9wX7av5KH9Hk/rPtK72kiaVAvQ==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings-inline" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/accessible-button" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings-inline" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     lodash "4.17.21"
@@ -2721,18 +2754,18 @@
     prop-types "15.8.1"
     react-intl "^6.3.2"
 
-"@commercetools-uikit/secondary-icon-button@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/secondary-icon-button/-/secondary-icon-button-19.11.0.tgz#80391a54480d6593dcaca34905cf797917ab63d2"
-  integrity sha512-Rin3SmSUSCMkRoncC65p1RG5qYELq7K7AIZuL5TwnqThbI20YsI6KmywEgKhm3z7qjXJGZ84Ewd8V6vU+mxh6w==
+"@commercetools-uikit/secondary-icon-button@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/secondary-icon-button/-/secondary-icon-button-19.20.1.tgz#323d068554cb342a60f27a2b63b3bd978565b441"
+  integrity sha512-w0IJ3/9E2sthK51N0KRweuswi3C3dTemVF6JgrSwC4NOwzpSLSQ3k+JhEBycGFGVAdYdb7bVNw1IWrxTui2lmQ==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/accessible-button" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     lodash "4.17.21"
@@ -2778,43 +2811,24 @@
     prop-types "15.8.1"
     react-select "5.8.0"
 
-"@commercetools-uikit/select-input@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/select-input/-/select-input-19.11.0.tgz#ea1681354ae82cd1029f2991b02221d808122698"
-  integrity sha512-GrfksGzPCKP4qvo+JfyzWJOvtB2POvmgiZGowAWQ+JwiX4c4C4R+gq4JRZ3s3aS11EA1vz6BCUr+HGbgv/TNJw==
+"@commercetools-uikit/select-input@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/select-input/-/select-input-19.20.1.tgz#16a34e0dd1096b8294a92c2aabbef5293228ba6d"
+  integrity sha512-lKEi8i9LSfxRjJtwDYByegdgdgV796Xg+OnGryuk78wRO9bE0tz6O3FlKejJTHjt011BgjkwD+Q9pZkyoEH59A==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/constraints" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/icons" "19.11.0"
-    "@commercetools-uikit/select-utils" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@emotion/is-prop-valid" "1.2.2"
+    "@commercetools-uikit/constraints" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/icons" "19.20.1"
+    "@commercetools-uikit/select-utils" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
+    "@emotion/is-prop-valid" "1.3.1"
     "@emotion/react" "^11.10.5"
     "@emotion/styled" "^11.10.5"
     lodash "4.17.21"
     prop-types "15.8.1"
-    react-select "5.8.0"
-
-"@commercetools-uikit/select-utils@19.11.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/select-utils/-/select-utils-19.11.0.tgz#df6dc2855e9887ea10c1a1383e57169d9093b59d"
-  integrity sha512-v+dfei9mTrtLlJqT7xqU2/RmYTew5xpOnF7dV2TA7vY3XS1FxN4f4WVxvz6yDhlv0XGg9tCZqFaFxmuhSqswbA==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/accessible-button" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/icons" "19.11.0"
-    "@commercetools-uikit/spacings" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@emotion/react" "^11.10.5"
-    "@emotion/styled" "^11.10.5"
-    lodash "4.17.21"
-    prop-types "15.8.1"
-    react-select "5.8.0"
+    react-select "5.9.0"
 
 "@commercetools-uikit/select-utils@19.12.0":
   version "19.12.0"
@@ -2835,6 +2849,26 @@
     prop-types "15.8.1"
     react-select "5.8.0"
 
+"@commercetools-uikit/select-utils@19.20.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/select-utils/-/select-utils-19.20.1.tgz#72bb9168d096de8a2cc56dd4d3b801fd4e5082f3"
+  integrity sha512-ophkOP1OdSZBH7WwgeG5kSq+0dlJTfKV7KUPf4UoB14+qu4RC6RLa9V/UgmKemVtinrWRYYeGTSfctSk1w/Zsw==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/accessible-button" "19.20.1"
+    "@commercetools-uikit/checkbox-input" "19.20.1"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/icons" "19.20.1"
+    "@commercetools-uikit/spacings" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
+    "@emotion/react" "^11.10.5"
+    "@emotion/styled" "^11.10.5"
+    lodash "4.17.21"
+    prop-types "15.8.1"
+    react-select "5.9.0"
+
 "@commercetools-uikit/spacings-inline@16.12.0":
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-inline/-/spacings-inline-16.12.0.tgz#db7f7baeaa2dc01440c4d6abcea19e117988b264"
@@ -2844,18 +2878,6 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "16.12.0"
     "@commercetools-uikit/utils" "16.12.0"
-    "@emotion/react" "^11.10.5"
-    prop-types "15.8.1"
-
-"@commercetools-uikit/spacings-inline@19.11.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-inline/-/spacings-inline-19.11.0.tgz#0d424873235e929a5d680e283eefc98c8963731b"
-  integrity sha512-KAenFG9Yy9+XWahlYks6H4GAYpr229welyLNfbn+fVFQm8qKnWPGjaKpi5kFeLGWqjPUQcM4H1G7Z9cJrT8fig==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
@@ -2871,15 +2893,15 @@
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
-"@commercetools-uikit/spacings-inset-squish@19.11.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-inset-squish/-/spacings-inset-squish-19.11.0.tgz#5940bf9a02796e6c6583fb1736120ee74ed7df39"
-  integrity sha512-2kGIWq7+Hq5lMzT1f9Y+QDrpLszRdorIz8AmnZJtljerE6BN42Nr52gRmLMLVG6wNRQcnvMdsIdqHeeH3y5rWA==
+"@commercetools-uikit/spacings-inline@19.20.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-inline/-/spacings-inline-19.20.1.tgz#8e72563e740dc12e7f0238641e1ca5c99f94f753"
+  integrity sha512-YK4qv1AKGaXX/RUAtZ+PN9geFPmZQ9PnS6wO6d88tZSbr+G0t7gjysYVcXRqLqA96HSKN1A6jlQWDntstI7zVg==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
@@ -2895,15 +2917,15 @@
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
-"@commercetools-uikit/spacings-inset@19.11.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-inset/-/spacings-inset-19.11.0.tgz#f1bad87ab99c90e97fcff3f6e2b0c1c41f893da9"
-  integrity sha512-fXhUhCqoVF16svN4eu6e40GhGJVk6IR3T1tUCfCJ7Hs1AE1BMld1khMuqKOvJE55GY/HN3/HiN7enUK4g+r26A==
+"@commercetools-uikit/spacings-inset-squish@19.20.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-inset-squish/-/spacings-inset-squish-19.20.1.tgz#515d38da144619274da6af8c548e11a613aaedce"
+  integrity sha512-ddZpDukbXoZSA2dn3p+oFxacFciaO0T2OrkbNunVpk8BFUBndlN7iXQ4YiCGfcwDv9ISfaEeNUcEElx975BlPw==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
@@ -2919,15 +2941,15 @@
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
-"@commercetools-uikit/spacings-stack@19.11.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-stack/-/spacings-stack-19.11.0.tgz#129f81fc0130e0529aa332f58061a0944ba3c1e0"
-  integrity sha512-SQkMSCPsXAWAEvqALFVcFQCDrEDQFHzOt0N349P3PTnaCD4m++rwNGgAFT1SR8pjDghcswqOUua84BaVKvy+og==
+"@commercetools-uikit/spacings-inset@19.20.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-inset/-/spacings-inset-19.20.1.tgz#6b0cb978844a1a1f4fc312036bf26e3b0bdd5d0c"
+  integrity sha512-kDc05RFU87NJOSEx6btCJm81aBPN6hnav6PLjr8jtEfPYs5YWt/8D6RlNIgO3Of1ELzIju4IF5sqOa9uwvynYA==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
@@ -2943,17 +2965,17 @@
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
-"@commercetools-uikit/spacings@19.11.0", "@commercetools-uikit/spacings@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings/-/spacings-19.11.0.tgz#9c59bb860c4cc91969f3c92ab0a3d2d6abafb511"
-  integrity sha512-eu7pRHc3LqolUQFYPD8ctXLsRGXJTJxz9O5l9pc+3uql9z13r7jfq93awI4Zr7451gkZo2KFoOY2QApsT9RRhA==
+"@commercetools-uikit/spacings-stack@19.20.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings-stack/-/spacings-stack-19.20.1.tgz#4d447a16e40c975a2c9ad7a261ce03f3f2ac4344"
+  integrity sha512-4pZ2Pf+oYp40fi7v4rhPh6JvUno0fN0j4i/6b4rCsJdDK3YmWwvMnUtg0Y9duJ5503hDhhugd1wvyKSlpfw7KQ==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/spacings-inline" "19.11.0"
-    "@commercetools-uikit/spacings-inset" "19.11.0"
-    "@commercetools-uikit/spacings-inset-squish" "19.11.0"
-    "@commercetools-uikit/spacings-stack" "19.11.0"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
+    "@emotion/react" "^11.10.5"
+    prop-types "15.8.1"
 
 "@commercetools-uikit/spacings@19.12.0":
   version "19.12.0"
@@ -2967,17 +2989,29 @@
     "@commercetools-uikit/spacings-inset-squish" "19.12.0"
     "@commercetools-uikit/spacings-stack" "19.12.0"
 
-"@commercetools-uikit/stamp@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/stamp/-/stamp-19.11.0.tgz#64d19f67d67daa0f0b755d69c0b43119e908703d"
-  integrity sha512-sCAmV3Q0tcj9ZoNbR7yxveI+dhjKXWBAEMxSxsmGRWRQR0H9udEd9PbiRU388WsxM4EYwWYMgjF4FAk6zHUz0w==
+"@commercetools-uikit/spacings@19.20.1", "@commercetools-uikit/spacings@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/spacings/-/spacings-19.20.1.tgz#989b9d989067e31bd82048ff89f229f001290476"
+  integrity sha512-aEGMAsf8pp/eniTZQGk6GHOQNkPPaIfoNWWgh28Ilz5FHKU2P7D7752oh4aY9p/VRwHzCq2uAF3Y4vEc+0XyrA==
   dependencies:
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/spacings-inline" "19.11.0"
-    "@commercetools-uikit/text" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
+    "@commercetools-uikit/spacings-inline" "19.20.1"
+    "@commercetools-uikit/spacings-inset" "19.20.1"
+    "@commercetools-uikit/spacings-inset-squish" "19.20.1"
+    "@commercetools-uikit/spacings-stack" "19.20.1"
+
+"@commercetools-uikit/stamp@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/stamp/-/stamp-19.20.1.tgz#60c844a72c4eab609b3ad3697f2c54b03b446ea0"
+  integrity sha512-I5wn+TEUHzIWADkDKyU6wc8iBARiyseLsOqHYHZ/V04bkWFoTMisgTgJ8XHoIT+EkyhGqaZyYz9zp2StV882Qg==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/spacings-inline" "19.20.1"
+    "@commercetools-uikit/text" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     prop-types "15.8.1"
 
@@ -3050,20 +3084,6 @@
     prop-types "15.8.1"
     warning "4.0.3"
 
-"@commercetools-uikit/text@19.11.0", "@commercetools-uikit/text@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/text/-/text-19.11.0.tgz#ef34a846236fd936e2da9a883b4fcfdac5caeab2"
-  integrity sha512-8q8Th40UkCEPFxbvC5Yfk7zcpRyyemnlAm6q5dKtp0/9LIYkNAU6MwA2A3Epc6j79FFlZvy1/GbeGQeAeom4Vw==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@emotion/react" "^11.10.5"
-    lodash "4.17.21"
-    prop-types "15.8.1"
-    warning "4.0.3"
-
 "@commercetools-uikit/text@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/text/-/text-19.12.0.tgz#8893225791bdfc35bdf4fbe75a1e3b1f0af49fc0"
@@ -3073,6 +3093,20 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@commercetools-uikit/design-system" "19.12.0"
     "@commercetools-uikit/utils" "19.12.0"
+    "@emotion/react" "^11.10.5"
+    lodash "4.17.21"
+    prop-types "15.8.1"
+    warning "4.0.3"
+
+"@commercetools-uikit/text@19.20.1", "@commercetools-uikit/text@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/text/-/text-19.20.1.tgz#4b3a549dbbb1e5a2d72574701e75ca63f9d17a47"
+  integrity sha512-G2rYV5q0nT2cNFjE2t6hyiI3G/fdYL8FUL8E22bp1RzokotCGTpmQIzETiCW29qc+ZpmXYjl57xxE6B0FCcEQg==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@commercetools-uikit/design-system" "19.20.1"
+    "@commercetools-uikit/utils" "19.20.1"
     "@emotion/react" "^11.10.5"
     lodash "4.17.21"
     prop-types "15.8.1"
@@ -3111,24 +3145,6 @@
     react-is "17.0.2"
     use-popper "1.1.6"
 
-"@commercetools-uikit/tooltip@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/tooltip/-/tooltip-19.11.0.tgz#473519ac87ab793b4aca649dee6136f432b45e4a"
-  integrity sha512-W7JJfQFBgDgnTN+QnVf3YddQWbOYDOZwfjbPmxAsy7iSRolDPpRxTOjKG0PW9qHO9a6+kecACtb7PwXWMbYK+Q==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@commercetools-uikit/constraints" "19.11.0"
-    "@commercetools-uikit/design-system" "19.11.0"
-    "@commercetools-uikit/hooks" "19.11.0"
-    "@commercetools-uikit/utils" "19.11.0"
-    "@emotion/react" "^11.10.5"
-    "@emotion/styled" "^11.10.5"
-    lodash "4.17.21"
-    prop-types "15.8.1"
-    react-is "17.0.2"
-    use-popper "1.1.6"
-
 "@commercetools-uikit/utils@16.12.0":
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/utils/-/utils-16.12.0.tgz#1025740a47b010ca91eade0c04cf7c3e98826fcb"
@@ -3138,15 +3154,6 @@
     "@babel/runtime-corejs3" "^7.20.13"
     "@emotion/is-prop-valid" "1.2.1"
 
-"@commercetools-uikit/utils@19.11.0", "@commercetools-uikit/utils@^19.9.0":
-  version "19.11.0"
-  resolved "https://registry.yarnpkg.com/@commercetools-uikit/utils/-/utils-19.11.0.tgz#05dc9265ecac68a3cb734cb8e395d3b4a5d127ad"
-  integrity sha512-ZC5mlGgjm36eBwvzXiinjoOYfFmDZ5ZiLa0+Jws0GdRRxPM0aPJIxIxjTIwk4UZp5EPFKivkd6RP2l1YPkn0qg==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    "@babel/runtime-corejs3" "^7.20.13"
-    "@emotion/is-prop-valid" "1.2.2"
-
 "@commercetools-uikit/utils@19.12.0":
   version "19.12.0"
   resolved "https://registry.yarnpkg.com/@commercetools-uikit/utils/-/utils-19.12.0.tgz#de49439d9c03be1f18f9dcd29d290d3f163909fe"
@@ -3155,6 +3162,15 @@
     "@babel/runtime" "^7.20.13"
     "@babel/runtime-corejs3" "^7.20.13"
     "@emotion/is-prop-valid" "1.2.2"
+
+"@commercetools-uikit/utils@19.20.1", "@commercetools-uikit/utils@^19.17.1":
+  version "19.20.1"
+  resolved "https://registry.yarnpkg.com/@commercetools-uikit/utils/-/utils-19.20.1.tgz#2691045a826eaebbc230478bf5964aaad799181a"
+  integrity sha512-8nYmB4BD4dFXzP2zxyj6BcrMgo6LCyus9i+bLX9Y2vtqybWsipH6N87wpM6R+IATA8C4k76QLz5J2wwVWYOqeQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    "@babel/runtime-corejs3" "^7.20.13"
+    "@emotion/is-prop-valid" "1.3.1"
 
 "@commercetools/api-request-builder@6.0.0":
   version "6.0.0"
@@ -3309,7 +3325,7 @@
   dependencies:
     "@emotion/memoize" "^0.8.1"
 
-"@emotion/is-prop-valid@^1.2.1":
+"@emotion/is-prop-valid@1.3.1", "@emotion/is-prop-valid@^1.2.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-1.3.1.tgz#8d5cf1132f836d7adbe42cf0b49df7816fc88240"
   integrity sha512-/ACwoqx7XQi9knQs/G0qKvv5teDMhD7bXYns9N/wM8ah8iNb8jZ2uNO0YOgiq2o2poIvVtJS2YALasQuMSQ7Kw==
@@ -4364,24 +4380,22 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz#4fc56c15c580b9adb7dc3c333a134e540b44bfb1"
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
-"@manypkg/cli@^0.21.1":
-  version "0.21.4"
-  resolved "https://registry.yarnpkg.com/@manypkg/cli/-/cli-0.21.4.tgz#e17d4bd3e1defceec0acf0449b7309d0490b6cd0"
-  integrity sha512-EACxxb+c/t6G0l1FrlyewZeBnyR5V1cLkXjnBfsay5TN1UgbilFpG6POglzn+lVJet9NqnEKe3RLHABzkIDZ0Q==
+"@manypkg/cli@0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@manypkg/cli/-/cli-0.23.0.tgz#abc6915c59160f1556f081b96857adba55f3f68b"
+  integrity sha512-9N0GuhUZhrDbOS2rer1/ZWaO8RvPOUI+kKTwlq74iQXomL+725E9Vfvl9U64FYwnLkQCxCmPZ9nBs/u8JwFnSw==
   dependencies:
     "@manypkg/get-packages" "^2.2.1"
-    chalk "^2.4.2"
     detect-indent "^6.0.0"
-    find-up "^4.1.0"
-    fs-extra "^8.1.0"
     normalize-path "^3.0.0"
     p-limit "^2.2.1"
-    package-json "^8.1.0"
+    package-json "^10.0.1"
     parse-github-url "^1.0.2"
-    sembear "^0.5.0"
-    semver "^6.3.0"
-    spawndamnit "^2.0.0"
-    validate-npm-package-name "^3.0.0"
+    picocolors "^1.1.0"
+    sembear "^0.7.0"
+    semver "^7.6.3"
+    tinyexec "^0.3.1"
+    validate-npm-package-name "^5.0.1"
 
 "@manypkg/find-root@^2.2.2":
   version "2.2.3"
@@ -4644,7 +4658,7 @@
     "@sentry/types" "7.119.1"
     "@sentry/utils" "7.119.1"
 
-"@sentry/browser@7.117.0", "@sentry/browser@^7.119.1":
+"@sentry/browser@7.117.0", "@sentry/browser@7.119.1", "@sentry/browser@^7.119.1":
   version "7.119.1"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-7.119.1.tgz#260470dd7fd18de366017c3bf23a252a24d2ff05"
   integrity sha512-aMwAnFU4iAPeLyZvqmOQaEDHt/Dkf8rpgYeJ0OEi50dmP6AjG+KIAMCXU7CYCCQDn70ITJo8QD5+KzCoZPYz0A==
@@ -4738,11 +4752,6 @@
   version "0.27.8"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
-
-"@sindresorhus/is@^5.2.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-5.6.0.tgz#41dd6093d34652cddb5d5bdeee04eafc33826668"
-  integrity sha512-TV7t8GKYaJWsn00tFDqBw8+Uqmr8A0fRU1tvTQhyZzGv0sJCGRQL3JGMI3ucuKo3XIZdUP+Lx7/gh2t3lewy7g==
 
 "@sinonjs/commons@^3.0.0":
   version "3.0.1"
@@ -4944,13 +4953,6 @@
   integrity sha512-wBJA+SdtkbFhHjTMYH+dEH1y4VpfGdAc2Kw/LK09i9bXd/K6j6PkDcFCEzb6iVfZMkPRrl/q0e3toqTAJdkIVA==
   dependencies:
     "@swc/counter" "^0.1.3"
-
-"@szmarczak/http-timer@^5.0.1":
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-5.0.1.tgz#c7c1bf1141cdd4751b0399c8fc7b8b664cd5be3a"
-  integrity sha512-+PmQX0PiAYPMeVYe237LJAYvOMYW1j2rH5YROyS3b4CTVJum34HfRvKvAzozHAQG0TnHNdUfY9nCeUyRAs//cw==
-  dependencies:
-    defer-to-connect "^2.0.1"
 
 "@testing-library/dom@9.3.3":
   version "9.3.3"
@@ -5192,11 +5194,6 @@
   resolved "https://registry.yarnpkg.com/@types/html-minifier-terser/-/html-minifier-terser-6.1.0.tgz#4fc33a00c1d0c16987b1a20cf92d20614c55ac35"
   integrity sha512-oh/6byDPnL1zeNXFrDXFLyZjkr1MsBG667IM792caf1L2UPOOMf65NFzjUH/ltyfwjAGfs1rsX1eftK0jC/KIg==
 
-"@types/http-cache-semantics@^4.0.2":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@types/http-cache-semantics/-/http-cache-semantics-4.0.4.tgz#b979ebad3919799c979b17c72621c0bc0a31c6c4"
-  integrity sha512-1m0bIFVc7eJWyve9S0RnuRgcQqF/Xd5QsUZAZeQFr1Q3/p9JWoQQEqmVy+DPTNpGXwhgIetAoYF8JSc33q29QA==
-
 "@types/http-errors@*":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-2.0.4.tgz#7eb47726c391b7345a6ec35ad7f4de469cf5ba4f"
@@ -5415,11 +5412,6 @@
   version "0.16.8"
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.8.tgz#ce5ace04cfeabe7ef87c0091e50752e36707deff"
   integrity sha512-WZLiwShhwLRmeV6zH+GkbOFT6Z6VklCItrDioxUnv+u4Ll+8vKeFySoFyK/0ctcRpOmwAicELfmys1sDc/Rw+A==
-
-"@types/semver@^6.0.1":
-  version "6.2.7"
-  resolved "https://registry.yarnpkg.com/@types/semver/-/semver-6.2.7.tgz#473fb8d63ea04f7511c699fb9b96830c51e8a53d"
-  integrity sha512-blctEWbzUFzQx799RZjzzIdBJOXmE37YYEyDtKkx5Dg+V7o/zyyAxLPiI98A2jdTtDgxZleMdfV+7p8WbRJ1OQ==
 
 "@types/semver@^7.3.12":
   version "7.5.8"
@@ -5871,10 +5863,15 @@ acorn-walk@^8.0.0, acorn-walk@^8.0.2:
   dependencies:
     acorn "^8.11.0"
 
-acorn@^8.0.4, acorn@^8.1.0, acorn@^8.11.0, acorn@^8.7.1, acorn@^8.8.1, acorn@^8.8.2, acorn@^8.9.0:
+acorn@^8.0.4, acorn@^8.1.0, acorn@^8.11.0, acorn@^8.7.1, acorn@^8.8.1, acorn@^8.8.2:
   version "8.12.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.12.1.tgz#71616bdccbe25e27a54439e0046e89ca76df2248"
   integrity sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==
+
+acorn@^8.9.0:
+  version "8.14.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.14.0.tgz#063e2c70cac5fb4f6467f0b11152e04c682795b0"
+  integrity sha512-cl669nCJTZBsL97OF4kUQm5g5hC2uihk0NxY3WENAC0TYdILVkAyHymAntgxGkl7K+t0cXIrH5siy5S4XkFycA==
 
 address@^1.0.1, address@^1.1.2:
   version "1.2.2"
@@ -6449,11 +6446,6 @@ buffer@^5.5.0:
     base64-js "^1.3.1"
     ieee754 "^1.1.13"
 
-builtins@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
-  integrity sha512-uYBjakWipfaO/bXI7E8rq6kpwHRZK5cNYrUv2OzZSI/FvmdMyXJ2tG9dKcjEC5YHmHpUAwsargWIZNWdxb/bnQ==
-
 busboy@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"
@@ -6475,24 +6467,6 @@ cac@6.7.14:
   version "6.7.14"
   resolved "https://registry.yarnpkg.com/cac/-/cac-6.7.14.tgz#804e1e6f506ee363cb0e3ccbb09cad5dd9870959"
   integrity sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==
-
-cacheable-lookup@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/cacheable-lookup/-/cacheable-lookup-7.0.0.tgz#3476a8215d046e5a3202a9209dd13fec1f933a27"
-  integrity sha512-+qJyx4xiKra8mZrcwhjMRMUhD5NR1R8esPkzIYxX96JiecFoxAXFuz/GpR3+ev4PE1WamHip78wV0vcmPQtp8w==
-
-cacheable-request@^10.2.8:
-  version "10.2.14"
-  resolved "https://registry.yarnpkg.com/cacheable-request/-/cacheable-request-10.2.14.tgz#eb915b665fda41b79652782df3f553449c406b9d"
-  integrity sha512-zkDT5WAF4hSSoUgyfg5tFIxz8XQK+25W/TLVojJTMKBaxevLBBtLxgqguAuVQB8PVW79FVjHcU+GJ9tVbDZ9mQ==
-  dependencies:
-    "@types/http-cache-semantics" "^4.0.2"
-    get-stream "^6.0.1"
-    http-cache-semantics "^4.1.1"
-    keyv "^4.5.3"
-    mimic-response "^4.0.0"
-    normalize-url "^8.0.0"
-    responselike "^3.0.0"
 
 call-bind@^1.0.2, call-bind@^1.0.5, call-bind@^1.0.6, call-bind@^1.0.7:
   version "1.0.7"
@@ -6868,16 +6842,12 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
-cosmiconfig@7.1.0, cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-7.1.0.tgz#1443b9afa596b670082ea46cbd8f6a62b84635f6"
-  integrity sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==
+cosmiconfig-typescript-loader@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig-typescript-loader/-/cosmiconfig-typescript-loader-6.1.0.tgz#7f644503e1c2bff90aed2d29a637008f279646bb"
+  integrity sha512-tJ1w35ZRUiM5FeTzT7DtYWAFFv37ZLqSRkGi2oeCK1gPhvaWjkAtfXvLmvE1pRfxxp9aQo6ba/Pvg1dKj05D4g==
   dependencies:
-    "@types/parse-json" "^4.0.0"
-    import-fresh "^3.2.1"
-    parse-json "^5.0.0"
-    path-type "^4.0.0"
-    yaml "^1.10.0"
+    jiti "^2.4.1"
 
 cosmiconfig@8.0.0:
   version "8.0.0"
@@ -6889,6 +6859,16 @@ cosmiconfig@8.0.0:
     parse-json "^5.0.0"
     path-type "^4.0.0"
 
+cosmiconfig@9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-9.0.0.tgz#34c3fc58287b915f3ae905ab6dc3de258b55ad9d"
+  integrity sha512-itvL5h8RETACmOTFc4UfIyB2RfEHi71Ax6E/PivVxq9NseKbOWpeyHEOIbmAw1rs8Ak0VursQNww7lf7YtUwzg==
+  dependencies:
+    env-paths "^2.2.1"
+    import-fresh "^3.3.0"
+    js-yaml "^4.1.0"
+    parse-json "^5.2.0"
+
 cosmiconfig@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-6.0.0.tgz#da4fee853c52f6b1e6935f41c1a2fc50bd4a9982"
@@ -6899,6 +6879,17 @@ cosmiconfig@^6.0.0:
     parse-json "^5.0.0"
     path-type "^4.0.0"
     yaml "^1.7.2"
+
+cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-7.1.0.tgz#1443b9afa596b670082ea46cbd8f6a62b84635f6"
+  integrity sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==
+  dependencies:
+    "@types/parse-json" "^4.0.0"
+    import-fresh "^3.2.1"
+    parse-json "^5.0.0"
+    path-type "^4.0.0"
+    yaml "^1.10.0"
 
 create-jest-runner@^0.11.2:
   version "0.11.2"
@@ -6929,19 +6920,10 @@ cross-fetch@^3.1.5:
   dependencies:
     node-fetch "^2.6.12"
 
-cross-spawn@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
-  integrity sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==
-  dependencies:
-    lru-cache "^4.0.1"
-    shebang-command "^1.2.0"
-    which "^1.2.9"
-
-cross-spawn@^7.0.2, cross-spawn@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
-  integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
+cross-spawn@^7.0.2, cross-spawn@^7.0.3, cross-spawn@^7.0.6:
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.6.tgz#8a58fe78f00dcd70c370451759dfbfaf03e8ee9f"
+  integrity sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==
   dependencies:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
@@ -7214,13 +7196,6 @@ decimal.js@^10.4.2, decimal.js@^10.4.3:
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.4.3.tgz#1044092884d245d1b7f65725fa4ad4c6f781cc23"
   integrity sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==
 
-decompress-response@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/decompress-response/-/decompress-response-6.0.0.tgz#ca387612ddb7e104bd16d85aab00d5ecf09c66fc"
-  integrity sha512-aW35yZM6Bb/4oJlZncMH2LCoZtJXTRxES17vE3hoRiowU2kWHaJKFkSBDnDR+cm9J+9QhXmREyIfv0pji9ejCQ==
-  dependencies:
-    mimic-response "^3.1.0"
-
 dedent@^1.0.0:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/dedent/-/dedent-1.5.3.tgz#99aee19eb9bae55a67327717b6e848d0bf777e5a"
@@ -7288,11 +7263,6 @@ defaults@^1.0.3:
   integrity sha512-eFuaLoy/Rxalv2kr+lqMlUnrDWV+3j4pljOIJgLIhI058IQfWJ7vXhyEIHu+HtC738klGALYxOKDO0bQP3tg8A==
   dependencies:
     clone "^1.0.2"
-
-defer-to-connect@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/defer-to-connect/-/defer-to-connect-2.0.1.tgz#8016bdb4143e4632b77a3449c6236277de520587"
-  integrity sha512-4tvttepXG1VaYGrRibk5EwJd1t4udunSOVMdLSAL6mId1ix438oPwPZMALY41FCijukO1L0twNcGsdzS7dHgDg==
 
 define-data-property@^1.0.1, define-data-property@^1.1.4:
   version "1.1.4"
@@ -7451,7 +7421,7 @@ domhandler@^4.0.0, domhandler@^4.2.0, domhandler@^4.3.1:
   dependencies:
     domelementtype "^2.2.0"
 
-dompurify@2.5.5, dompurify@^2.4.7, dompurify@^2.5.4:
+dompurify@2.5.5, dompurify@2.5.8, dompurify@^2.4.7, dompurify@^2.5.4:
   version "2.5.7"
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.5.7.tgz#6e0d36b9177db5a99f18ade1f28579db5ab839d7"
   integrity sha512-2q4bEI+coQM8f5ez7kt2xclg1XsecaV9ASJk/54vwlfRRNQfDqJz2pzQ8t0Ix/ToBpXlVjrRIx7pFC/o8itG2Q==
@@ -7568,6 +7538,11 @@ entities@^4.4.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/entities/-/entities-4.5.0.tgz#5d268ea5e7113ec74c4d033b79ea5a35a488fb48"
   integrity sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==
+
+env-paths@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-2.2.1.tgz#420399d416ce1fbe9bc0a07c62fa68d67fd0f8f2"
+  integrity sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==
 
 error-ex@^1.3.1:
   version "1.3.2"
@@ -8411,11 +8386,6 @@ fork-ts-checker-webpack-plugin@^6.5.0:
     semver "^7.3.2"
     tapable "^1.0.0"
 
-form-data-encoder@^2.1.2:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/form-data-encoder/-/form-data-encoder-2.1.4.tgz#261ea35d2a70d48d30ec7a9603130fa5515e9cd5"
-  integrity sha512-yDYSgNMraqvnxiEXO4hi88+YZxaHC6QKzb5N84iRCTDeRO7ZALpir/lVmf/uXUhnwUr2O4HU8s/n6x+yNjQkHw==
-
 form-data@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-3.0.1.tgz#ebd53791b78356a99af9a300d4282c4d5eb9755f"
@@ -8471,15 +8441,6 @@ fs-extra@10, fs-extra@10.1.0:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
     universalify "^2.0.0"
-
-fs-extra@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
-  integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^4.0.0"
-    universalify "^0.1.0"
 
 fs-extra@^9.0.0:
   version "9.1.0"
@@ -8557,7 +8518,7 @@ get-package-type@^0.1.0:
   resolved "https://registry.yarnpkg.com/get-package-type/-/get-package-type-0.1.0.tgz#8de2d803cff44df3bc6c456e6668b36c3926e11a"
   integrity sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==
 
-get-stream@^6.0.0, get-stream@^6.0.1:
+get-stream@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-6.0.1.tgz#a262d8eef67aced57c2852ad6167526a43cbf7b7"
   integrity sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==
@@ -8663,23 +8624,6 @@ gopd@^1.0.1:
   integrity sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==
   dependencies:
     get-intrinsic "^1.1.3"
-
-got@^12.1.0:
-  version "12.6.1"
-  resolved "https://registry.yarnpkg.com/got/-/got-12.6.1.tgz#8869560d1383353204b5a9435f782df9c091f549"
-  integrity sha512-mThBblvlAF1d4O5oqyvN+ZxLAYwIJK7bpMxgYqPD9okW0C3qm5FFn7k811QrcuEBwaogR3ngOFoCfs6mRv7teQ==
-  dependencies:
-    "@sindresorhus/is" "^5.2.0"
-    "@szmarczak/http-timer" "^5.0.1"
-    cacheable-lookup "^7.0.0"
-    cacheable-request "^10.2.8"
-    decompress-response "^6.0.0"
-    form-data-encoder "^2.1.2"
-    get-stream "^6.0.1"
-    http2-wrapper "^2.1.10"
-    lowercase-keys "^3.0.0"
-    p-cancelable "^3.0.0"
-    responselike "^3.0.0"
 
 graceful-fs@4.2.10:
   version "4.2.10"
@@ -8915,11 +8859,6 @@ htmlparser2@^6.1.0:
     domutils "^2.5.2"
     entities "^2.0.0"
 
-http-cache-semantics@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.1.tgz#abe02fcb2985460bf0323be664436ec3476a6d5a"
-  integrity sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==
-
 http-deceiver@^1.2.7:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/http-deceiver/-/http-deceiver-1.2.7.tgz#fa7168944ab9a519d337cb0bec7284dc3e723d87"
@@ -8980,14 +8919,6 @@ http-proxy@^1.18.1:
     follow-redirects "^1.0.0"
     requires-port "^1.0.0"
 
-http2-wrapper@^2.1.10:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/http2-wrapper/-/http2-wrapper-2.2.1.tgz#310968153dcdedb160d8b72114363ef5fce1f64a"
-  integrity sha512-V5nVw1PAOgfI3Lmeaj2Exmeg7fenjhRUgz1lPSezy1CuhPYbgQtbQj4jZfEAEMlaL+vupsvhjqCyjzob0yxsmQ==
-  dependencies:
-    quick-lru "^5.1.1"
-    resolve-alpn "^1.2.0"
-
 https-proxy-agent@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-5.0.1.tgz#c59ef224a04fe8b754f3db0063a25ea30d0005d6"
@@ -9047,7 +8978,7 @@ immer@^9.0.21, immer@^9.0.7:
   resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.21.tgz#1e025ea31a40f24fb064f1fef23e931496330176"
   integrity sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==
 
-import-fresh@^3.0.0, import-fresh@^3.1.0, import-fresh@^3.2.1:
+import-fresh@^3.0.0, import-fresh@^3.1.0, import-fresh@^3.2.1, import-fresh@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.3.0.tgz#37162c25fcb9ebaa2e6e53d5b4d88ce17d9e0c2b"
   integrity sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==
@@ -9978,6 +9909,11 @@ jiti@1.17.1:
   resolved "https://registry.yarnpkg.com/jiti/-/jiti-1.17.1.tgz#264daa43ee89a03e8be28c3d712ccc4eb9f1e8ed"
   integrity sha512-NZIITw8uZQFuzQimqjUxIrIcEdxYDFIe/0xYfIlVXTkiBjjyBEvgasj5bb0/cHtPRD/NziPbT312sFrkI5ALpw==
 
+jiti@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/jiti/-/jiti-2.4.1.tgz#4de9766ccbfa941d9b6390d2b159a4b295a52e6b"
+  integrity sha512-yPBThwecp1wS9DmoA4x4KR2h3QoslacnDR8ypuFM962kI4/456Iy1oHx2RAgh4jfZNdn0bctsdadceiBUgpU1g==
+
 jju@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/jju/-/jju-1.4.0.tgz#a3abe2718af241a2b2904f84a625970f389ae32a"
@@ -10147,13 +10083,6 @@ jsondiffpatch@^0.4.0:
     chalk "^2.3.0"
     diff-match-patch "^1.0.0"
 
-jsonfile@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
-  integrity sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==
-  optionalDependencies:
-    graceful-fs "^4.1.6"
-
 jsonfile@^6.0.1:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-6.1.0.tgz#bc55b2634793c679ec6403094eb13698a6ec0aae"
@@ -10204,6 +10133,11 @@ klona@^2.0.5:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.6.tgz#85bffbf819c03b2f53270412420a4555ef882e22"
   integrity sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==
+
+ky@^1.2.0:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/ky/-/ky-1.7.3.tgz#6f9c143afb81fdd4778b00f3dd494ba7286c575e"
+  integrity sha512-Sz49ZWR/BjNOq+2UK1k9ONZUVq8eyuCj30Zgc8VrRNtFlTBZduzuvehUd5kjQF6/Fms3Ir3EYqzJryw9tRvsSw==
 
 language-subtag-registry@^0.3.20:
   version "0.3.23"
@@ -10435,19 +10369,6 @@ lower-case@^2.0.2:
   dependencies:
     tslib "^2.0.3"
 
-lowercase-keys@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-3.0.0.tgz#c5e7d442e37ead247ae9db117a9d0a467c89d4f2"
-  integrity sha512-ozCC6gdQ+glXOQsveKD0YsDy8DSQFjDTz4zyzEHNV5+JP5D62LmfDZ6o1cycFx9ouG940M5dE8C8CTewdj2YWQ==
-
-lru-cache@^4.0.1:
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.5.tgz#8bbe50ea85bed59bc9e33dcab8235ee9bcf443cd"
-  integrity sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==
-  dependencies:
-    pseudomap "^1.0.2"
-    yallist "^2.1.2"
-
 lru-cache@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-5.1.1.tgz#1da27e6710271947695daf6848e847f01d84b920"
@@ -10593,16 +10514,6 @@ mimic-fn@^3.0.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-3.1.0.tgz#65755145bbf3e36954b949c16450427451d5ca74"
   integrity sha512-Ysbi9uYW9hFyfrThdDEQuykN4Ey6BuwPD2kpI5ES/nFTDn/98yxYNLZJcgUAKPT/mcrLLKaGzJR9YVxJrIdASQ==
 
-mimic-response@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-3.1.0.tgz#2d1d59af9c1b129815accc2c46a022a5ce1fa3c9"
-  integrity sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==
-
-mimic-response@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/mimic-response/-/mimic-response-4.0.0.tgz#35468b19e7c75d10f5165ea25e75a5ceea7cf70f"
-  integrity sha512-e5ISH9xMYU0DzrT+jl8q2ze9D6eWBto+I8CNpe+VI+K2J/F/k3PdkdTdz4wvGVH4NTpo+NRYTVIuMQEMMcsLqg==
-
 min-indent@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/min-indent/-/min-indent-1.0.1.tgz#a63f681673b30571fbe8bc25686ae746eefa9869"
@@ -10720,10 +10631,10 @@ mute-stream@0.0.8:
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-nanoid@^3.3.7:
-  version "3.3.7"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
-  integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
+nanoid@^3.3.7, nanoid@^3.3.8:
+  version "3.3.8"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.8.tgz#b1be3030bee36aaff18bacb375e5cce521684baf"
+  integrity sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==
 
 natural-compare-lite@^1.4.0:
   version "1.4.0"
@@ -10796,11 +10707,6 @@ normalize-url@^6.0.1:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-6.1.0.tgz#40d0885b535deffe3f3147bec877d05fe4c5668a"
   integrity sha512-DlL+XwOy3NxAQ8xuC0okPgK46iuVNAK01YN7RueYBqqFeGsBjV9XmCAzAdgt+667bCl5kPh9EqKKDwnaPG1I7A==
-
-normalize-url@^8.0.0:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-8.0.1.tgz#9b7d96af9836577c58f5883e939365fa15623a4a"
-  integrity sha512-IO9QvjUMWxPQQhs60oOu10CRkWCiZzSUkzbXGGV9pviYl1fXYcvkzQ5jV9z8Y6un8ARoVRl4EtC6v6jNqbaJ/w==
 
 npm-run-path@^4.0.1:
   version "4.0.1"
@@ -10999,11 +10905,6 @@ outvariant@^1.2.1, outvariant@^1.4.0:
   resolved "https://registry.yarnpkg.com/outvariant/-/outvariant-1.4.3.tgz#221c1bfc093e8fec7075497e7799fdbf43d14873"
   integrity sha512-+Sl2UErvtsoajRDKCE5/dBz4DIvHXQQnAxtQTF04OJxY0+DyZXSo5P5Bb7XYWOh81syohlYL24hbDwxedPUJCA==
 
-p-cancelable@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/p-cancelable/-/p-cancelable-3.0.0.tgz#63826694b54d61ca1c20ebcb6d3ecf5e14cd8050"
-  integrity sha512-mlVgR3PGuzlo0MmTdk4cXqXWlwQDLnONTAg6sm62XkMJEiRxN3GL3SffkYvqwonbkJBcrI7Uvv5Zh9yjvn2iUw==
-
 p-limit@3.1.0, p-limit@^3.0.2, p-limit@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.1.0.tgz#e1daccbe78d0d1388ca18c64fea38e3e57e3706b"
@@ -11052,15 +10953,15 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-package-json@^8.1.0:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/package-json/-/package-json-8.1.1.tgz#3e9948e43df40d1e8e78a85485f1070bf8f03dc8"
-  integrity sha512-cbH9IAIJHNj9uXi196JVsRlt7cHKak6u/e6AkL/bkRelZ7rlL3X1YKxsZwa36xipOEKAsdtmaG6aAJoM1fx2zA==
+package-json@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/package-json/-/package-json-10.0.1.tgz#e49ee07b8de63b638e7f1b5bb353733e428fe7d7"
+  integrity sha512-ua1L4OgXSBdsu1FPb7F3tYH0F48a6kxvod4pLUlGY9COeJAJQNX/sNH2IiEmsxw7lqYiAwrdHMjz1FctOsyDQg==
   dependencies:
-    got "^12.1.0"
-    registry-auth-token "^5.0.1"
-    registry-url "^6.0.0"
-    semver "^7.3.7"
+    ky "^1.2.0"
+    registry-auth-token "^5.0.2"
+    registry-url "^6.0.1"
+    semver "^7.6.0"
 
 param-case@^3.0.4:
   version "3.0.4"
@@ -11599,11 +11500,6 @@ proxy-addr@~2.0.7:
     forwarded "0.2.0"
     ipaddr.js "1.9.1"
 
-pseudomap@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
-  integrity sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==
-
 psl@^1.1.33:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.9.0.tgz#d0df2a137f00794565fcaf3b2c00cd09f8d5a5a7"
@@ -11662,11 +11558,6 @@ queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
-
-quick-lru@^5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
-  integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
 raf-schd@^4.0.2, raf-schd@^4.0.3:
   version "4.0.3"
@@ -11916,6 +11807,21 @@ react-select@5.8.0:
     react-transition-group "^4.3.0"
     use-isomorphic-layout-effect "^1.1.2"
 
+react-select@5.9.0:
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.9.0.tgz#41325b7bfe8452a8d401b82fc4fb7d44a03e29c5"
+  integrity sha512-nwRKGanVHGjdccsnzhFte/PULziueZxGD8LL2WojON78Mvnq7LdAMEtu2frrwld1fr3geixg3iiMBIc/LLAZpw==
+  dependencies:
+    "@babel/runtime" "^7.12.0"
+    "@emotion/cache" "^11.4.0"
+    "@emotion/react" "^11.8.1"
+    "@floating-ui/dom" "^1.0.1"
+    "@types/react-transition-group" "^4.4.0"
+    memoize-one "^6.0.0"
+    prop-types "^15.6.0"
+    react-transition-group "^4.3.0"
+    use-isomorphic-layout-effect "^1.2.0"
+
 react-textarea-autosize@8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-8.4.0.tgz#4d0244d6a50caa897806b8c44abc0540a69bfc8c"
@@ -12084,14 +11990,14 @@ regexpu-core@^6.1.1:
     unicode-match-property-ecmascript "^2.0.0"
     unicode-match-property-value-ecmascript "^2.1.0"
 
-registry-auth-token@^5.0.1:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/registry-auth-token/-/registry-auth-token-5.0.2.tgz#8b026cc507c8552ebbe06724136267e63302f756"
-  integrity sha512-o/3ikDxtXaA59BmZuZrJZDJv8NMDGSj+6j6XaeBmHw8eY1i1qd9+6H+LjVvQXx3HN6aRCGa1cUdJ9RaJZUugnQ==
+registry-auth-token@^5.0.2:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/registry-auth-token/-/registry-auth-token-5.0.3.tgz#417d758c8164569de8cf5cabff16cc937902dcc6"
+  integrity sha512-1bpc9IyC+e+CNFRaWyn77tk4xGG4PPUyfakSmA6F6cvUDjrm58dfyJ3II+9yb10EDkHoy1LaPSmHaWLOH3m6HA==
   dependencies:
     "@pnpm/npm-conf" "^2.1.0"
 
-registry-url@^6.0.0:
+registry-url@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/registry-url/-/registry-url-6.0.1.tgz#056d9343680f2f64400032b1e199faa692286c58"
   integrity sha512-+crtS5QjFRqFCoQmvGduwYWEBng99ZvmFvF+cUJkGYF1L1BfU8C6Zp9T7f5vPAwyLkUExpvK+ANVZmGU49qi4Q==
@@ -12166,11 +12072,6 @@ reselect@4.1.8, reselect@^4.1.8:
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.8.tgz#3f5dc671ea168dccdeb3e141236f69f02eaec524"
   integrity sha512-ab9EmR80F/zQTMNeneUr4cv+jSwPJgIlvEmVwLerwrWVbpLlBuls9XHzIeTFy4cegU2NHBp3va0LKOzU5qFEYQ==
 
-resolve-alpn@^1.2.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/resolve-alpn/-/resolve-alpn-1.2.1.tgz#b7adbdac3546aaaec20b45e7d8265927072726f9"
-  integrity sha512-0a1F4l73/ZFZOakJnQ3FvkJ2+gSTQWz/r2KE5OdDY0TxPm5h4GkqkWWfM47T7HsbnOtcJVEF4epCVy6u7Q3K+g==
-
 resolve-cwd@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-3.0.0.tgz#0f0075f1bb2544766cf73ba6a6e2adfebcb13f2d"
@@ -12226,13 +12127,6 @@ response-iterator@^0.2.6:
   resolved "https://registry.yarnpkg.com/response-iterator/-/response-iterator-0.2.6.tgz#249005fb14d2e4eeb478a3f735a28fd8b4c9f3da"
   integrity sha512-pVzEEzrsg23Sh053rmDUvLSkGXluZio0qu8VT6ukrYuvtjVfCbDZH9d6PGXb8HZfzdNZt8feXv/jvUzlhRgLnw==
 
-responselike@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/responselike/-/responselike-3.0.0.tgz#20decb6c298aff0dbee1c355ca95461d42823626"
-  integrity sha512-40yHxbNcl2+rzXvZuVkrYohathsSJlMTXKryG5y8uciHv1+xDLHQpgjG64JUO9nrEq2jGLH6IZ8BcZyw3wrweg==
-  dependencies:
-    lowercase-keys "^3.0.0"
-
 restore-cursor@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/restore-cursor/-/restore-cursor-3.1.0.tgz#39f67c54b3a7a58cea5236d95cf0034239631f7e"
@@ -12257,6 +12151,16 @@ rimraf@^3.0.2:
   integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
   dependencies:
     glob "^7.1.3"
+
+rollup-plugin-visualizer@^5.12.0:
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-visualizer/-/rollup-plugin-visualizer-5.12.0.tgz#661542191ce78ee4f378995297260d0c1efb1302"
+  integrity sha512-8/NU9jXcHRs7Nnj07PF2o4gjxmm9lXIrZ8r175bT9dK8qoLlvKTwRMArRCMgpMGlq8CTLugRvEmyMeMXIU2pNQ==
+  dependencies:
+    open "^8.4.0"
+    picomatch "^2.3.1"
+    source-map "^0.7.4"
+    yargs "^17.5.1"
 
 rollup@^3.27.1, rollup@^3.29.5:
   version "3.29.5"
@@ -12388,13 +12292,12 @@ selfsigned@^2.1.1:
     "@types/node-forge" "^1.3.0"
     node-forge "^1"
 
-sembear@^0.5.0:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/sembear/-/sembear-0.5.2.tgz#679da95f1cf1a39b7fcd54a1ae89cd5badedb7b3"
-  integrity sha512-Ij1vCAdFgWABd7zTg50Xw1/p0JgESNxuLlneEAsmBrKishA06ulTTL/SHGmNy2Zud7+rKrHTKNI6moJsn1ppAQ==
+sembear@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/sembear/-/sembear-0.7.0.tgz#a2a0cfecf8886818e49e9bca959188e3685105b3"
+  integrity sha512-XyLTEich2D02FODCkfdto3mB9DetWPLuTzr4tvoofe9SvyM27h4nQSbV3+iVcYQz94AFyKtqBv5pcZbj3k2hdA==
   dependencies:
-    "@types/semver" "^6.0.1"
-    semver "^6.3.0"
+    semver "^7.3.5"
 
 semver@^5.6.0:
   version "5.7.2"
@@ -12406,7 +12309,7 @@ semver@^6.0.0, semver@^6.3.0, semver@^6.3.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
-semver@^7.3.2, semver@^7.3.5, semver@^7.3.7, semver@^7.5.3, semver@^7.5.4, semver@^7.6.3:
+semver@^7.3.2, semver@^7.3.5, semver@^7.3.7, semver@^7.5.3, semver@^7.5.4, semver@^7.6.0, semver@^7.6.3:
   version "7.6.3"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.3.tgz#980f7b5550bc175fb4dc09403085627f9eb33143"
   integrity sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==
@@ -12523,24 +12426,12 @@ shallowequal@^1.1.0:
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==
 
-shebang-command@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
-  integrity sha512-EV3L1+UQWGor21OmnvojK36mhg+TyIKDh3iFBKBohr5xeXIhNBcx8oWdgkTEEQ+BEFFYdLRuqMfd5L84N1V5Vg==
-  dependencies:
-    shebang-regex "^1.0.0"
-
 shebang-command@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-2.0.0.tgz#ccd0af4f8835fbdc265b82461aaf0c36663f34ea"
   integrity sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==
   dependencies:
     shebang-regex "^3.0.0"
-
-shebang-regex@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
-  integrity sha512-wpoSFAxys6b2a2wHZ1XpDSgD7N9iVjg29Ph9uV/uaP9Ex/KXlkTZTeddxDPSYQpgvzKLGJke2UU0AzoGCjNIvQ==
 
 shebang-regex@^3.0.0:
   version "3.0.0"
@@ -12640,18 +12531,10 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.0, source-map@~0.6.1:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
-source-map@^0.7.3:
+source-map@^0.7.3, source-map@^0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.4.tgz#a9bbe705c9d8846f4e08ff6765acf0f1b0898656"
   integrity sha512-l3BikUxvPOcn5E74dZiq5BGsTb5yEwhaTSzccU6t4sDOH8NWJCstKO5QT2CvtFoK6F0saL7p9xHAqHOlCPJygA==
-
-spawndamnit@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/spawndamnit/-/spawndamnit-2.0.0.tgz#9f762ac5c3476abb994b42ad592b5ad22bb4b0ad"
-  integrity sha512-j4JKEcncSjFlqIwU5L/rp2N5SIPsdxaRsIv678+TZxZ0SRDJTm8JrxJMjE/XuiEZNEir3S8l0Fa3Ke339WI4qA==
-  dependencies:
-    cross-spawn "^5.1.0"
-    signal-exit "^3.0.2"
 
 spdy-transport@^3.0.0:
   version "3.0.0"
@@ -13056,6 +12939,11 @@ tiny-warning@1.0.3, tiny-warning@^1.0.0, tiny-warning@^1.0.2:
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
+tinyexec@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/tinyexec/-/tinyexec-0.3.1.tgz#0ab0daf93b43e2c211212396bdb836b468c97c98"
+  integrity sha512-WiCJLEECkO18gwqIp6+hJg0//p23HXp4S+gGtAKu3mI2F2/sXC4FvHvXvB0zJVVaTPhx1/tOwdbRsa1sOBIKqQ==
+
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
@@ -13300,11 +13188,6 @@ unicode-property-aliases-ecmascript@^2.0.0:
   resolved "https://registry.yarnpkg.com/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-2.1.0.tgz#43d41e3be698bd493ef911077c9b131f827e8ccd"
   integrity sha512-6t3foTQI9qne+OZoVQB/8x8rk2k1eVy1gRXhV3oFQ5T6R1dqQ1xtin3XqSlx3+ATBkliTaR/hHyJBm+LVPNM8w==
 
-universalify@^0.1.0:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
-  integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
-
 universalify@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.2.0.tgz#6451760566fa857534745ab1dde952d1b1761be0"
@@ -13380,6 +13263,11 @@ use-isomorphic-layout-effect@^1.1.1, use-isomorphic-layout-effect@^1.1.2:
   resolved "https://registry.yarnpkg.com/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.1.2.tgz#497cefb13d863d687b08477d9e5a164ad8c1a6fb"
   integrity sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==
 
+use-isomorphic-layout-effect@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.2.0.tgz#afb292eb284c39219e8cb8d3d62d71999361a21d"
+  integrity sha512-q6ayo8DWoPZT0VdG4u3D3uxcgONP3Mevx2i2b0434cwWBoL+aelL1DzkXI6w3PhTZzUeR2kaVlZn70iCiseP6w==
+
 use-latest@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/use-latest/-/use-latest-1.2.1.tgz#d13dfb4b08c28e3e33991546a2cee53e14038cf2"
@@ -13444,12 +13332,10 @@ v8-to-istanbul@^9.0.1:
     "@types/istanbul-lib-coverage" "^2.0.1"
     convert-source-map "^2.0.0"
 
-validate-npm-package-name@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-3.0.0.tgz#5fa912d81eb7d0c74afc140de7317f0ca7df437e"
-  integrity sha512-M6w37eVCMMouJ9V/sdPGnC5H4uDr73/+xdq0FBLO3TFFX1+7wiUY6Es328NN+y43tmY+doUdN9g9J21vqB7iLw==
-  dependencies:
-    builtins "^1.0.3"
+validate-npm-package-name@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/validate-npm-package-name/-/validate-npm-package-name-5.0.1.tgz#a316573e9b49f3ccd90dbb6eb52b3f06c6d604e8"
+  integrity sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==
 
 value-equal@^1.0.1:
   version "1.0.1"
@@ -13465,6 +13351,11 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+
+vite-bundle-analyzer@0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/vite-bundle-analyzer/-/vite-bundle-analyzer-0.12.1.tgz#0a429384ab327ad6ab08e3f0aa29e4cf0693969f"
+  integrity sha512-mIYwsDvTYCqXAUtOZIL3f7NdwWUeL/MlNFhOJzlTdcZE4pye6h06IEnOvWhnc/e+HM4oVVNxuRHZt0Rz6VO7EA==
 
 vite@^4.5.4, vite@~4.5.3:
   version "4.5.5"
@@ -13762,7 +13653,7 @@ which-typed-array@^1.1.13, which-typed-array@^1.1.14, which-typed-array@^1.1.15:
     gopd "^1.0.1"
     has-tostringtag "^1.0.2"
 
-which@^1.2.9, which@^1.3.1:
+which@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
   integrity sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==
@@ -13837,11 +13728,6 @@ y18n@^5.0.5:
   resolved "https://registry.yarnpkg.com/y18n/-/y18n-5.0.8.tgz#7f4934d0f7ca8c56f95314939ddcd2dd91ce1d55"
   integrity sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==
 
-yallist@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/yallist/-/yallist-2.1.2.tgz#1c11f9218f076089a47dd512f93c6699a6a81d52"
-  integrity sha512-ncTzHV7NvsQZkYe1DW7cbDLm0YpzHmZF5r/iyP3ZnQtMiJ+pjzisCiMNI+Sj+xQF5pXhSHxSB3uDbsBTzY/c2A==
-
 yallist@^3.0.2:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
@@ -13857,7 +13743,7 @@ yargs-parser@^21.1.1:
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-21.1.1.tgz#9096bceebf990d21bb31fa9516e0ede294a77d35"
   integrity sha512-tVpsJW7DdjecAiFpbIB1e3qxIQsE6NoPc5/eTdrbbIC4h0LVsWhnoa3g+m2HclBIujHzsxZ4VJVA+GUuc2/LBw==
 
-yargs@^17.3.1:
+yargs@^17.3.1, yargs@^17.5.1:
   version "17.7.2"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.7.2.tgz#991df39aca675a192b816e1e0363f9d75d2aa269"
   integrity sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w==

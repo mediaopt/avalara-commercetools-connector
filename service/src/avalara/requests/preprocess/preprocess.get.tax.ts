@@ -7,7 +7,6 @@ import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
-import { sanitizeAddress } from '../../../utils/avatax.utils';
 
 // initialize and specify the tax document model of Avalara
 export async function processCart(
@@ -18,9 +17,9 @@ export async function processCart(
   const taxDocument = new CreateTransactionModel();
 
   if (cart?.shippingAddress && cart?.shippingInfo) {
-    const shipFrom = sanitizeAddress(originAddress);
+    const shipFrom = originAddress;
 
-    const shipTo = sanitizeAddress(shippingAddress(cart?.shippingAddress));
+    const shipTo = shippingAddress(cart?.shippingAddress);
 
     const shippingInfo = await shipItem(cart?.shippingInfo);
 

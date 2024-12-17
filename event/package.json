@@ -51,6 +51,8 @@
     "braces": "^3.0.3",
     "micromatch": "^4.0.8",
     "node": "^22.0.0",
-    "cookie": "^0.7.0"
+    "cookie": "^0.7.0",
+    "cross-spawn": "^7.0.5",
+    "@eslint/plugin-kit": "^0.2.3"
   }
 }
