@@ -48,7 +48,8 @@ export function hashCart(cart: Cart) {
     },
     lineItems: cart?.lineItems.map((lineItem) => ({
       avalaraTaxCode: lineItem?.variant?.attributes?.filter(
-        (attr) => attr.name === 'avatax-code'
+        (attr) =>
+          attr.name === (process.env.AVATAX_PRODUCT_ATTRIBUTE_NAME as string)
       )[0]?.value,
       sku: lineItem?.variant?.sku,
       quantity: lineItem?.quantity,

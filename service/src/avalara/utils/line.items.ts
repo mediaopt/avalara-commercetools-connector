@@ -6,8 +6,10 @@ if there is a simple amount off discount, it is applied directly to the item
 prices, so no need to forward it to Avalara */
 
 function itemTaxCode(item: LineItem) {
+  const avataxProductAttributeName = process.env
+    .AVATAX_PRODUCT_ATTRIBUTE_NAME as string;
   const productTaxCode = item?.variant?.attributes?.filter(
-    (attr) => attr.name === 'avatax-code'
+    (attr) => attr.name === avataxProductAttributeName
   )[0]?.value;
 
   return productTaxCode;
