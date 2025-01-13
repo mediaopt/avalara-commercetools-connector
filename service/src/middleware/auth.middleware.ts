@@ -2,6 +2,7 @@ import { type AuthMiddlewareOptions } from '@commercetools/sdk-client-v2'; // Re
 import { readConfiguration } from '../utils/config.utils';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { Jwt, JwtPayload } from 'jsonwebtoken';
 import jwksClient from 'jwks-rsa';
 import { logger } from '../utils/logger.utils';
 import CustomError from '../errors/custom.error';
@@ -30,8 +31,9 @@ export async function verifyJWT(
 ) {
   try {
     const token = (req.get('authorization') as string).split(' ')[1];
-    const payload = jwt.decode(token) as any;
-    if (!MC_API_URLS.includes(payload.iss)) {
+    let { header, payload } = jwt.decode(token, { complete: true }) as Jwt;
+    payload = payload as JwtPayload;
+    if (!MC_API_URLS.includes(payload.iss as any)) {
       const apiKey = process.env.FRONTEND_API_KEY as string;
       if (!apiKey) {
         throw new CustomError(401, 'No external communication allowed.');
@@ -42,12 +44,12 @@ export async function verifyJWT(
     const client = jwksClient({
       jwksUri: `${payload.iss}/.well-known/jwks.json`,
     });
-    const key = await client.getSigningKey();
+    const key = await client.getSigningKey(header.kid);
     const signingKey = key.getPublicKey();
     jwt.verify(token, signingKey);
   } catch (error) {
     logger.error(error);
-    return res.status(401).send('Unauthorized');
+    return next(new CustomError(401, 'Unauthorized'));
   }
   next();
 }

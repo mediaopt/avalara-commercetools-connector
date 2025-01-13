@@ -94,7 +94,7 @@ export function postProcessing(
     action: 'setCartTotalTax',
     externalTotalGross: {
       currencyCode: cart?.totalPrice?.currencyCode,
-      centAmount: cart?.totalPrice?.centAmount + totalTax,
+      centAmount: cart?.totalPrice?.centAmount + totalTax, // minus total cart discount gross
     },
   });
 

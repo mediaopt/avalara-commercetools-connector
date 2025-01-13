@@ -5,11 +5,14 @@ import {
 } from '../../../client/data.client';
 
 export async function getCategoryTaxCodes(items: Array<LineItem>) {
+  const avataxProductAttributeName = process.env
+    .AVATAX_PRODUCT_ATTRIBUTE_NAME as string;
   const itemsWithoutTaxCodes = items
     ?.filter(
       (x) =>
-        x?.variant?.attributes?.filter((attr) => attr.name === 'avatax-code')[0]
-          ?.value === undefined
+        x?.variant?.attributes?.filter(
+          (attr) => attr.name === avataxProductAttributeName
+        )[0]?.value === undefined
     )
     ?.map((x) => x.variant?.sku);
 

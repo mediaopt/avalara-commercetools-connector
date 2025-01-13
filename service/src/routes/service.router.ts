@@ -6,7 +6,7 @@ import { verifyJWT } from '../middleware/auth.middleware';
 
 const serviceRouter = Router();
 
-serviceRouter.use('/:var(test-connection|check-address)', verifyJWT);
+serviceRouter.use(['/test-connection', '/check-address'], verifyJWT);
 
 serviceRouter.post('/', post);
 

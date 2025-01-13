@@ -50,6 +50,10 @@ deployAs:
           description: Custom type name for order
           required: true
           default: 'Additional field to store cart hash'
+        - key: AVATAX_PRODUCT_ATTRIBUTE_NAME
+          description: Product attribute name to store Avalara Tax codes
+          required: false
+          default: 'avatax-code'
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key
@@ -89,6 +93,10 @@ deployAs:
         - key: CTP_REGION
           description: commercetools Composable Commerce API region
           required: true
+        - key: AVATAX_PRODUCT_ATTRIBUTE_NAME
+          description: Product attribute name to store Avalara Tax codes
+          required: false
+          default: 'avatax-code'
       securedConfiguration:
         - key: CTP_PROJECT_KEY
           description: commercetools Composable Commerce project key

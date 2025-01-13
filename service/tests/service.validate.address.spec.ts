@@ -197,6 +197,6 @@ describe('test check address controller', () => {
       next
     );
     expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(new CustomError(400, 'Authentication failed.'));
+    expect(next).toBeCalledWith(new CustomError(401, 'BadRequest'));
   });
 });

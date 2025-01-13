@@ -118,7 +118,8 @@ const response = {
 } as unknown as Response;
 
 const expectSuccessfulCall = (next: NextFunction, res: Response, times = 1) => {
-  expect(next).toBeCalledTimes(0);
+  const next_times = times === 2 ? 2 : 0;
+  expect(next).toBeCalledTimes(next_times);
   expect(res.status).toBeCalledWith(200);
   expect(res.send).toBeCalledTimes(times);
   expect(res.send).toBeCalledWith();
