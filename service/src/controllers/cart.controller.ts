@@ -51,6 +51,7 @@ export async function createUpdate(resource: Resource) {
     }
   } catch (error) {
     if (error instanceof Error) {
+      logger.error(error.stack);
       return {
         statusCode: 400,
         error: error.message,

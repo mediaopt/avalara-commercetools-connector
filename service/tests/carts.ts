@@ -160,6 +160,7 @@ export const fullCart = (address: Address, hash = '123') => {
     },
     country: 'US',
     shippingMode: 'Single',
+    shippingKey: 'Shipping',
     shippingInfo: {
       shippingMethodName: 'Standard US',
       price: {

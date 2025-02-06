@@ -109,8 +109,12 @@ export const bulkProductCategoriesBody = {
   },
 };
 
-export const order = (orderNumber: string, country: string) => {
-  return {
+export const order = (
+  orderNumber: string,
+  country: string,
+  customShipping = false
+) => {
+  const order = {
     createdAt: '2021-06-01T00:00:00.000Z',
     id: '123',
     version: 1,
@@ -229,6 +233,72 @@ export const order = (orderNumber: string, country: string) => {
       },
     ],
   };
+  if (customShipping) {
+    return {
+      ...order,
+      shippingInfo: null,
+      shipping: [
+        {
+          shippingKey: 'Shipping',
+          shippingAddress: {
+            country: 'US',
+            city: 'Irvine',
+            streetName: 'Main St',
+            streetNumber: '2000',
+            postalCode: '92614',
+          },
+          shippingInfo: {
+            shippingMethodName: 'Standard',
+            price: {
+              type: 'centPrecision',
+              currencyCode: 'USD',
+              centAmount: 123,
+              fractionDigits: 2,
+            },
+            taxRate: {
+              name: 'avaTaxRate',
+              amount: 0.0725,
+              includedInPrice: false,
+              country: 'US',
+              subRates: [],
+            },
+            shippingMethod: {
+              typeId: 'shipping-method',
+              id: '123',
+            },
+            taxedPrice: {
+              totalNet: {
+                type: 'centPrecision',
+                currencyCode: 'USD',
+                centAmount: 1000,
+                fractionDigits: 2,
+              },
+              totalGross: {
+                type: 'centPrecision',
+                currencyCode: 'USD',
+                centAmount: 1073,
+                fractionDigits: 2,
+              },
+              totalTax: {
+                type: 'centPrecision',
+                currencyCode: 'USD',
+                centAmount: 73,
+                fractionDigits: 2,
+              },
+            },
+            shippingMethodState: 'MatchesCart',
+          },
+          shippingCustomFields: {
+            fields: {
+              avalaraTaxCode: 'PC030000',
+            },
+          },
+        },
+      ],
+    };
+  } else {
+    return order;
+  }
 };
 
 export const orderRequest = (orderNumber: string, country: string) => {
@@ -237,7 +307,11 @@ export const orderRequest = (orderNumber: string, country: string) => {
   };
 };
 
-export const messageOrderCreated = (orderNumber: string, country: string) => {
+export const messageOrderCreated = (
+  orderNumber: string,
+  country: string,
+  customShipping = false
+) => {
   return {
     type: 'OrderCreated',
     id: '123',
@@ -255,7 +329,7 @@ export const messageOrderCreated = (orderNumber: string, country: string) => {
       customerEmail: '',
     },
     resourceVersion: 1,
-    order: order(orderNumber, country),
+    order: order(orderNumber, country, customShipping),
   } as unknown as OrderCreatedMessage;
 };
 

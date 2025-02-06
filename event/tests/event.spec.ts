@@ -52,12 +52,15 @@ const getRandomNumber = (): string => {
 const generateGoodRequest = (
   type: string,
   orderNumber: string,
-  country: string
+  country: string,
+  customShipping = false
 ) => {
   let data = '';
   type === 'OrderCreated'
     ? (data = Buffer.from(
-        JSON.stringify(messageOrderCreated(orderNumber, country))
+        JSON.stringify(
+          messageOrderCreated(orderNumber, country, customShipping)
+        )
       ).toString('base64'))
     : (data = Buffer.from(JSON.stringify(messageOrderStateChanged)).toString(
         'base64'
@@ -90,8 +93,11 @@ const refundRequestConfigTest = generateGoodRequest(
   'US'
 );
 
-const commitRequest = (country: string) =>
-  generateGoodRequest('OrderCreated', orderNumber, country);
+const commitRequest = (
+  country: string,
+  number = orderNumber,
+  customShipping = false
+) => generateGoodRequest('OrderCreated', number, country, customShipping);
 const voidRequest = (country: string) =>
   generateGoodRequest('OrderStateChanged', orderNumber, country);
 const refundRequest = (country: string) =>
@@ -371,5 +377,29 @@ describe('test event controller', () => {
       new CustomError(400, 'No Avalara merchant data is present.')
     );
     expect(response.send).toBeCalledTimes(0);
+  });
+
+  test('Single shipping info is not specified, instead shipping array has custom shipping info, avalara tax call is made and the updates are correct', async () => {
+    const next = jest.fn() as NextFunction;
+    apiRoot.execute = jest
+      .fn()
+      .mockReturnValueOnce(avalaraMerchantDataBody(false))
+      .mockReturnValueOnce(bulkProductCategoriesBody)
+      .mockReturnValueOnce(bulkCategoryTaxCodeBody(['PS081282', 'PS080101']))
+      .mockReturnValueOnce(entityUseCodeBody('B'));
+    const spyCommit = jest.spyOn(
+      moduleAvaTax.default.prototype,
+      'createTransaction'
+    );
+    const spyCreds = jest.spyOn(moduleAvaTax.default.prototype, 'withSecurity');
+    const newOrderNumber = getRandomNumber();
+    await post(commitRequest('US', newOrderNumber, true), response, next);
+    expect(spyCreds).toBeCalledTimes(1);
+    const getCommitResult = (): Promise<TransactionModel> =>
+      spyCommit.mock.results[0].value as Promise<TransactionModel>;
+
+    expect(spyCommit).toBeCalledTimes(1);
+    expectCommitReturn(newOrderNumber, await getCommitResult());
+    expectSuccessfulCall(next, response);
   });
 });

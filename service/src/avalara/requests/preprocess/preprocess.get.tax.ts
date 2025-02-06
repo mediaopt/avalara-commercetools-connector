@@ -7,6 +7,7 @@ import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
+import { customShipItem } from '../../utils/custom.shipping.info';
 
 // initialize and specify the tax document model of Avalara
 export async function processCart(
@@ -16,12 +17,21 @@ export async function processCart(
 ): Promise<CreateTransactionModel> {
   const taxDocument = new CreateTransactionModel();
 
-  if (cart?.shippingAddress && cart?.shippingInfo) {
+  if (cart?.shippingAddress && (cart?.shippingInfo || cart?.shipping)) {
     const shipFrom = originAddress;
 
-    const shipTo = shippingAddress(cart?.shippingAddress);
+    let shipTo;
 
-    const shippingInfo = await shipItem(cart?.shippingInfo);
+    let shippingInfo;
+
+    if (cart?.shippingInfo) {
+      shippingInfo = await shipItem(cart?.shippingInfo);
+      shipTo = shippingAddress(cart?.shippingAddress);
+    } else if (cart?.shipping) {
+      const shipping = cart?.shipping[0];
+      shippingInfo = customShipItem(shipping);
+      shipTo = shippingAddress(shipping.shippingAddress);
+    }
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems);
 
@@ -33,7 +43,9 @@ export async function processCart(
           : []
       );
 
-    lines.push(shippingInfo);
+    if (shippingInfo) {
+      lines.push(shippingInfo);
+    }
 
     taxDocument.date = new Date();
 

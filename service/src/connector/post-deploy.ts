@@ -10,6 +10,7 @@ import {
   createShippingTaxCodeFields,
   createCartUpdateExtension,
   createCustomLineItemTaxCodeFields,
+  createCustomShippingTaxCodeFields,
 } from './actions';
 import { testConnectionController } from '../controllers/test.connection.controller';
 import { logger } from '../utils/logger.utils';
@@ -28,6 +29,7 @@ async function postDeploy(properties: Map<string, unknown>): Promise<void> {
   await createCategoryTaxCodeFields(apiRoot);
   await createAvalaraHashedCartField(apiRoot);
   await createCustomLineItemTaxCodeFields(apiRoot);
+  await createCustomShippingTaxCodeFields(apiRoot);
   const testConnection = await testConnectionController({
     logging: {
       enabled: true,

@@ -37,6 +37,7 @@ export const post = async (
     } catch (error) {
       if (error instanceof Error) {
         logger.error(error.message);
+        logger.error(error.stack);
         next(new CustomError(500, error.message));
       } else {
         next(error);

@@ -66,17 +66,32 @@ export function postProcessing(
     });
   }
 
-  const shipTaxCentAmount =
-    lines.find((x: any) => x.itemCode === 'Shipping')?.tax * 100;
+  let shipTaxCentAmount = 0;
+  let shipPrice = 0;
+  let shippingKey = '';
 
-  const shipPrice =
-    cart?.shippingInfo?.discountedPrice?.value?.centAmount ??
-    (cart?.shippingInfo?.price?.centAmount as number);
-  totalTax += shipTaxCentAmount;
+  if (cart?.shippingInfo) {
+    shippingKey = cart?.shippingKey as string;
+    shipTaxCentAmount =
+      lines.find((x: any) => x.itemCode === 'Shipping')?.tax * 100;
+    shipPrice =
+      cart?.shippingInfo?.discountedPrice?.value?.centAmount ??
+      (cart?.shippingInfo?.price?.centAmount as number);
+    totalTax += shipTaxCentAmount;
+  } else if (cart?.shipping) {
+    const shipping = cart?.shipping[0];
+    shippingKey = shipping?.shippingKey;
+    shipTaxCentAmount =
+      lines.find((x: any) => x.itemCode === shippingKey)?.tax * 100;
+    shipPrice =
+      shipping?.shippingInfo?.discountedPrice?.value?.centAmount ??
+      (shipping?.shippingInfo?.price?.centAmount as number);
+    totalTax += shipTaxCentAmount;
+  }
 
   actions.push({
     action: 'setShippingMethodTaxAmount',
-    shippingKey: cart?.shippingKey,
+    shippingKey: shippingKey,
     externalTaxAmount: {
       totalGross: {
         centAmount: shipPrice + shipTaxCentAmount,
@@ -85,7 +100,10 @@ export function postProcessing(
       taxRate: {
         name: 'avaTaxRate',
         amount: shipTaxCentAmount ? taxRate : 0,
-        country: cart?.country || cart?.shippingAddress?.country,
+        country:
+          cart?.country ||
+          cart?.shippingAddress?.country ||
+          cart?.shipping[0]?.shippingAddress?.country,
       },
     },
   });

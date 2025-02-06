@@ -40,47 +40,50 @@ export const expectAvaTaxReturn = (taxResponse: TransactionModel) => {
   ).toBeDefined();
 };
 
-export const actions = {
-  actions: [
-    { action: 'changeTaxMode', taxMode: 'ExternalAmount' },
-    {
-      action: 'setLineItemTaxAmount',
-      lineItemId: 'id123',
-      externalTaxAmount: {
-        totalGross: { currencyCode: 'USD', centAmount: 70249 },
-        taxRate: { name: 'avaTaxRate', amount: 0.0725, country: 'US' },
-      },
-    },
-    {
-      action: 'setCustomLineItemTaxAmount',
-      customLineItemId: '641649e5-2337-4871-90ab-164fd3e919b3',
-      externalTaxAmount: {
-        totalGross: {
-          currencyCode: 'USD',
-          centAmount: 4505,
-        },
-        taxRate: {
-          name: 'avaTaxRate',
-          amount: 0.0725,
-          country: 'US',
+export const actions = (hash = 'ae6a3c3af8b7caeb6ff3e397ea552afd') => {
+  return {
+    actions: [
+      { action: 'changeTaxMode', taxMode: 'ExternalAmount' },
+      {
+        action: 'setLineItemTaxAmount',
+        lineItemId: 'id123',
+        externalTaxAmount: {
+          totalGross: { currencyCode: 'USD', centAmount: 70249 },
+          taxRate: { name: 'avaTaxRate', amount: 0.0725, country: 'US' },
         },
       },
-    },
-    {
-      action: 'setShippingMethodTaxAmount',
-      externalTaxAmount: {
-        totalGross: { centAmount: 1073, currencyCode: 'USD' },
-        taxRate: { name: 'avaTaxRate', amount: 0.0725, country: 'US' },
+      {
+        action: 'setCustomLineItemTaxAmount',
+        customLineItemId: '641649e5-2337-4871-90ab-164fd3e919b3',
+        externalTaxAmount: {
+          totalGross: {
+            currencyCode: 'USD',
+            centAmount: 4505,
+          },
+          taxRate: {
+            name: 'avaTaxRate',
+            amount: 0.0725,
+            country: 'US',
+          },
+        },
       },
-    },
-    {
-      action: 'setCartTotalTax',
-      externalTotalGross: { currencyCode: 'USD', centAmount: 71627 },
-    },
-    {
-      action: 'setCustomField',
-      name: 'avalaraHash',
-      value: 'ae6a3c3af8b7caeb6ff3e397ea552afd',
-    },
-  ],
+      {
+        action: 'setShippingMethodTaxAmount',
+        shippingKey: 'Shipping',
+        externalTaxAmount: {
+          totalGross: { centAmount: 1073, currencyCode: 'USD' },
+          taxRate: { name: 'avaTaxRate', amount: 0.0725, country: 'US' },
+        },
+      },
+      {
+        action: 'setCartTotalTax',
+        externalTotalGross: { currencyCode: 'USD', centAmount: 71627 },
+      },
+      {
+        action: 'setCustomField',
+        name: 'avalaraHash',
+        value: hash,
+      },
+    ],
+  };
 };

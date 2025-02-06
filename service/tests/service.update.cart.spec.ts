@@ -202,7 +202,7 @@ describe('test service/cart controller', () => {
     expect(next).toBeCalledTimes(0);
     expect(response.status).toBeCalledWith(200);
     expect(response.json).toBeCalledTimes(1);
-    expect(response.json).toBeCalledWith(actions);
+    expect(response.json).toBeCalledWith(actions());
   });
 
   test('valid cart request is made with an expected AvaTax configuration', async () => {
@@ -268,5 +268,100 @@ describe('test service/cart controller', () => {
       )
     );
     expect(response.json).toBeCalledTimes(0);
+  });
+
+  test('Single shipping info is not specified, instead shipping array has custom shipping info, avalara tax call is made and the updates are correct', async () => {
+    const next = jest.fn() as NextFunction;
+    apiRoot.execute = jest
+      .fn()
+      .mockReturnValueOnce(avalaraMerchantDataBody)
+      .mockReturnValueOnce(bulkProductCategoriesBody)
+      .mockReturnValueOnce(bulkCategoryTaxCodeBody)
+      .mockReturnValueOnce(entityUseCodeBody);
+    const spyGetTax = jest.spyOn(
+      moduleAvaTax.default.prototype,
+      'createTransaction'
+    );
+
+    let cart = {
+      ...fullCart({
+        country: 'US',
+        city: 'Irvine',
+        streetName: 'Main St',
+        streetNumber: '2000',
+        postalCode: '92614',
+      }),
+      shippingInfo: null,
+      shipping: [
+        {
+          shippingKey: 'Shipping',
+          shippingAddress: {
+            country: 'US',
+            city: 'Irvine',
+            streetName: 'Main St',
+            streetNumber: '2000',
+            postalCode: '92614',
+          },
+          shippingInfo: {
+            shippingMethodName: 'Standard US',
+            price: {
+              type: 'centPrecision',
+              currencyCode: 'USD',
+              centAmount: 1000,
+              fractionDigits: 2,
+            },
+            taxRate: {
+              name: 'avaTaxRate',
+              amount: 0.0725,
+              includedInPrice: false,
+              country: 'US',
+              subRates: [],
+            },
+            shippingMethod: {
+              typeId: 'shipping-method',
+              id: '123',
+            },
+            taxedPrice: {
+              totalNet: {
+                type: 'centPrecision',
+                currencyCode: 'USD',
+                centAmount: 1000,
+                fractionDigits: 2,
+              },
+              totalGross: {
+                type: 'centPrecision',
+                currencyCode: 'USD',
+                centAmount: 1073,
+                fractionDigits: 2,
+              },
+              totalTax: {
+                type: 'centPrecision',
+                currencyCode: 'USD',
+                centAmount: 73,
+                fractionDigits: 2,
+              },
+            },
+            shippingMethodState: 'MatchesCart',
+          },
+          shippingCustomFields: {
+            fields: {
+              avalaraTaxCode: 'PC030000',
+            },
+          },
+        },
+      ],
+    };
+
+    await post(cartRequest(cart), response, next);
+    expect(spyGetTax).toBeCalledTimes(1);
+    const getTaxResult = (): Promise<TransactionModel> =>
+      spyGetTax.mock.results[0].value as Promise<TransactionModel>;
+    expectAvaTaxReturn(await getTaxResult());
+    expect(next).toBeCalledTimes(0);
+    expect(response.status).toBeCalledWith(200);
+    expect(response.json).toBeCalledTimes(1);
+    expect(response.json).toBeCalledWith(
+      actions('92aac5e64d8f585abd6005a32a0386d0')
+    );
   });
 });

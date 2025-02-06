@@ -7,6 +7,7 @@ import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
 import { customLineItem } from '../../utils/custom.line.items';
+import { customShipItem } from '../../utils/custom.shipping.info';
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
@@ -17,12 +18,21 @@ export async function processOrder(
 ): Promise<CreateTransactionModel> {
   const taxDocument = new CreateTransactionModel();
 
-  if (order?.shippingAddress && order?.shippingInfo) {
+  if (order?.shippingAddress && (order?.shippingInfo || order?.shipping)) {
     const shipFrom = originAddress;
 
-    const shipTo = shippingAddress(order?.shippingAddress);
+    let shipTo;
 
-    const shippingInfo = await shipItem(type, order?.shippingInfo);
+    let shippingInfo;
+
+    if (order?.shippingInfo) {
+      shippingInfo = await shipItem(type, order?.shippingInfo);
+      shipTo = shippingAddress(order?.shippingAddress);
+    } else if (order?.shipping) {
+      const shipping = order?.shipping[0];
+      shippingInfo = await customShipItem(type, shipping);
+      shipTo = shippingAddress(shipping.shippingAddress);
+    }
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(order?.lineItems);
 
@@ -40,7 +50,9 @@ export async function processOrder(
       ? await getCustomerEntityUseCode(order?.customerId)
       : { customerNumber: 'Guest', exemptCode: '' };
 
-    lines.push(shippingInfo);
+    if (shippingInfo) {
+      lines.push(shippingInfo);
+    }
 
     taxDocument.date = new Date();
 
