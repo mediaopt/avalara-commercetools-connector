@@ -23,7 +23,7 @@ const config = {
       }
     },
   oAuthScopes: {
-    view: ['view_key_value_documents'],
+    view: ['view_key_value_documents', 'view_states'],
     manage: ['manage_key_value_documents', 'manage_extensions'],
   },
   icon: '${path:@commercetools-frontend/assets/application-icons/stamp.svg}',

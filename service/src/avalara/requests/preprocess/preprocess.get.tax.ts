@@ -21,7 +21,12 @@ export async function processCart(
 
     const shipTo = shippingAddress(cart?.shippingAddress);
 
-    const shippingInfo = await shipItem(cart?.shippingInfo);
+    const shippingCustomFields = cart?.shippingCustomFields;
+
+    const shippingInfo = await shipItem(
+      cart?.shippingInfo,
+      shippingCustomFields
+    );
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(cart?.lineItems);
 

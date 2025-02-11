@@ -49,7 +49,7 @@ describe('test coco api client', () => {
     expect(apiRoot.get).toBeCalledTimes(1);
     expect(apiRoot.execute).toBeCalledTimes(1);
     expect(data).toBeDefined();
-    expect(Object.keys(data?.settings).length).toBe(12);
+    expect(Object.keys(data?.settings).length).toBe(16);
   });
 
   test('get avalara merchant data method fails', async () => {

@@ -20,6 +20,10 @@ export type AvataxMerchantConfig = {
   logLevel: string;
   addressValidation: boolean;
   disableDocRec: boolean;
+  commitOnOrderCreation: boolean;
+  cancelOnOrderCancelation: boolean;
+  commitOrderStates: Array<string>;
+  cancelOrderStates: Array<string>;
   taxCalculation: string;
   enableLogging: boolean;
   displayPricesWithTax: boolean;

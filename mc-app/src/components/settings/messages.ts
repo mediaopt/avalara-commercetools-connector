@@ -11,6 +11,33 @@ export default defineMessages({
     defaultMessage: 'Avalara Configuration',
   },
 
+  transactionManagement: {
+    id: 'Settings.transactionManagement',
+    defaultMessage: 'Avalara Transaction Management',
+  },
+
+  commitOnOrderCreation: {
+    id: 'Settings.commitOnOrderCreation',
+    defaultMessage:
+      'Automatically commit orders to Avalara upon their creation',
+  },
+
+  cancelOnOrderCancelation: {
+    id: 'Settings.cancelOnOrderCancelation',
+    defaultMessage:
+      'Automatically cancel orders in Avalara upon their cancellation',
+  },
+
+  transactionCommit: {
+    id: 'Settings.transactionCommit',
+    defaultMessage: 'Choose order states for committing orders to Avalara',
+  },
+
+  transactionCancel: {
+    id: 'Settings.transactionCancel',
+    defaultMessage: 'Choose order states for cancelling orders in Avalara',
+  },
+
   originAddress: {
     id: 'Settings.originAddress',
     defaultMessage: 'Avalara Origin Address',

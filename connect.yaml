@@ -10,6 +10,14 @@ deployAs:
         - key: CTP_REGION
           description: commercetools Composable Commerce API region
           required: true
+        - key: CUSTOM_SHIPPING_CUSTOM_TYPE_KEY
+          description: Custom type key for custom shipping
+          required: true
+          default: 'avalara-connector-custom-shipping'
+        - key: CUSTOM_SHIPPING_CUSTOM_TYPE_NAME
+          description: Custom type name for custom shipping
+          required: true
+          default: 'Additional field to store Avalara Tax codes for custom shipping'
         - key: CUSTOM_LINE_ITEM_CUSTOM_TYPE_KEY
           description: Custom type key for custom line item
           required: true

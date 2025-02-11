@@ -52,7 +52,11 @@ describe('test connector actions', () => {
         messages: [
           {
             resourceTypeId: 'order',
-            types: ['OrderCreated', 'OrderStateChanged'],
+            types: [
+              'OrderCreated',
+              'OrderStateChanged',
+              'OrderStateTransition',
+            ],
           },
         ],
       },

@@ -1,12 +1,17 @@
-import { ShippingInfo } from '@commercetools/platform-sdk';
+import { CustomFields, ShippingInfo } from '@commercetools/platform-sdk';
 import { LineItemModel } from 'avatax/lib/models/LineItemModel';
 import { getShipTaxCode } from '../../client/data.client';
 
 // Mapping CT LineItem Model to Avalara LineItem Model
-export async function shipItem(item: ShippingInfo) {
+export async function shipItem(
+  item: ShippingInfo,
+  shippingCustomFields: CustomFields | undefined
+) {
   const lineItem = new LineItemModel();
 
-  const taxCode = await getShipTaxCode(item.shippingMethod?.id as string);
+  const taxCode = shippingCustomFields
+    ? (shippingCustomFields.fields?.avalaraTaxCode as string)
+    : await getShipTaxCode(item.shippingMethod?.id as string);
 
   lineItem.quantity = 1;
 

@@ -120,6 +120,47 @@ async function deleteOrUpdateCustomType(
   }
 }
 
+export async function createCustomShippingTaxCodeFields(
+  apiRoot: ByProjectKeyRequestBuilder
+): Promise<void> {
+  const customType = {
+    key: process.env.CUSTOM_SHIPPING_CUSTOM_TYPE_KEY,
+    name: {
+      en: process.env.CUSTOM_SHIPPING_CUSTOM_TYPE_NAME,
+    },
+    resourceTypeIds: ['shipping'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraTaxCode',
+        label: {
+          en: 'Avalara Tax code',
+        },
+        required: false,
+        type: {
+          name: 'String',
+        },
+        inputHint: 'SingleLine',
+      },
+    ],
+  } as TypeDraft;
+  await addOrUpdateCustomType(apiRoot, customType);
+}
+
+export async function deleteCustomShippingTaxCodeFields(
+  apiRoot: ByProjectKeyRequestBuilder
+): Promise<void> {
+  const customType = {
+    key: process.env.CUSTOM_SHIPPING_CUSTOM_TYPE_KEY,
+    resourceTypeIds: ['shipping'],
+    fieldDefinitions: [
+      {
+        name: 'avalaraTaxCode',
+      },
+    ],
+  } as unknown as TypeDraft;
+  await deleteOrUpdateCustomType(apiRoot, customType);
+}
+
 export async function createCustomLineItemTaxCodeFields(
   apiRoot: ByProjectKeyRequestBuilder
 ): Promise<void> {

@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { getData } from '../client/data.client';
+import { getData, getOrder } from '../client/data.client';
 import CustomError from '../errors/custom.error';
 import {
   Message,
   OrderCreatedMessage,
   OrderStateChangedMessage,
+  OrderStateTransitionMessage,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/message';
 import { logger } from '../utils/logger.utils';
 import { setUpAvaTax } from '../utils/avatax.utils';
@@ -54,62 +55,37 @@ export const post = async (
       password: process.env.AVALARA_PASSWORD as string,
       companyCode: process.env.AVALARA_COMPANY_CODE as string,
     };
+
     const messagePayload = parseRequest(request) as
       | OrderCreatedMessage
-      | OrderStateChangedMessage;
+      | OrderStateChangedMessage
+      | OrderStateTransitionMessage;
 
     const settings = await getData('avalara-connector-settings').then(
       (res) => res?.settings
     );
+
     if (!settings) {
       logger.error('Missing Avalara settings.');
       throw new CustomError(400, 'No Avalara merchant data is present.');
     }
+
     if (settings?.disableDocRec) {
       response.status(200).send();
       return next();
     }
+
     const { originAddress, avataxConfig } = setUpAvaTax(settings, env);
 
-    switch (messagePayload.type) {
-      case 'OrderCreated':
-        if (!messagePayload.order) {
-          throw new CustomError(400, `Order must be defined.`);
-        }
-        await commitTransaction(
-          messagePayload.order,
-          creds,
-          originAddress,
-          avataxConfig
-        ).catch((error) => logger.error(error));
-        response.status(200).send();
-        break;
-      case 'OrderStateChanged':
-        if (
-          messagePayload.orderState === 'Cancelled' &&
-          messagePayload.resource.id
-        ) {
-          await voidTransaction(
-            messagePayload.resource.id,
-            creds,
-            avataxConfig
-          ).catch(async (error) => {
-            logger.error(error);
-            if (error?.code === 'CannotModifyLockedTransaction') {
-              await refundTransaction(
-                messagePayload.resource.id,
-                creds,
-                originAddress,
-                avataxConfig
-              ).catch((error) => logger.error(error));
-            }
-          });
-        }
-        response.status(200).send();
-        break;
-      default:
-        response.status(200).send();
-    }
+    await handleMessagePayload(
+      messagePayload,
+      settings,
+      creds,
+      originAddress,
+      avataxConfig
+    );
+
+    response.status(200).send();
   } catch (error) {
     if (error instanceof Error) {
       next(new CustomError(400, error.message));
@@ -117,4 +93,148 @@ export const post = async (
       next(error);
     }
   }
+};
+
+const handleMessagePayload = async (
+  messagePayload:
+    | OrderCreatedMessage
+    | OrderStateChangedMessage
+    | OrderStateTransitionMessage,
+  settings: any,
+  creds: any,
+  originAddress: any,
+  avataxConfig: any
+) => {
+  switch (messagePayload.type) {
+    case 'OrderCreated':
+      await handleOrderCreated(
+        messagePayload,
+        settings,
+        creds,
+        originAddress,
+        avataxConfig
+      );
+      break;
+    case 'OrderStateTransition':
+      await handleOrderStateTransition(
+        messagePayload,
+        settings,
+        creds,
+        originAddress,
+        avataxConfig
+      );
+      break;
+    case 'OrderStateChanged':
+      await handleOrderStateChanged(
+        messagePayload,
+        settings,
+        creds,
+        originAddress,
+        avataxConfig
+      );
+      break;
+    default:
+      break;
+  }
+};
+
+const handleOrderCreated = async (
+  messagePayload: OrderCreatedMessage,
+  settings: any,
+  creds: any,
+  originAddress: any,
+  avataxConfig: any
+) => {
+  if (!messagePayload.order) {
+    throw new CustomError(400, `Order must be defined.`);
+  }
+  if (settings?.commitOnOrderCreation) {
+    await commitTransaction(
+      messagePayload.order,
+      creds,
+      originAddress,
+      avataxConfig
+    ).catch((error) => logger.error(error));
+  }
+};
+
+const handleOrderStateTransition = async (
+  messagePayload: OrderStateTransitionMessage,
+  settings: any,
+  creds: any,
+  originAddress: any,
+  avataxConfig: any
+) => {
+  if (
+    settings?.commitOrderStates?.includes(messagePayload.state.id) &&
+    messagePayload.resource.id
+  ) {
+    const order = await getOrder(messagePayload.resource.id);
+    await commitTransaction(order, creds, originAddress, avataxConfig).catch(
+      (error) => logger.error(error)
+    );
+  }
+  if (
+    settings?.cancelOrderStates?.includes(messagePayload.state.id) &&
+    messagePayload.resource.id
+  ) {
+    await voidOrRefundTransaction(
+      messagePayload.resource.id,
+      creds,
+      originAddress,
+      avataxConfig
+    );
+  }
+};
+
+const handleOrderStateChanged = async (
+  messagePayload: OrderStateChangedMessage,
+  settings: any,
+  creds: any,
+  originAddress: any,
+  avataxConfig: any
+) => {
+  if (
+    settings?.commitOrderStates?.includes(messagePayload.orderState) &&
+    messagePayload.resource.id
+  ) {
+    const order = await getOrder(messagePayload.resource.id);
+    await commitTransaction(order, creds, originAddress, avataxConfig).catch(
+      (error) => logger.error(error)
+    );
+  }
+  if (
+    (settings?.cancelOrderStates?.includes(messagePayload.orderState) ||
+      (settings?.cancelOnOrderCancelation &&
+        messagePayload.orderState === 'Cancelled')) &&
+    messagePayload.resource.id
+  ) {
+    await voidOrRefundTransaction(
+      messagePayload.resource.id,
+      creds,
+      originAddress,
+      avataxConfig
+    );
+  }
+};
+
+const voidOrRefundTransaction = async (
+  resourceId: string,
+  creds: any,
+  originAddress: any,
+  avataxConfig: any
+) => {
+  await voidTransaction(resourceId, creds, avataxConfig).catch(
+    async (error) => {
+      logger.error(error);
+      if (error?.code === 'CannotModifyLockedTransaction') {
+        await refundTransaction(
+          resourceId,
+          creds,
+          originAddress,
+          avataxConfig
+        ).catch((error) => logger.error(error));
+      }
+    }
+  );
 };
