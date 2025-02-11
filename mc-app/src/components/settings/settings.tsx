@@ -20,6 +20,7 @@ import {
   DOMAINS,
   NOTIFICATION_KINDS_SIDE,
 } from '@commercetools-frontend/constants';
+import AvalaraTransactionManagement from './AvalaraTransactionManagement';
 
 const DEFAULT = {
   logLevel: '0',
@@ -99,6 +100,10 @@ const Settings = () => {
           <Spacings.Stack alignItems="stretch" scale="xl">
             <AvalaraCredentials values={values} handleChange={handleChange} />
             <AvalaraConfiguration values={values} handleChange={handleChange} />
+            <AvalaraTransactionManagement
+              values={values}
+              handleChange={handleChange}
+            />
             <AvalaraOriginAddress values={values} handleChange={handleChange} />
             <Spacings.Inline
               scale="s"

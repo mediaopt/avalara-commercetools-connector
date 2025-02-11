@@ -45,7 +45,11 @@ export async function createOrderSubscription(
         messages: [
           {
             resourceTypeId: 'order',
-            types: ['OrderCreated', 'OrderStateChanged'],
+            types: [
+              'OrderCreated',
+              'OrderStateChanged',
+              'OrderStateTransition',
+            ],
           },
         ],
       },

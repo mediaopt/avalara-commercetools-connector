@@ -5,6 +5,10 @@ export type SettingsFormDataType = {
   logLevel: string;
   addressValidation: boolean;
   disableDocRec: boolean;
+  commitOnOrderCreation: boolean;
+  cancelOnOrderCancelation: boolean;
+  commitOrderStates: Array<string>;
+  cancelOrderStates: Array<string>;
   taxCalculation: string;
   enableLogging: boolean;
   displayPricesWithTax: boolean;
@@ -34,6 +38,13 @@ export type FetchedCustomObjectType = {
 
 export type FetchedExtensionUrlType = {
   url: string;
+};
+
+export type OrderStateType = {
+  id: string;
+  key: string;
+  name: string;
+  type: string;
 };
 
 export type ApollonFetchedCustomObjectType = {

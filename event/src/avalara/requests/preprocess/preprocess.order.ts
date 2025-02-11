@@ -22,7 +22,9 @@ export async function processOrder(
 
     const shipTo = shippingAddress(order?.shippingAddress);
 
-    const shippingInfo = await shipItem(type, order?.shippingInfo);
+    const shippingCustomFields = order?.shippingCustomFields;
+
+    const shippingInfo = await shipItem(type, order?.shippingInfo, shippingCustomFields);
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(order?.lineItems);
 

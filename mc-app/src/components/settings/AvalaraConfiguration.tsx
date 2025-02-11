@@ -67,22 +67,6 @@ const AvalaraConfiguration = ({ values, handleChange }: AvaTaxSettingsType) => {
             >
               <ToggleInput
                 isDisabled={false}
-                isChecked={values.displayPricesWithTax}
-                value="false"
-                name="displayPricesWithTax"
-                onChange={handleChange}
-                size="big"
-              />
-              <Text.Body intlMessage={messages.displayPricesWithTax} />
-            </Spacings.Inline>
-
-            <Spacings.Inline
-              scale="s"
-              alignItems="center"
-              justifyContent="flex-start"
-            >
-              <ToggleInput
-                isDisabled={false}
                 isChecked={values.addressValidation}
                 value="false"
                 name="addressValidation"
