@@ -195,7 +195,7 @@ const handleOrderStateChanged = async (
   avataxConfig: any
 ) => {
   if (
-    settings?.commitOrderStates?.includes(messagePayload.orderState) &&
+    settings?.commitOrderStates?.includes(messagePayload.orderState.toLowerCase()) &&
     messagePayload.resource.id
   ) {
     const order = await getOrder(messagePayload.resource.id);
@@ -204,7 +204,7 @@ const handleOrderStateChanged = async (
     );
   }
   if (
-    (settings?.cancelOrderStates?.includes(messagePayload.orderState) ||
+    (settings?.cancelOrderStates?.includes(messagePayload.orderState.toLowerCase()) ||
       (settings?.cancelOnOrderCancelation &&
         messagePayload.orderState === 'Cancelled')) &&
     messagePayload.resource.id
