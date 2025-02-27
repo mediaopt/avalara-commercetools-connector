@@ -49,6 +49,8 @@ export async function createOrderSubscription(
               'OrderCreated',
               'OrderStateChanged',
               'OrderStateTransition',
+              'ReturnInfoAdded',
+              'ReturnInfoSet'
             ],
           },
         ],

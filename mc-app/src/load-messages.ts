@@ -1,25 +1,11 @@
-import {
-  type TI18NImportData,
-  type TMessageTranslations,
-  parseChunkImport,
-} from '@commercetools-frontend/i18n';
+import { parseChunkImport } from '@commercetools-frontend/i18n';
 
-const getChunkImport = (locale: string): Promise<TI18NImportData> => {
-  switch (locale) {
-    case 'de':
-      return import(
-        /* webpackChunkName: "app-i18n-de" */
-        './i18n/data/de.json'
-      );
-    default:
-      return import(
-        /* webpackChunkName: "app-i18n-en" */
-        './i18n/data/en.json'
-      );
-  }
+const getChunkImport = (_locale: any) => {
+  // at present we support only english
+  return import(/* webpackChunkName: "app-i18n-en" */ './i18n/data/en.json');
 };
 
-const loadMessages = async (locale: string): Promise<TMessageTranslations> => {
+const loadMessages = async (locale: any) => {
   try {
     const chunkImport = await getChunkImport(locale);
     return parseChunkImport(chunkImport);

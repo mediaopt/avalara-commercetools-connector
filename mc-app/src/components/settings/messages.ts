@@ -38,6 +38,11 @@ export default defineMessages({
     defaultMessage: 'Choose order states for cancelling orders in Avalara',
   },
 
+  activateReturns: {
+    id: 'Settings.activateReturns',
+    defaultMessage: 'Activate line-item level returns',
+  },
+
   originAddress: {
     id: 'Settings.originAddress',
     defaultMessage: 'Avalara Origin Address',

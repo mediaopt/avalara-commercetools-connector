@@ -4,15 +4,11 @@ import { LineItemModel } from 'avatax/lib/models/LineItemModel';
 export function customLineItem(type: string, item: CustomLineItem) {
   const lineItem = new LineItemModel();
 
-  const discounted: any = item?.discountedPricePerQuantity;
-
-  const discountedPrice = discounted?.discountedPrice?.value?.centAmount;
-
   lineItem.quantity = item?.quantity;
 
   lineItem.amount =
-    ((type === 'refund' ? -1 : 1) *
-      (discountedPrice ?? item?.totalPrice?.centAmount)) /
+    (type === 'refund' ? -1 : 1) *
+      item?.totalPrice?.centAmount /
     100;
 
   lineItem.itemCode = item?.key ?? item?.id;

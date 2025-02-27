@@ -24,5 +24,11 @@
   "Settings.city": "City",
   "Settings.postalCode": "Postal code",
   "Settings.region": "State",
-  "Settings.country": "Country"
+  "Settings.country": "Country",
+  "Settings.transactionManagement": "Avalara Transaction Management",
+  "Settings.commitOnOrderCreation": "Automatically commit transactions to Avalara upon order creation",
+  "Settings.cancelOnOrderCancelation": "Automatically cancel transactions in Avalara upon order cancelation",
+  "Settings.transactionCommit": "Choose order states to commit transactions to Avalara",
+  "Settings.transactionCancel": "Choose order states to cancel transactions in Avalara",
+  "Settings.activateReturns": "Activate line-item level returns"
 }

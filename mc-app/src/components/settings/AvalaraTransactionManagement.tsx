@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 import { AvaTaxSettingsType } from '../../types/types';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import styles from './settings.module.css';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
@@ -30,6 +31,8 @@ const AvalaraTransactionManagement = ({
     Record<string, boolean>
   >({});
 
+  const { locale } = useApplicationContext( (context) => ({ locale: context.dataLocale }) );
+
   useEffect(() => {
     const commitOrderStates = values.commitOrderStates?.reduce((acc, id) => {
       return { ...acc, [id]: true };
@@ -57,7 +60,7 @@ const AvalaraTransactionManagement = ({
   const orderCancelStateRows = [
     { id: 'cancelled', checkbox: '', state: 'Cancelled', type: 'General' },
   ];
-  const { states, error, loading } = useFetchOrderState();
+  const { states, error, loading } = useFetchOrderState(locale || 'en');
 
   if (error) {
     showNotification({
@@ -73,7 +76,7 @@ const AvalaraTransactionManagement = ({
     states.map((state) => ({
       id: state.id,
       checkbox: '',
-      state: state.name,
+      state: state.name || 'This state has no name for this locale',
       type: 'Workflow',
     }))
   );
@@ -82,7 +85,7 @@ const AvalaraTransactionManagement = ({
     states.map((state) => ({
       id: state.id,
       checkbox: '',
-      state: state.name,
+      state: state.name || 'This state has no name for this locale',
       type: 'Workflow',
     }))
   );
@@ -262,6 +265,21 @@ const AvalaraTransactionManagement = ({
                   </Spacings.Inline>
                 </>
               )}
+              <Spacings.Inline
+                scale="s"
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <ToggleInput
+                  isDisabled={false}
+                  isChecked={values.activateReturns}
+                  value="false"
+                  name="activateReturns"
+                  onChange={handleChange}
+                  size="big"
+                />
+                <Text.Body intlMessage={messages.activateReturns} />
+              </Spacings.Inline>
             </>
           )}
         </Spacings.Stack>

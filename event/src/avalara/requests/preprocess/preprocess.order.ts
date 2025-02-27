@@ -7,6 +7,7 @@ import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
 import { customLineItem } from '../../utils/custom.line.items';
+import { CreateOrAdjustTransactionModel } from 'avatax/lib/models/CreateOrAdjustTransactionModel';
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
@@ -14,8 +15,8 @@ export async function processOrder(
   order: Order,
   companyCode: string,
   originAddress: AddressInfo
-): Promise<CreateTransactionModel> {
-  const taxDocument = new CreateTransactionModel();
+): Promise<CreateOrAdjustTransactionModel> {
+  const transaction = new CreateOrAdjustTransactionModel();
 
   if (order?.shippingAddress && order?.shippingInfo) {
     const shipFrom = originAddress;
@@ -44,27 +45,27 @@ export async function processOrder(
 
     lines.push(shippingInfo);
 
-    taxDocument.date = new Date();
+    transaction.createTransactionModel.date = new Date();
 
-    taxDocument.code = order?.orderNumber || order.id;
+    transaction.createTransactionModel.code = order?.orderNumber || order.id;
 
-    taxDocument.commit = true;
+    transaction.createTransactionModel.commit = true;
 
-    taxDocument.companyCode = companyCode;
+    transaction.createTransactionModel.companyCode = companyCode;
 
-    taxDocument.type = type === 'refund' ? 5 : 1;
+    transaction.createTransactionModel.type = type === 'refund' ? 5 : 1;
 
-    taxDocument.currencyCode = order?.totalPrice?.currencyCode;
+    transaction.createTransactionModel.currencyCode = order?.totalPrice?.currencyCode;
 
-    taxDocument.customerCode = customerInfo?.customerNumber as string;
+    transaction.createTransactionModel.customerCode = customerInfo?.customerNumber as string;
 
-    taxDocument.addresses = {
+    transaction.createTransactionModel.addresses = {
       shipFrom: shipFrom,
       shipTo: shipTo,
     };
-    taxDocument.entityUseCode = customerInfo?.exemptCode;
-    taxDocument.lines = lines;
+    transaction.createTransactionModel.entityUseCode = customerInfo?.exemptCode;
+    transaction.createTransactionModel.lines = lines;
   }
 
-  return taxDocument;
+  return transaction;
 }

@@ -21,7 +21,7 @@ export async function commitTransaction(
     originAddress
   );
 
-  const taxResponse = await client.createTransaction({ model: taxDocument });
+  const taxResponse = await client.createOrAdjustTransaction({ model: taxDocument });
 
   return taxResponse;
 }

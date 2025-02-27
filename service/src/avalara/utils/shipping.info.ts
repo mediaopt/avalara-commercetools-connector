@@ -11,7 +11,9 @@ export async function shipItem(
 
   const taxCode = shippingCustomFields
     ? (shippingCustomFields.fields?.avalaraTaxCode as string)
-    : await getShipTaxCode(item.shippingMethod?.id as string);
+    : item.shippingMethod?.id
+      ? await getShipTaxCode(item.shippingMethod?.id as string)
+      : undefined;
 
   lineItem.quantity = 1;
 

@@ -24,5 +24,11 @@
   "Settings.city": "Stadt",
   "Settings.postalCode": "Postleitzahl",
   "Settings.region": "Bundesland",
-  "Settings.country": "Land"
+  "Settings.country": "Land",
+  "Settings.transactionManagement": "Avalara Transaktionsmanagement",
+  "Settings.commitOnOrderCreation": "Transaktionen automatisch bei Bestellung an Avalara übermitteln",
+  "Settings.cancelOnOrderCancelation": "Transaktionen automatisch bei Stornierung an Avalara übermitteln",
+  "Settings.transactionCommit": "Bestellstatus wählen, um Transaktionen an Avalara zu übermitteln",
+  "Settings.transactionCancel": "Bestellstatus wählen, um Transaktionen bei Avalara zu stornieren",
+  "Settings.activateReturns": "Rücksendungen auf Positionsebene aktivieren"
 }

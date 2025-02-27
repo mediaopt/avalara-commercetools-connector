@@ -6,6 +6,7 @@ export type SettingsFormDataType = {
   addressValidation: boolean;
   disableDocRec: boolean;
   commitOnOrderCreation: boolean;
+  activateReturns: boolean;
   cancelOnOrderCancelation: boolean;
   commitOrderStates: Array<string>;
   cancelOrderStates: Array<string>;
@@ -43,7 +44,7 @@ export type FetchedExtensionUrlType = {
 export type OrderStateType = {
   id: string;
   key: string;
-  name: string;
+  name: string | null;
   type: string;
 };
 

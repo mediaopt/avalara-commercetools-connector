@@ -6,12 +6,14 @@ import {
   OrderCreatedMessage,
   OrderStateChangedMessage,
   OrderStateTransitionMessage,
+  ReturnInfoAddedMessage,
+  ReturnInfoSetMessage,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/message';
 import { logger } from '../utils/logger.utils';
 import { setUpAvaTax } from '../utils/avatax.utils';
 import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
-import { voidTransaction } from '../avalara/requests/actions/void.transaction';
-import { refundTransaction } from '../avalara/requests/actions/refund.transaction';
+import { voidOrRefundTransaction } from '../avalara/requests/actions/void.or.refund.transaction';
+import { adjustOrRefundTransactionLines } from '../avalara/requests/actions/adjust.or.refund.transaction.lines';
 
 /**
  * Exposed event POST endpoint.
@@ -99,7 +101,9 @@ const handleMessagePayload = async (
   messagePayload:
     | OrderCreatedMessage
     | OrderStateChangedMessage
-    | OrderStateTransitionMessage,
+    | OrderStateTransitionMessage
+    | ReturnInfoAddedMessage
+    | ReturnInfoSetMessage,
   settings: any,
   creds: any,
   originAddress: any,
@@ -126,6 +130,26 @@ const handleMessagePayload = async (
       break;
     case 'OrderStateChanged':
       await handleOrderStateChanged(
+        messagePayload,
+        settings,
+        creds,
+        originAddress,
+        avataxConfig
+      );
+      break;
+
+    case 'ReturnInfoAdded':
+      await handleReturnInfoAdded(
+        messagePayload,
+        settings,
+        creds,
+        originAddress,
+        avataxConfig
+      );
+      break;
+
+    case 'ReturnInfoSet':
+      await handleReturnInfoSet(
         messagePayload,
         settings,
         creds,
@@ -195,7 +219,9 @@ const handleOrderStateChanged = async (
   avataxConfig: any
 ) => {
   if (
-    settings?.commitOrderStates?.includes(messagePayload.orderState.toLowerCase()) &&
+    settings?.commitOrderStates?.includes(
+      messagePayload.orderState.toLowerCase()
+    ) &&
     messagePayload.resource.id
   ) {
     const order = await getOrder(messagePayload.resource.id);
@@ -204,7 +230,9 @@ const handleOrderStateChanged = async (
     );
   }
   if (
-    (settings?.cancelOrderStates?.includes(messagePayload.orderState.toLowerCase()) ||
+    (settings?.cancelOrderStates?.includes(
+      messagePayload.orderState.toLowerCase()
+    ) ||
       (settings?.cancelOnOrderCancelation &&
         messagePayload.orderState === 'Cancelled')) &&
     messagePayload.resource.id
@@ -214,27 +242,42 @@ const handleOrderStateChanged = async (
       creds,
       originAddress,
       avataxConfig
-    );
+    ).catch((error) => logger.error(error));
   }
 };
 
-const voidOrRefundTransaction = async (
-  resourceId: string,
+const handleReturnInfoAdded = async (
+  messagePayload: ReturnInfoAddedMessage,
+  settings: any,
   creds: any,
   originAddress: any,
   avataxConfig: any
 ) => {
-  await voidTransaction(resourceId, creds, avataxConfig).catch(
-    async (error) => {
-      logger.error(error);
-      if (error?.code === 'CannotModifyLockedTransaction') {
-        await refundTransaction(
-          resourceId,
-          creds,
-          originAddress,
-          avataxConfig
-        ).catch((error) => logger.error(error));
-      }
-    }
-  );
+  if (settings?.activateReturns && messagePayload.returnInfo) {
+    await adjustOrRefundTransactionLines(
+      [messagePayload.returnInfo],
+      messagePayload.resource.id,
+      creds,
+      originAddress,
+      avataxConfig
+    ).catch((error) => logger.error(error));
+  }
+};
+
+const handleReturnInfoSet = async (
+  messagePayload: ReturnInfoSetMessage,
+  settings: any,
+  creds: any,
+  originAddress: any,
+  avataxConfig: any
+) => {
+  if (settings?.activateReturns && messagePayload.returnInfo) {
+    await adjustOrRefundTransactionLines(
+      messagePayload.returnInfo,
+      messagePayload.resource.id,
+      creds,
+      originAddress,
+      avataxConfig
+    ).catch((error) => logger.error(error));
+  }
 };
