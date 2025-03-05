@@ -39,6 +39,10 @@ export async function adjustTransactionLines(
     })
     .flat();
 
+  if (returnItems.length === 0) {
+    return;
+  }
+
   taxDocument.createTransactionModel.lines =
     taxDocument.createTransactionModel.lines
       .map((line) => {
