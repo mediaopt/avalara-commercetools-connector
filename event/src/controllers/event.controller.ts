@@ -12,9 +12,10 @@ import {
 import { logger } from '../utils/logger.utils';
 import { setUpAvaTax } from '../utils/avatax.utils';
 import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
-import { voidOrRefundTransaction } from '../avalara/requests/actions/void.or.refund.transaction';
-import { adjustOrRefundTransactionLines } from '../avalara/requests/actions/adjust.or.refund.transaction.lines';
-
+import {
+  adjustOrRefundTransactionLines,
+  voidOrRefundTransaction,
+} from '../avalara/requests/actions';
 /**
  * Exposed event POST endpoint.
  * Receives the Pub/Sub message and works with it
@@ -190,6 +191,7 @@ const handleOrderStateTransition = async (
   avataxConfig: any
 ) => {
   if (
+    !settings?.commitOnOrderCreation &&
     settings?.commitOrderStates?.includes(messagePayload.state.id) &&
     messagePayload.resource.id
   ) {
@@ -199,6 +201,7 @@ const handleOrderStateTransition = async (
     );
   }
   if (
+    !settings?.cancelOnOrderCancelation &&
     settings?.cancelOrderStates?.includes(messagePayload.state.id) &&
     messagePayload.resource.id
   ) {
@@ -219,6 +222,7 @@ const handleOrderStateChanged = async (
   avataxConfig: any
 ) => {
   if (
+    !settings?.commitOnOrderCreation &&
     settings?.commitOrderStates?.includes(
       messagePayload.orderState.toLowerCase()
     ) &&
@@ -230,9 +234,10 @@ const handleOrderStateChanged = async (
     );
   }
   if (
-    (settings?.cancelOrderStates?.includes(
-      messagePayload.orderState.toLowerCase()
-    ) ||
+    ((!settings?.cancelOnOrderCancelation &&
+      settings?.cancelOrderStates?.includes(
+        messagePayload.orderState.toLowerCase()
+      )) ||
       (settings?.cancelOnOrderCancelation &&
         messagePayload.orderState === 'Cancelled')) &&
     messagePayload.resource.id

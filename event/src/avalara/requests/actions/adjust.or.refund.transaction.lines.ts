@@ -5,34 +5,6 @@ import { ReturnInfo } from '@commercetools/platform-sdk';
 import { processOrder } from '../preprocess/preprocess.order';
 import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
 
-export async function adjustOrRefundTransactionLines(
-  returnInfos: ReturnInfo[],
-  orderId: string,
-  creds: { [key: string]: string },
-  originAddress: any,
-  config: any
-) {
-  try {
-    await adjustTransactionLines(
-      returnInfos,
-      orderId,
-      creds,
-      originAddress,
-      config
-    );
-  } catch (error: any) {
-    if (error?.code === 'CannotModifyLockedTransaction') {
-      await refundTransactionLines(
-        returnInfos,
-        orderId,
-        creds,
-        originAddress,
-        config
-      );
-    }
-  }
-}
-
 export async function adjustTransactionLines(
   returnInfos: ReturnInfo[],
   orderId: string,
@@ -78,10 +50,11 @@ export async function adjustTransactionLines(
           if (restQuantity < 0) {
             restQuantity = 0;
           }
-          const unitAmount = Math.round(line.amount * 100 / (line.quantity as number));
+          const unitAmount = Math.round(
+            (line.amount * 100) / (line.quantity as number)
+          );
           line.quantity = restQuantity;
-          line.amount = unitAmount * restQuantity / 100;
-          
+          line.amount = (unitAmount * restQuantity) / 100;
         }
         return line;
       })
@@ -131,9 +104,11 @@ export async function refundTransactionLines(
           (returnItem) => returnItem.itemCode === line.itemCode
         );
         if (returnItem) {
-          const unitAmount = Math.round(line.amount * 100 / (line.quantity as number));
+          const unitAmount = Math.round(
+            (line.amount * 100) / (line.quantity as number)
+          );
           line.quantity = returnItem.quantity;
-          line.amount = unitAmount * returnItem.quantity / 100;
+          line.amount = (unitAmount * returnItem.quantity) / 100;
         }
         return line;
       })

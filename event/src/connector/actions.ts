@@ -50,7 +50,7 @@ export async function createOrderSubscription(
               'OrderStateChanged',
               'OrderStateTransition',
               'ReturnInfoAdded',
-              'ReturnInfoSet'
+              'ReturnInfoSet',
             ],
           },
         ],

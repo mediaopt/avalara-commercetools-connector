@@ -12,7 +12,10 @@ export async function commitTransaction(
   if (!['US', 'CA'].includes(order?.shippingAddress?.country || 'default')) {
     return undefined;
   }
-  const client = new AvaTaxClient(config).withSecurity(creds);
+  
+  const avataxClient = new AvaTaxClient(config);
+
+  const client = avataxClient.withSecurity(creds);
 
   const taxDocument = await processOrder(
     'commit',
@@ -21,7 +24,9 @@ export async function commitTransaction(
     originAddress
   );
 
-  const taxResponse = await client.createOrAdjustTransaction({ model: taxDocument });
+  const taxResponse = await client.createOrAdjustTransaction({
+    model: taxDocument,
+  });
 
   return taxResponse;
 }

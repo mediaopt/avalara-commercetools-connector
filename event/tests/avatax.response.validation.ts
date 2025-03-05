@@ -1,38 +1,45 @@
 import { expect } from '@jest/globals';
+import { AdjustmentReason } from 'avatax/lib/enums/AdjustmentReason';
 import { TransactionLineModel } from 'avatax/lib/models/TransactionLineModel';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 
 const expectGeneralAvaTaxReturn = (
   taxResponse: TransactionModel,
-  refund: boolean
+  refund: boolean,
+  lineItemsQuantity: number = 3,
+  mainProductQuantity: number = 2,
+  totalAmount: number = 166.23,
+  totalTax: number = 12.05
 ) => {
   const coef = refund ? -1 : 1;
   expect(taxResponse.currencyCode).toEqual('USD');
   expect(taxResponse.entityUseCode).toEqual('B');
   expect(taxResponse.customerCode).toEqual('123');
-  expect(taxResponse.totalAmount).toEqual(coef * 166.23);
-  expect(taxResponse.totalTax).toEqual(coef * 12.05);
-  expect(taxResponse.lines).toHaveLength(3);
+  expect(taxResponse.totalAmount).toEqual(coef * totalAmount);
+  expect(taxResponse.totalTax).toEqual(coef * totalTax);
+  expect(taxResponse.lines).toHaveLength(lineItemsQuantity);
   const item: TransactionLineModel =
     taxResponse.lines?.find((line) => line.itemCode === 'sku123') ??
     ({} as TransactionLineModel);
-  const shipping: TransactionLineModel =
-    taxResponse.lines?.find((line) => line.itemCode === 'Shipping') ??
-    ({} as TransactionLineModel);
   expect(item.description).toEqual('Test Product');
   expect(item.itemCode).toEqual('sku123');
-  expect(item.quantity).toEqual(2);
-  expect(item.lineAmount).toEqual(coef * 123);
+  expect(item.quantity).toEqual(mainProductQuantity);
+  expect(item.lineAmount).toEqual(coef * 61.5 * mainProductQuantity);
   expect(item.taxCode).toEqual('PS081282');
-  expect(item.tax).toEqual(coef * 8.92);
+  expect(item.tax).toEqual(coef * 4.46 * mainProductQuantity);
   expect(item.taxIncluded).toEqual(false);
-  expect(shipping.description).toEqual('Standard');
-  expect(shipping.itemCode).toEqual('Shipping');
-  expect(shipping.quantity).toEqual(1);
-  expect(shipping.lineAmount).toEqual(coef * 1.23);
-  expect(shipping.taxCode).toEqual('PC030000');
-  expect(shipping.tax).toEqual(coef * 0.08);
-  expect(shipping.taxIncluded).toEqual(false);
+  if (!refund) {
+    const shipping: TransactionLineModel =
+      taxResponse.lines?.find((line) => line.itemCode === 'Shipping') ??
+      ({} as TransactionLineModel);
+    expect(shipping.description).toEqual('Standard');
+    expect(shipping.itemCode).toEqual('Shipping');
+    expect(shipping.quantity).toEqual(1);
+    expect(shipping.lineAmount).toEqual(coef * 1.23);
+    expect(shipping.taxCode).toEqual('PC030000');
+    expect(shipping.tax).toEqual(coef * 0.08);
+    expect(shipping.taxIncluded).toEqual(false);
+  }
   const shipFrom = taxResponse.addresses?.find(
     (address) =>
       address.id ===
@@ -93,5 +100,19 @@ export const expectRefundReturn = (
   expect(taxResponse.taxOverrideType).toEqual('TaxDate');
   expect(taxResponse.taxDate).toEqual('2021-06-01');
   expect(taxResponse.date).toEqual(new Date().toISOString().substring(0, 10));
-  expectGeneralAvaTaxReturn(taxResponse, true);
+  expectGeneralAvaTaxReturn(taxResponse, true, 2, 2, 165, 11.97);
+};
+
+export const expectAdjustedRefundReturn = (
+  orderNumber: string,
+  taxResponse: TransactionModel,
+  locked: boolean
+) => {
+  const totalAmount = locked ? 165 : 104.73;
+  const totalTax = locked ? 11.97 : 7.59;
+  expect(taxResponse.code).toEqual(orderNumber);
+  expect(taxResponse.status).toEqual('Committed');
+  expect(taxResponse.adjustmentReason).toEqual('ProductReturned');
+  expect(taxResponse.date).toEqual(new Date().toISOString().substring(0, 10));
+  expectGeneralAvaTaxReturn(taxResponse, locked, 3, 1, totalAmount, totalTax);
 };

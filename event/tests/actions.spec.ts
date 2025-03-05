@@ -56,6 +56,8 @@ describe('test connector actions', () => {
               'OrderCreated',
               'OrderStateChanged',
               'OrderStateTransition',
+              'ReturnInfoAdded',
+              'ReturnInfoSet',
             ],
           },
         ],

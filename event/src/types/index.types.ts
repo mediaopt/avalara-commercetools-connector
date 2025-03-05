@@ -24,6 +24,7 @@ export type AvataxMerchantConfig = {
   cancelOnOrderCancelation: boolean;
   commitOrderStates: Array<string>;
   cancelOrderStates: Array<string>;
+  activateReturns: boolean;
   taxCalculation: string;
   enableLogging: boolean;
   displayPricesWithTax: boolean;

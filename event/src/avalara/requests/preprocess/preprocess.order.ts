@@ -1,6 +1,5 @@
 import { CustomLineItem, LineItem, Order } from '@commercetools/platform-sdk';
 import { getCustomerEntityUseCode } from '../../../client/data.client';
-import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { lineItem } from '../../utils/line.items';
 import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
@@ -8,6 +7,7 @@ import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
 import { customLineItem } from '../../utils/custom.line.items';
 import { CreateOrAdjustTransactionModel } from 'avatax/lib/models/CreateOrAdjustTransactionModel';
+import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 
 // initialize and specify the tax document model of Avalara
 export async function processOrder(
@@ -16,16 +16,12 @@ export async function processOrder(
   companyCode: string,
   originAddress: AddressInfo
 ): Promise<CreateOrAdjustTransactionModel> {
-  const transaction = new CreateOrAdjustTransactionModel();
+  let transaction = new CreateOrAdjustTransactionModel();
 
   if (order?.shippingAddress && order?.shippingInfo) {
     const shipFrom = originAddress;
 
     const shipTo = shippingAddress(order?.shippingAddress);
-
-    const shippingCustomFields = order?.shippingCustomFields;
-
-    const shippingInfo = await shipItem(type, order?.shippingInfo, shippingCustomFields);
 
     const itemCategoryTaxCodes = await getCategoryTaxCodes(order?.lineItems);
 
@@ -43,7 +39,19 @@ export async function processOrder(
       ? await getCustomerEntityUseCode(order?.customerId)
       : { customerNumber: 'Guest', exemptCode: '' };
 
-    lines.push(shippingInfo);
+    if (type === 'commit') {
+      const shippingCustomFields = order?.shippingCustomFields;
+
+      const shippingInfo = await shipItem(
+        type,
+        order?.shippingInfo,
+        shippingCustomFields
+      );
+
+      lines.push(shippingInfo);
+    }
+
+    transaction.createTransactionModel = new CreateTransactionModel();
 
     transaction.createTransactionModel.date = new Date();
 
@@ -55,9 +63,11 @@ export async function processOrder(
 
     transaction.createTransactionModel.type = type === 'refund' ? 5 : 1;
 
-    transaction.createTransactionModel.currencyCode = order?.totalPrice?.currencyCode;
+    transaction.createTransactionModel.currencyCode =
+      order?.totalPrice?.currencyCode;
 
-    transaction.createTransactionModel.customerCode = customerInfo?.customerNumber as string;
+    transaction.createTransactionModel.customerCode =
+      customerInfo?.customerNumber as string;
 
     transaction.createTransactionModel.addresses = {
       shipFrom: shipFrom,

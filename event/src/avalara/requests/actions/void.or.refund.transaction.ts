@@ -5,27 +5,7 @@ import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { processOrder } from '../preprocess/preprocess.order';
 
-export async function voidOrRefundTransaction(
-  orderId: string,
-  creds: { [key: string]: string },
-  originAddress: AddressInfo,
-  config: any
-) {
-  try {
-    await voidTransaction(orderId, creds, config);
-  } catch (error: any) {
-    if (error?.code === 'CannotModifyLockedTransaction') {
-      await refundTransaction(
-        orderId,
-        creds,
-        originAddress,
-        config
-      );
-    }
-  }
-}
-
-async function voidTransaction(
+export async function voidTransaction(
   orderId: string,
   creds: { [key: string]: string },
   config: any
@@ -49,7 +29,6 @@ async function voidTransaction(
   const taxResponse = await client.voidTransaction(voidBody);
   return taxResponse;
 }
-
 
 export async function refundTransaction(
   orderId: string,
@@ -80,7 +59,7 @@ export async function refundTransaction(
   taxDocument.createTransactionModel.taxOverride = taxModel;
 
   const taxResponse = await client.createOrAdjustTransaction({
-    model: taxDocument
+    model: taxDocument,
   });
   return taxResponse;
 }

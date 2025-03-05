@@ -6,7 +6,7 @@ import { OrderStateType } from '../../types/types';
 export const useFetchOrderState = (locale: string) => {
   const { data, error, loading } = useQuery(FETCH_SETTINGS, {
     variables: {
-      locale
+      locale,
     },
     context: {
       target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,

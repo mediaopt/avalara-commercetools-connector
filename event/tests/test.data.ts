@@ -1,10 +1,17 @@
 import {
   OrderCreatedMessage,
   OrderStateChangedMessage,
+  OrderStateTransitionMessage,
+  ReturnInfoAddedMessage,
+  ReturnInfoSetMessage,
 } from '@commercetools/platform-sdk';
 import { AvataxMerchantConfig } from '../src/types/index.types';
 
-export const avalaraMerchantDataBody = (disableDocRec: boolean) => {
+export const avalaraMerchantDataBody = (
+  disableDocRec: boolean,
+  commitOnOrderCreation?: boolean,
+  cancelOnOrderCancelation?: boolean
+) => {
   return {
     body: {
       results: [
@@ -14,10 +21,11 @@ export const avalaraMerchantDataBody = (disableDocRec: boolean) => {
             logLevel: '3',
             addressValidation: true,
             disableDocRec: disableDocRec,
-            commitOnOrderCreation: true,
-            cancelOnOrderCancelation: true,
-            commitOrderStates: ['Open'],
-            cancelOrderStates: ['Cancelled'],
+            commitOnOrderCreation: !!commitOnOrderCreation,
+            cancelOnOrderCancelation: !!cancelOnOrderCancelation,
+            commitOrderStates: ['Open', '123'],
+            cancelOrderStates: ['Cancelled', '123'],
+            activateReturns: true,
             taxCalculation: 'USCA',
             enableLogging: true,
             line1: '505 Beasley St',
@@ -147,6 +155,7 @@ export const order = (orderNumber: string, country: string) => {
     lineItems: [
       {
         quantity: 2,
+        id: '123',
         totalPrice: {
           currencyCode: 'USD',
           centAmount: 12300,
@@ -281,3 +290,85 @@ export const messageOrderStateChanged = {
   oldOrderState: 'Open',
   orderState: 'Cancelled',
 } as unknown as OrderStateChangedMessage;
+
+export const messageOrderStateTransition = (id: string) => {
+  return {
+    type: 'OrderStateTransition',
+    id: '123',
+    version: 1,
+    createdAt: '2021-06-01T00:00:00.000Z',
+    lastModifiedAt: '2021-06-01T00:00:00.000Z',
+    sequenceNumber: 1,
+    resource: {
+      typeId: 'order',
+      id: '123',
+      version: 1,
+      createdAt: '2021-06-01T00:00:00.000Z',
+      lastModifiedAt: '2021-06-01T00:00:00.000Z',
+    },
+    resourceVersion: 1,
+    state: {
+      id: id,
+      typeId: 'state',
+      obj: {},
+    },
+  } as unknown as OrderStateTransitionMessage;
+};
+
+export const messageReturnInfoAdded = {
+  type: 'ReturnInfoAdded',
+  id: '123',
+  version: 1,
+  createdAt: '2021-06-01T00:00:00.000Z',
+  lastModifiedAt: '2021-06-01T00:00:00.000Z',
+  sequenceNumber: 1,
+  resource: {
+    typeId: 'order',
+    id: '123',
+    version: 1,
+    createdAt: '2021-06-01T00:00:00.000Z',
+    lastModifiedAt: '2021-06-01T00:00:00.000Z',
+  },
+  resourceVersion: 1,
+  returnInfo: {
+    items: [
+      {
+        id: '123',
+        quantity: 1,
+        lineItemId: '123',
+        shipmentState: 'Delivered',
+        paymentState: 'Refunded',
+      },
+    ],
+  },
+} as unknown as ReturnInfoAddedMessage;
+
+export const messageReturnInfoSet = {
+  type: 'ReturnInfoSet',
+  id: '123',
+  version: 1,
+  createdAt: '2021-06-01T00:00:00.000Z',
+  lastModifiedAt: '2021-06-01T00:00:00.000Z',
+  sequenceNumber: 1,
+  resource: {
+    typeId: 'order',
+    id: '123',
+    version: 1,
+    createdAt: '2021-06-01T00:00:00.000Z',
+    lastModifiedAt: '2021-06-01T00:00:00.000Z',
+  },
+  resourceVersion: 1,
+  returnInfo: [
+    {
+      items: [
+        {
+          id: '123',
+          quantity: 1,
+          lineItemId: '123',
+          shipmentState: 'Delivered',
+          paymentState: 'Refunded',
+        },
+      ],
+    },
+  ],
+} as unknown as ReturnInfoSetMessage;

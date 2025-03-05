@@ -21,7 +21,6 @@ export function lineItem(
 ) {
   const lineItem = new LineItemModel();
 
-
   lineItem.quantity = item?.quantity;
 
   lineItem.amount = item?.totalPrice?.centAmount / 100;

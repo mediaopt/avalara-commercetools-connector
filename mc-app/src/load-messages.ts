@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 import { parseChunkImport } from '@commercetools-frontend/i18n';
 
 const getChunkImport = (_locale: any) => {

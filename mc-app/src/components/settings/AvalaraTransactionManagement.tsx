@@ -31,7 +31,9 @@ const AvalaraTransactionManagement = ({
     Record<string, boolean>
   >({});
 
-  const { locale } = useApplicationContext( (context) => ({ locale: context.dataLocale }) );
+  const { locale } = useApplicationContext((context) => ({
+    locale: context.dataLocale,
+  }));
 
   useEffect(() => {
     const commitOrderStates = values.commitOrderStates?.reduce((acc, id) => {

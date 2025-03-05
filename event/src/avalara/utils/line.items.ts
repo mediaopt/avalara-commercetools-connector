@@ -24,9 +24,7 @@ export function lineItem(
   lineItem.quantity = item?.quantity;
 
   lineItem.amount =
-    (type === 'refund' ? -1 : 1) *
-      item?.totalPrice?.centAmount /
-    100;
+    ((type === 'refund' ? -1 : 1) * item?.totalPrice?.centAmount) / 100;
 
   lineItem.description = item?.name?.en;
 
