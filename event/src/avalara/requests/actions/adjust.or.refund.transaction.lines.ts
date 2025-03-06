@@ -5,13 +5,15 @@ import { Order, ReturnItem } from '@commercetools/platform-sdk';
 import { processOrder } from '../preprocess/preprocess.order';
 import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
 import { CreateOrAdjustTransactionModel } from 'avatax/lib/models/CreateOrAdjustTransactionModel';
+import { logger } from '../../../utils/logger.utils';
 
 export async function adjustTransactionLines(
   returnItemId: string,
   orderId: string,
   creds: { [key: string]: string },
   originAddress: any,
-  config: any
+  config: any,
+  logging: string
 ) {
   let order = await getOrder(orderId);
 
@@ -19,6 +21,14 @@ export async function adjustTransactionLines(
 
   if (!returnItems || (returnItems && returnItems.length === 0)) {
     return;
+  }
+
+  if (logging === 'debug') {
+    logger.debug(
+      `Adjusting transaction lines for return item ${returnItemId} in order ${orderId}: ${JSON.stringify(
+        returnItems
+      )}`
+    );
   }
 
   const client = new AvaTaxClient(config).withSecurity(creds);
@@ -51,7 +61,8 @@ export async function refundTransactionLines(
   orderId: string,
   creds: { [key: string]: string },
   originAddress: any,
-  config: any
+  config: any,
+  logging: string
 ) {
   const order = await getOrder(orderId);
 
@@ -59,6 +70,14 @@ export async function refundTransactionLines(
 
   if (!returnItems || (returnItems && returnItems.length === 0)) {
     return;
+  }
+
+  if (logging === 'debug') {
+    logger.debug(
+      `Refunding transaction lines for return item ${returnItemId} in order ${orderId}: ${JSON.stringify(
+        returnItems
+      )}`
+    );
   }
 
   const client = new AvaTaxClient(config).withSecurity(creds);
@@ -122,9 +141,11 @@ function extractRemainingLines(
 }
 
 function extractReturnItems(order: Order, returnItemId: string) {
-  const returnInfos = order?.returnInfo?.map((returnInfo) =>
-    returnInfo.items.find((item) => item.id === returnItemId)
-  );
+  const returnInfos = order?.returnInfo
+    ?.map((returnInfo) =>
+      returnInfo.items.find((item) => item.id === returnItemId)
+    )
+    .filter(Boolean);
 
   let returnItems = returnInfos
     ?.filter(
@@ -136,8 +157,5 @@ function extractReturnItems(order: Order, returnItemId: string) {
       quantity: item?.quantity,
     }));
 
-  if (!returnItems || (returnItems && returnItems.length === 0)) {
-    return;
-  }
   return returnItems;
 }

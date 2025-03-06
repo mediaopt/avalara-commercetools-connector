@@ -79,12 +79,30 @@ export const post = async (
 
     const { originAddress, avataxConfig } = setUpAvaTax(settings, env);
 
+    const logLevel = () => {
+      switch (Number(settings?.logLevel)) {
+        case 0:
+          return 'error';
+        case 1:
+          return 'warn';
+        case 2:
+          return 'info';
+        case 3:
+          return 'debug';
+        default:
+          return 'off';
+      }
+    };
+
+    const logging = settings?.enableLogging ? logLevel() : 'off';
+
     await handleMessagePayload(
       messagePayload,
       settings,
       creds,
       originAddress,
-      avataxConfig
+      avataxConfig,
+      logging
     );
 
     response.status(200).send();
@@ -106,7 +124,8 @@ const handleMessagePayload = async (
   settings: any,
   creds: any,
   originAddress: any,
-  avataxConfig: any
+  avataxConfig: any,
+  logging: string
 ) => {
   switch (messagePayload.type) {
     case 'OrderCreated':
@@ -143,7 +162,8 @@ const handleMessagePayload = async (
         settings,
         creds,
         originAddress,
-        avataxConfig
+        avataxConfig,
+        logging
       );
       break;
     default:
@@ -244,7 +264,8 @@ const handleReturnShipmentStateChanged = async (
   settings: any,
   creds: any,
   originAddress: any,
-  avataxConfig: any
+  avataxConfig: any,
+  logging: string
 ) => {
   if (
     settings?.activateReturns &&
@@ -257,7 +278,8 @@ const handleReturnShipmentStateChanged = async (
       messagePayload.resource.id,
       creds,
       originAddress,
-      avataxConfig
+      avataxConfig,
+      logging
     ).catch((error) => logger.error(error));
   }
 };

@@ -14,7 +14,8 @@ export async function adjustOrRefundTransactionLines(
   orderId: string,
   creds: { [key: string]: string },
   originAddress: any,
-  config: any
+  config: any,
+  logging: string
 ) {
   try {
     await adjustTransactionLines(
@@ -22,7 +23,8 @@ export async function adjustOrRefundTransactionLines(
       orderId,
       creds,
       originAddress,
-      config
+      config,
+      logging
     );
   } catch (error: any) {
     if (error?.code === 'CannotModifyLockedTransaction') {
@@ -31,7 +33,8 @@ export async function adjustOrRefundTransactionLines(
         orderId,
         creds,
         originAddress,
-        config
+        config,
+        logging
       );
     }
   }
