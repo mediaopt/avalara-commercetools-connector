@@ -4,10 +4,9 @@ import CustomError from '../errors/custom.error';
 import {
   Message,
   OrderCreatedMessage,
+  OrderReturnShipmentStateChangedMessage,
   OrderStateChangedMessage,
   OrderStateTransitionMessage,
-  ReturnInfoAddedMessage,
-  ReturnInfoSetMessage,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/message';
 import { logger } from '../utils/logger.utils';
 import { setUpAvaTax } from '../utils/avatax.utils';
@@ -103,8 +102,7 @@ const handleMessagePayload = async (
     | OrderCreatedMessage
     | OrderStateChangedMessage
     | OrderStateTransitionMessage
-    | ReturnInfoAddedMessage
-    | ReturnInfoSetMessage,
+    | OrderReturnShipmentStateChangedMessage,
   settings: any,
   creds: any,
   originAddress: any,
@@ -139,18 +137,8 @@ const handleMessagePayload = async (
       );
       break;
 
-    case 'ReturnInfoAdded':
-      await handleReturnInfoAdded(
-        messagePayload,
-        settings,
-        creds,
-        originAddress,
-        avataxConfig
-      );
-      break;
-
-    case 'ReturnInfoSet':
-      await handleReturnInfoSet(
+    case 'OrderReturnShipmentStateChanged':
+      await handleReturnShipmentStateChanged(
         messagePayload,
         settings,
         creds,
@@ -251,34 +239,21 @@ const handleOrderStateChanged = async (
   }
 };
 
-const handleReturnInfoAdded = async (
-  messagePayload: ReturnInfoAddedMessage,
+const handleReturnShipmentStateChanged = async (
+  messagePayload: OrderReturnShipmentStateChangedMessage,
   settings: any,
   creds: any,
   originAddress: any,
   avataxConfig: any
 ) => {
-  if (settings?.activateReturns && messagePayload.returnInfo) {
+  if (
+    settings?.activateReturns &&
+    messagePayload.returnItemId &&
+    messagePayload.resource.id &&
+    messagePayload.returnShipmentState
+  ) {
     await adjustOrRefundTransactionLines(
-      [messagePayload.returnInfo],
-      messagePayload.resource.id,
-      creds,
-      originAddress,
-      avataxConfig
-    ).catch((error) => logger.error(error));
-  }
-};
-
-const handleReturnInfoSet = async (
-  messagePayload: ReturnInfoSetMessage,
-  settings: any,
-  creds: any,
-  originAddress: any,
-  avataxConfig: any
-) => {
-  if (settings?.activateReturns && messagePayload.returnInfo) {
-    await adjustOrRefundTransactionLines(
-      messagePayload.returnInfo,
+      messagePayload.returnItemId,
       messagePayload.resource.id,
       creds,
       originAddress,

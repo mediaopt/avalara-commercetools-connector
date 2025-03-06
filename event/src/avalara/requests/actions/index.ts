@@ -3,12 +3,14 @@ import {
   refundTransaction,
   voidTransaction,
 } from './void.or.refund.transaction';
-import { ReturnInfo } from '@commercetools/platform-sdk';
-import { adjustTransactionLines, refundTransactionLines } from './adjust.or.refund.transaction.lines';
+import {
+  adjustTransactionLines,
+  refundTransactionLines,
+} from './adjust.or.refund.transaction.lines';
 import { commitTransaction } from './commit.transaction';
 
 export async function adjustOrRefundTransactionLines(
-  returnInfos: ReturnInfo[],
+  returnItemId: string,
   orderId: string,
   creds: { [key: string]: string },
   originAddress: any,
@@ -16,7 +18,7 @@ export async function adjustOrRefundTransactionLines(
 ) {
   try {
     await adjustTransactionLines(
-      returnInfos,
+      returnItemId,
       orderId,
       creds,
       originAddress,
@@ -25,7 +27,7 @@ export async function adjustOrRefundTransactionLines(
   } catch (error: any) {
     if (error?.code === 'CannotModifyLockedTransaction') {
       await refundTransactionLines(
-        returnInfos,
+        returnItemId,
         orderId,
         creds,
         originAddress,

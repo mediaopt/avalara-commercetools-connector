@@ -1,9 +1,8 @@
 import {
   OrderCreatedMessage,
+  OrderReturnShipmentStateChangedMessage,
   OrderStateChangedMessage,
   OrderStateTransitionMessage,
-  ReturnInfoAddedMessage,
-  ReturnInfoSetMessage,
 } from '@commercetools/platform-sdk';
 import { AvataxMerchantConfig } from '../src/types/index.types';
 
@@ -241,6 +240,19 @@ export const order = (orderNumber: string, country: string) => {
         priceMode: 'Standard',
       },
     ],
+    returnInfo: [
+      {
+        items: [
+          {
+            id: '123',
+            quantity: 1,
+            lineItemId: '123',
+            shipmentState: 'Delivered',
+            paymentState: 'Refunded',
+          },
+        ],
+      },
+    ],
   };
 };
 
@@ -315,8 +327,8 @@ export const messageOrderStateTransition = (id: string) => {
   } as unknown as OrderStateTransitionMessage;
 };
 
-export const messageReturnInfoAdded = {
-  type: 'ReturnInfoAdded',
+export const messageReturnShipmentStateChanged = {
+  type: 'OrderReturnShipmentStateChanged',
   id: '123',
   version: 1,
   createdAt: '2021-06-01T00:00:00.000Z',
@@ -330,45 +342,6 @@ export const messageReturnInfoAdded = {
     lastModifiedAt: '2021-06-01T00:00:00.000Z',
   },
   resourceVersion: 1,
-  returnInfo: {
-    items: [
-      {
-        id: '123',
-        quantity: 1,
-        lineItemId: '123',
-        shipmentState: 'Delivered',
-        paymentState: 'Refunded',
-      },
-    ],
-  },
-} as unknown as ReturnInfoAddedMessage;
-
-export const messageReturnInfoSet = {
-  type: 'ReturnInfoSet',
-  id: '123',
-  version: 1,
-  createdAt: '2021-06-01T00:00:00.000Z',
-  lastModifiedAt: '2021-06-01T00:00:00.000Z',
-  sequenceNumber: 1,
-  resource: {
-    typeId: 'order',
-    id: '123',
-    version: 1,
-    createdAt: '2021-06-01T00:00:00.000Z',
-    lastModifiedAt: '2021-06-01T00:00:00.000Z',
-  },
-  resourceVersion: 1,
-  returnInfo: [
-    {
-      items: [
-        {
-          id: '123',
-          quantity: 1,
-          lineItemId: '123',
-          shipmentState: 'Delivered',
-          paymentState: 'Refunded',
-        },
-      ],
-    },
-  ],
-} as unknown as ReturnInfoSetMessage;
+  returnItemId: '123',
+  returnShipmentState: 'BackInStock',
+} as unknown as OrderReturnShipmentStateChangedMessage;

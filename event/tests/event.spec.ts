@@ -9,8 +9,7 @@ import {
   messageOrderCreated,
   messageOrderStateChanged,
   messageOrderStateTransition,
-  messageReturnInfoAdded,
-  messageReturnInfoSet,
+  messageReturnShipmentStateChanged,
   orderRequest,
   shipTaxCodeBody,
 } from './test.data';
@@ -77,15 +76,10 @@ const generateGoodRequest = (
         JSON.stringify(messageOrderStateTransition(state_id as string))
       ).toString('base64');
       break;
-    case 'ReturnInfoAdded':
-      data = Buffer.from(JSON.stringify(messageReturnInfoAdded)).toString(
-        'base64'
-      );
-      break;
-    case 'ReturnInfoSet':
-      data = Buffer.from(JSON.stringify(messageReturnInfoSet)).toString(
-        'base64'
-      );
+    case 'OrderReturnShipmentStateChanged':
+      data = Buffer.from(
+        JSON.stringify(messageReturnShipmentStateChanged)
+      ).toString('base64');
       break;
     default:
       data = Buffer.from(
@@ -138,7 +132,11 @@ const commitRequestWithCustomOrderState = (country: string) =>
   );
 
 const refundTransactionLinesRequest = (country: string) =>
-  generateGoodRequest('ReturnInfoSet', anotherOrderNumber, country);
+  generateGoodRequest(
+    'OrderReturnShipmentStateChanged',
+    anotherOrderNumber,
+    country
+  );
 
 const badRequests = [
   {
@@ -364,11 +362,11 @@ describe('test event controller', () => {
       spyCommit.mock.results[0].value as Promise<TransactionModel>;
 
     expect(spyCommit).toBeCalledTimes(1);
-    // expectAdjustedRefundReturn(
-    //   anotherOrderNumber,
-    //   await getRefundResult(),
-    //   true
-    // );
+    expectAdjustedRefundReturn(
+      anotherOrderNumber,
+      await getRefundResult(),
+      true
+    );
     expectSuccessfulCall(next, response);
     mockAdjust.mockRestore();
   });

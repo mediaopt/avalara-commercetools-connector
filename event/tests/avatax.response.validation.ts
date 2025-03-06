@@ -1,5 +1,4 @@
 import { expect } from '@jest/globals';
-import { AdjustmentReason } from 'avatax/lib/enums/AdjustmentReason';
 import { TransactionLineModel } from 'avatax/lib/models/TransactionLineModel';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 
@@ -108,11 +107,25 @@ export const expectAdjustedRefundReturn = (
   taxResponse: TransactionModel,
   locked: boolean
 ) => {
-  const totalAmount = locked ? 165 : 104.73;
-  const totalTax = locked ? 11.97 : 7.59;
+  const totalAmount = locked ? 103.5 : 104.73;
+  const totalTax = locked ? 7.51 : 7.59;
   expect(taxResponse.code).toEqual(orderNumber);
   expect(taxResponse.status).toEqual('Committed');
-  expect(taxResponse.adjustmentReason).toEqual('ProductReturned');
+  expect(taxResponse.adjustmentReason).toEqual(
+    locked ? 'NotAdjusted' : 'ProductReturned'
+  );
+  if (locked) {
+    expect(taxResponse.type).toEqual('ReturnInvoice');
+    expect(taxResponse.taxOverrideType).toEqual('TaxDate');
+    expect(taxResponse.taxDate).toEqual('2021-06-01');
+  }
   expect(taxResponse.date).toEqual(new Date().toISOString().substring(0, 10));
-  expectGeneralAvaTaxReturn(taxResponse, locked, 3, 1, totalAmount, totalTax);
+  expectGeneralAvaTaxReturn(
+    taxResponse,
+    locked,
+    locked ? 2 : 3,
+    1,
+    totalAmount,
+    totalTax
+  );
 };
