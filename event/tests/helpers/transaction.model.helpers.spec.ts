@@ -30,7 +30,7 @@ describe('transaction.model.helpers', () => {
             businessIdentificationNo: 'business-id',
           },
         ],
-        type: DocumentType.SalesInvoice,
+        type: "SalesInvoice",
         companyCode: 'company-code',
         date: new Date(),
         salespersonCode: 'salesperson-code',
@@ -87,7 +87,7 @@ describe('transaction.model.helpers', () => {
             businessIdentificationNo: 'business-id',
           },
         ],
-        type: DocumentType.SalesInvoice,
+        type: "SalesInvoice",
         companyCode: 'company-code',
         date: transaction.date,
         salespersonCode: 'salesperson-code',
@@ -246,11 +246,11 @@ describe('transaction.model.helpers', () => {
     it('should extract sales invoice transaction', () => {
       const transactions: TransactionModel[] = [
         {
-          type: DocumentType.SalesInvoice,
+          type: "SalesInvoice",
           code: 'order-id',
         },
         {
-          type: DocumentType.ReturnInvoice,
+          type: "ReturnInvoice",
           code: 'order-id-R1',
         },
       ] as any;
@@ -258,7 +258,7 @@ describe('transaction.model.helpers', () => {
       const result = extractSalesInvoiceTransaction(transactions, 'order-id');
 
       expect(result).toEqual({
-        type: DocumentType.SalesInvoice,
+        type: "SalesInvoice",
         code: 'order-id',
       });
     });
@@ -268,16 +268,16 @@ describe('transaction.model.helpers', () => {
     it('should extract unlocked return transaction and count', () => {
       const transactions: TransactionModel[] = [
         {
-          type: DocumentType.SalesInvoice,
+          type: "SalesInvoice",
           code: 'order-id',
         },
         {
-          type: DocumentType.ReturnInvoice,
+          type: "ReturnInvoice",
           code: 'order-id-R1',
           locked: true,
         },
         {
-          type: DocumentType.ReturnInvoice,
+          type: "ReturnInvoice",
           code: 'order-id-R2',
           locked: false,
         },
@@ -291,7 +291,7 @@ describe('transaction.model.helpers', () => {
       expect(result).toEqual({
         returnTransactionsCount: 2,
         unlockedReturnTransaction: {
-          type: DocumentType.ReturnInvoice,
+          type: "ReturnInvoice",
           code: 'order-id-R2',
           locked: false,
         },

@@ -94,9 +94,8 @@ export function extractSalesInvoiceTransaction(
   orderId: string
 ) {
   return transactions.find(
-    (transaction) =>
-      transaction.type === DocumentType.SalesInvoice &&
-      transaction.code === orderId
+    (transaction: any) =>
+      transaction.type === 'SalesInvoice' && transaction.code === orderId
   );
 }
 
@@ -105,8 +104,8 @@ export function extractUnlockedReturnTransactionAndCount(
   orderId: string
 ) {
   const returnTransactions = transactions.filter(
-    (transaction) =>
-      transaction.type === DocumentType.ReturnInvoice &&
+    (transaction: any) =>
+      transaction.type === "ReturnInvoice" &&
       transaction.code?.includes(orderId + '-R')
   );
   const unlockedReturnTransaction = returnTransactions.find(

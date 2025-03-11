@@ -38,6 +38,7 @@ export class AvataxTransactionManager {
       await this.client.listTransactionsByCompany({
         companyCode: this.companyCode,
         filter: `code startsWith ${orderId}`,
+        include: 'lines, addresses, details, summary',
       });
 
     return listTransactionsResponse.value;

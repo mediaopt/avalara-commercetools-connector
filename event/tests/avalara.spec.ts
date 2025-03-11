@@ -79,6 +79,7 @@ describe('AvataxTransactionManager', () => {
       expect(client.listTransactionsByCompany).toHaveBeenCalledWith({
         companyCode,
         filter: 'code startsWith order-id',
+        include: 'lines, addresses, details, summary',
       });
       expect(result).toEqual(mockResponse.value);
     });
