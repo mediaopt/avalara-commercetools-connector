@@ -2,7 +2,7 @@ import { logger } from '../utils/logger.utils';
 import { createApiRoot } from './create.client';
 import { Order } from '@commercetools/platform-sdk';
 
-export const getData = async (container: string) => {
+export const getCustomObject = async (container: string) => {
   try {
     return (
       await createApiRoot()
@@ -19,33 +19,29 @@ export const getData = async (container: string) => {
   }
 };
 
-export const getShipTaxCode = async (id: string) => {
+export const getShippingMethod = async (id: string) => {
   try {
     return (
       await createApiRoot().shippingMethods().withId({ ID: id }).get().execute()
-    )?.body?.custom?.fields?.avalaraTaxCode as string;
+    )?.body;
   } catch (e) {
     logger.error(e);
-    return undefined;
+    return;
   }
 };
 
-export const getCustomerEntityUseCode = async (id: string) => {
+export const getCustomer = async (id: string) => {
   try {
-    const customer = (
+    return (
       await createApiRoot().customers().withId({ ID: id }).get().execute()
     )?.body;
-    return {
-      customerNumber: customer?.customerNumber || id,
-      exemptCode: customer?.custom?.fields?.avalaraEntityUseCode as string,
-    };
   } catch (e) {
     logger.error(e);
-    return { customerNumber: id, exemptCode: undefined };
+    return;
   }
 };
 
-export const getBulkCategoryTaxCode = async (categories: Array<string>) => {
+export const getCategories = async (categories: Array<string>) => {
   if (!categories.length) return [];
   try {
     return (
@@ -61,22 +57,19 @@ export const getBulkCategoryTaxCode = async (categories: Array<string>) => {
           },
         })
         .execute()
-    )?.body?.results.map((x) => ({
-      id: x.id,
-      avalaraTaxCode: x.custom?.fields?.avalaraTaxCode as string,
-    }));
+    )?.body?.results;
   } catch (e) {
     logger.error(e);
     return [];
   }
 };
 
-export const getBulkProductCategories = async (
+export const getProductProjections = async (
   keys: Array<string | undefined>
 ) => {
   if (!keys.length) return [];
   try {
-    const data = (
+    return (
       await createApiRoot()
         .productProjections()
         .search()
@@ -91,18 +84,6 @@ export const getBulkProductCategories = async (
         })
         .execute()
     )?.body?.results;
-    return keys
-      .map((x) => ({
-        sku: x as string,
-        categories: data
-          .find(
-            (y) =>
-              y?.masterVariant?.sku === x ||
-              y?.variants?.find((z) => z?.sku === x)
-          )
-          ?.categories.map((x: any) => x.id) as string[],
-      }))
-      .filter((x) => x.categories && x.categories.length);
   } catch (e) {
     logger.error(e);
     return [];

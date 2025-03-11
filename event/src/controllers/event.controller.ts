@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { getData, getOrder } from '../client/data.client';
+import { getCustomObject, getOrder } from '../client/data.client';
 import CustomError from '../errors/custom.error';
 import {
   Message,
@@ -9,12 +9,14 @@ import {
   OrderStateTransitionMessage,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/message';
 import { logger } from '../utils/logger.utils';
-import { setUpAvaTax } from '../utils/avatax.utils';
-import { commitTransaction } from '../avalara/requests/actions/commit.transaction';
+import { AvataxTransactionManager } from '../avalara';
+import AvaTaxClient from 'avatax/lib/AvaTaxClient';
 import {
-  adjustOrRefundTransactionLines,
-  voidOrRefundTransaction,
-} from '../avalara/requests/actions';
+  avaTaxConfig,
+  extractOriginAddress,
+} from '../avalara/helpers/config.helpers';
+import { Order } from '@commercetools/platform-sdk';
+import { AvataxMerchantConfig } from '../avalara/types/index.types';
 /**
  * Exposed event POST endpoint.
  * Receives the Pub/Sub message and works with it
@@ -51,21 +53,15 @@ export const post = async (
   next: NextFunction
 ) => {
   try {
-    const env = process.env.AVALARA_ENV || 'sandbox';
-    const creds = {
-      username: process.env.AVALARA_USERNAME as string,
-      password: process.env.AVALARA_PASSWORD as string,
-      companyCode: process.env.AVALARA_COMPANY_CODE as string,
-    };
-
     const messagePayload = parseRequest(request) as
       | OrderCreatedMessage
       | OrderStateChangedMessage
-      | OrderStateTransitionMessage;
+      | OrderStateTransitionMessage
+      | OrderReturnShipmentStateChangedMessage;
 
-    const settings = await getData('avalara-connector-settings').then(
-      (res) => res?.settings
-    );
+    const settings: AvataxMerchantConfig = await getCustomObject(
+      'avalara-connector-settings'
+    ).then((res) => res?.settings);
 
     if (!settings) {
       logger.error('Missing Avalara settings.');
@@ -77,33 +73,22 @@ export const post = async (
       return next();
     }
 
-    const { originAddress, avataxConfig } = setUpAvaTax(settings, env);
-
-    const logLevel = () => {
-      switch (Number(settings?.logLevel)) {
-        case 0:
-          return 'error';
-        case 1:
-          return 'warn';
-        case 2:
-          return 'info';
-        case 3:
-          return 'debug';
-        default:
-          return 'off';
-      }
-    };
-
-    const logging = settings?.enableLogging ? logLevel() : 'off';
-
-    await handleMessagePayload(
-      messagePayload,
-      settings,
-      creds,
-      originAddress,
-      avataxConfig,
-      logging
+    const transactionManager = new AvataxTransactionManager(
+      new AvaTaxClient(
+        avaTaxConfig(
+          process.env.AVALARA_ENV || 'sandbox',
+          settings?.enableLogging,
+          settings?.logLevel
+        )
+      ).withSecurity({
+        username: process.env.AVALARA_USERNAME as string,
+        password: process.env.AVALARA_PASSWORD as string,
+      }),
+      process.env.AVALARA_COMPANY_CODE as string,
+      extractOriginAddress(settings)
     );
+
+    await handleMessagePayload(messagePayload, settings, transactionManager);
 
     response.status(200).send();
   } catch (error) {
@@ -122,164 +107,137 @@ const handleMessagePayload = async (
     | OrderStateTransitionMessage
     | OrderReturnShipmentStateChangedMessage,
   settings: any,
-  creds: any,
-  originAddress: any,
-  avataxConfig: any,
-  logging: string
+  transactionManager: AvataxTransactionManager
 ) => {
+  const order: Order =
+    (messagePayload as any)?.order ||
+    (await getOrder(messagePayload.resource.id));
+
+  if (!order) {
+    logger.error(
+      `Order not found for message: ${JSON.stringify(messagePayload)}`
+    );
+    return;
+  }
+
+  const country = order?.shippingAddress?.country;
+  if (!['US', 'CA'].includes(country || 'default')) {
+    return;
+  }
+
   switch (messagePayload.type) {
     case 'OrderCreated':
-      await handleOrderCreated(
-        messagePayload,
-        settings,
-        creds,
-        originAddress,
-        avataxConfig
-      );
+      await handleOrderCreated(order, settings, transactionManager);
       break;
     case 'OrderStateTransition':
       await handleOrderStateTransition(
         messagePayload,
+        order,
         settings,
-        creds,
-        originAddress,
-        avataxConfig
+        transactionManager
       );
       break;
     case 'OrderStateChanged':
       await handleOrderStateChanged(
         messagePayload,
+        order,
         settings,
-        creds,
-        originAddress,
-        avataxConfig
+        transactionManager
       );
       break;
-
     case 'OrderReturnShipmentStateChanged':
       await handleReturnShipmentStateChanged(
         messagePayload,
+        order,
         settings,
-        creds,
-        originAddress,
-        avataxConfig,
-        logging
+        transactionManager
       );
       break;
     default:
-      break;
   }
 };
 
 const handleOrderCreated = async (
-  messagePayload: OrderCreatedMessage,
+  order: Order,
   settings: any,
-  creds: any,
-  originAddress: any,
-  avataxConfig: any
+  transactionManager: AvataxTransactionManager
 ) => {
-  if (!messagePayload.order) {
-    throw new CustomError(400, `Order must be defined.`);
-  }
-  if (settings?.commitOnOrderCreation) {
-    await commitTransaction(
-      messagePayload.order,
-      creds,
-      originAddress,
-      avataxConfig
-    ).catch((error) => logger.error(error));
+  try {
+    if (settings?.commitOnOrderCreation) {
+      await transactionManager.commitTransaction(order);
+    }
+  } catch (error) {
+    logger.error(error);
   }
 };
 
 const handleOrderStateTransition = async (
   messagePayload: OrderStateTransitionMessage,
+  order: Order,
   settings: any,
-  creds: any,
-  originAddress: any,
-  avataxConfig: any
+  transactionManager: AvataxTransactionManager
 ) => {
-  if (
-    !settings?.commitOnOrderCreation &&
-    settings?.commitOrderStates?.includes(messagePayload.state.id) &&
-    messagePayload.resource.id
-  ) {
-    const order = await getOrder(messagePayload.resource.id);
-    await commitTransaction(order, creds, originAddress, avataxConfig).catch(
-      (error) => logger.error(error)
-    );
-  }
-  if (
-    !settings?.cancelOnOrderCancelation &&
-    settings?.cancelOrderStates?.includes(messagePayload.state.id) &&
-    messagePayload.resource.id
-  ) {
-    await voidOrRefundTransaction(
-      messagePayload.resource.id,
-      creds,
-      originAddress,
-      avataxConfig
-    );
+  try {
+    if (
+      !settings?.commitOnOrderCreation &&
+      settings?.commitOrderStates?.includes(messagePayload.state.id)
+    ) {
+      await transactionManager.commitTransaction(order);
+    } else if (
+      !settings?.cancelOnOrderCancelation &&
+      settings?.cancelOrderStates?.includes(messagePayload.state.id) &&
+      messagePayload.resource.id
+    ) {
+      await transactionManager.voidOrRefundTransaction(order);
+    }
+  } catch (error) {
+    logger.error(error);
   }
 };
 
 const handleOrderStateChanged = async (
   messagePayload: OrderStateChangedMessage,
+  order: Order,
   settings: any,
-  creds: any,
-  originAddress: any,
-  avataxConfig: any
+  transactionManager: AvataxTransactionManager
 ) => {
-  if (
-    !settings?.commitOnOrderCreation &&
-    settings?.commitOrderStates?.includes(
-      messagePayload.orderState.toLowerCase()
-    ) &&
-    messagePayload.resource.id
-  ) {
-    const order = await getOrder(messagePayload.resource.id);
-    await commitTransaction(order, creds, originAddress, avataxConfig).catch(
-      (error) => logger.error(error)
-    );
-  }
-  if (
-    ((!settings?.cancelOnOrderCancelation &&
-      settings?.cancelOrderStates?.includes(
+  try {
+    if (
+      !settings?.commitOnOrderCreation &&
+      settings?.commitOrderStates?.includes(
         messagePayload.orderState.toLowerCase()
-      )) ||
+      )
+    ) {
+      await transactionManager.commitTransaction(order);
+    } else if (
+      (!settings?.cancelOnOrderCancelation &&
+        settings?.cancelOrderStates?.includes(
+          messagePayload.orderState.toLowerCase()
+        )) ||
       (settings?.cancelOnOrderCancelation &&
-        messagePayload.orderState === 'Cancelled')) &&
-    messagePayload.resource.id
-  ) {
-    await voidOrRefundTransaction(
-      messagePayload.resource.id,
-      creds,
-      originAddress,
-      avataxConfig
-    ).catch((error) => logger.error(error));
+        messagePayload.orderState === 'Cancelled')
+    ) {
+      await transactionManager.voidOrRefundTransaction(order);
+    }
+  } catch (error) {
+    logger.error(error);
   }
 };
 
 const handleReturnShipmentStateChanged = async (
   messagePayload: OrderReturnShipmentStateChangedMessage,
+  order: Order,
   settings: any,
-  creds: any,
-  originAddress: any,
-  avataxConfig: any,
-  logging: string
+  transactionManager: AvataxTransactionManager
 ) => {
-  if (
-    settings?.activateReturns &&
-    messagePayload.returnItemId &&
-    messagePayload.resource.id &&
-    messagePayload.returnShipmentState
-  ) {
-    await adjustOrRefundTransactionLines(
-      messagePayload.returnItemId,
-      messagePayload.resource.id,
-      creds,
-      originAddress,
-      avataxConfig,
-      logging
-    ).catch((error) => logger.error(error));
+  try {
+    if (settings?.activateReturns) {
+      await transactionManager.adjustOrRefundTransactionLines(
+        messagePayload.returnItemId,
+        order
+      );
+    }
+  } catch (error) {
+    logger.error(error);
   }
 };

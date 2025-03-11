@@ -5,4 +5,11 @@ module.exports = {
   testMatch: ['**/?(*.)+(spec|test).[tj]s?(x)'],
   preset: 'ts-jest',
   testEnvironment: 'node',
+  collectCoverage: true,
+  collectCoverageFrom: [
+        "src/avalara/**/*.ts",
+        "src/client/data.client.ts",
+        "src/controllers/**/*.ts",
+        "src/connector/actions.ts",
+    ],
 };

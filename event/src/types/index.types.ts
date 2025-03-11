@@ -15,24 +15,3 @@ export type ValidatorFunction = (o: object) => boolean;
 export type Wrapper = (
   validator: ValidatorFunction
 ) => (value: object) => boolean;
-
-export type AvataxMerchantConfig = {
-  logLevel: string;
-  addressValidation: boolean;
-  disableDocRec: boolean;
-  commitOnOrderCreation: boolean;
-  cancelOnOrderCancelation: boolean;
-  commitOrderStates: Array<string>;
-  cancelOrderStates: Array<string>;
-  activateReturns: boolean;
-  taxCalculation: string;
-  enableLogging: boolean;
-  displayPricesWithTax: boolean;
-  line1: string;
-  line2: string;
-  line3: string;
-  postalCode: string;
-  city: string;
-  region: string;
-  country: string;
-};

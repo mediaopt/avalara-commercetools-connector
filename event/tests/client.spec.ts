@@ -1,185 +1,154 @@
-import { describe, expect, test, jest, afterEach } from '@jest/globals';
 import {
-  getData,
-  getShipTaxCode,
-  getCustomerEntityUseCode,
-  getBulkCategoryTaxCode,
-  getBulkProductCategories,
+  getCustomObject,
+  getShippingMethod,
+  getCustomer,
+  getCategories,
+  getProductProjections,
   getOrder,
 } from '../src/client/data.client';
-import {
-  avalaraMerchantDataBody,
-  bulkCategoryTaxCodeBody,
-  bulkProductCategoriesBody,
-  entityUseCodeBody,
-  orderRequest,
-  shipTaxCodeBody,
-} from './test.data';
+import { logger } from '../src/utils/logger.utils';
+import { Order } from '@commercetools/platform-sdk';
+import { describe, expect, jest, beforeEach, it } from '@jest/globals';
 
-const apiRoot: any = {
-  customObjects: jest.fn(() => apiRoot),
-  shippingMethods: jest.fn(() => apiRoot),
-  customers: jest.fn(() => apiRoot),
-  productProjections: jest.fn(() => apiRoot),
-  categories: jest.fn(() => apiRoot),
-  orders: jest.fn(() => apiRoot),
-  search: jest.fn(() => apiRoot),
-  withId: jest.fn(() => apiRoot),
-  withContainer: jest.fn(() => apiRoot),
-  get: jest.fn(() => apiRoot),
+const mockCreateApiRoot: any = {
+  customObjects: jest.fn(() => mockCreateApiRoot),
+  shippingMethods: jest.fn(() => mockCreateApiRoot),
+  customers: jest.fn(() => mockCreateApiRoot),
+  productProjections: jest.fn(() => mockCreateApiRoot),
+  categories: jest.fn(() => mockCreateApiRoot),
+  orders: jest.fn(() => mockCreateApiRoot),
+  search: jest.fn(() => mockCreateApiRoot),
+  withId: jest.fn(() => mockCreateApiRoot),
+  withContainer: jest.fn(() => mockCreateApiRoot),
+  get: jest.fn(() => mockCreateApiRoot),
   execute: jest.fn(() => ({ body: { results: [] } })),
 };
 jest.mock('../src/client/create.client', () => {
   return {
-    createApiRoot: () => apiRoot,
+    createApiRoot: () => mockCreateApiRoot,
   };
 });
 
-describe('test coco api client', () => {
-  afterEach(() => {
+jest.mock('../src/utils/logger.utils');
+
+describe('data.client', () => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
-  test('get avalara merchant data method succeeds', async () => {
-    apiRoot.execute = jest.fn(() => avalaraMerchantDataBody(false));
-    const data = await getData('avalara-connector-settings');
-    expect(apiRoot.customObjects).toBeCalledTimes(1);
-    expect(apiRoot.withContainer).toBeCalledWith({
-      container: 'avalara-connector-settings',
+
+  describe('getCustomObject', () => {
+    it('should return custom object data', async () => {
+      const mockResponse = {
+        body: {
+          results: [
+            { key: 'key1', value: 'value1' },
+            { key: 'key2', value: 'value2' },
+          ],
+        },
+      };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await getCustomObject('container');
+      expect(result).toEqual({ key1: 'value1', key2: 'value2' });
     });
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(data).toBeDefined();
-    expect(Object.keys(data?.settings).length).toBe(17);
-  });
 
-  test('get avalara merchant data method fails', async () => {
-    apiRoot.execute = jest.fn(() => {
-      throw new Error('error');
+    it('should log error and return undefined on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
+      const result = await getCustomObject('container');
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toBeUndefined();
     });
-    const data = await getData('avalara-connector-settings');
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
-    expect(data).toBeUndefined();
   });
 
-  test('get shipping tax code method succeeds', async () => {
-    apiRoot.execute = jest.fn(() => shipTaxCodeBody('PC030000'));
-    const data = await getShipTaxCode('123');
-    expect(apiRoot.shippingMethods).toBeCalledTimes(1);
-    expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(data).toBe('PC030000');
-  });
-
-  test('get shipping tax code method fails', async () => {
-    apiRoot.execute = jest.fn(() => {
-      throw new Error('error');
+  describe('getShippingMethod', () => {
+    it('should return shipping method data', async () => {
+      const mockResponse = { body: { id: 'shippingMethodId' } };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await getShippingMethod('shippingMethodId');
+      expect(result).toEqual(mockResponse.body);
     });
-    const data = await getShipTaxCode('123');
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
-    expect(data).toBeUndefined();
-  });
 
-  test('get customer entity use code method succeeds', async () => {
-    apiRoot.execute = jest.fn(() => entityUseCodeBody('B'));
-    const data = await getCustomerEntityUseCode('123');
-    expect(apiRoot.customers).toBeCalledTimes(1);
-    expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-
-    expect(data?.customerNumber).toBe('123');
-    expect(data?.exemptCode).toBe('B');
-  });
-
-  test('get customer entity use code method fails', async () => {
-    apiRoot.execute = jest.fn(() => {
-      throw new Error('error');
+    it('should log error and return undefined on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
+      const result = await getShippingMethod('shippingMethodId');
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toBeUndefined();
     });
-    const data = await getCustomerEntityUseCode('123');
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
-    expect(data?.customerNumber).toBe('123');
-    expect(data?.exemptCode).toBeUndefined();
   });
 
-  test('get all categories of a list of products succeeds', async () => {
-    apiRoot.execute = jest.fn(() => bulkProductCategoriesBody);
-    const data = await getBulkProductCategories(['sku123', 'sku456']);
-    expect(apiRoot.productProjections).toBeCalledTimes(1);
-    expect(apiRoot.search).toBeCalledTimes(1);
-    expect(apiRoot.get).toBeCalledWith({
-      queryArgs: { filter: `variants.sku:"sku123","sku456"`, limit: 500 },
+  describe('getCustomer', () => {
+    it('should return customer data', async () => {
+      const mockResponse = { body: { id: 'customerId' } };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await getCustomer('customerId');
+      expect(result).toEqual(mockResponse.body);
     });
-    expect(apiRoot.execute).toBeCalledTimes(1);
 
-    expect(data).toBeDefined();
-    expect(data[0]?.sku).toBe('sku123');
-    expect(data[0]?.categories[0]).toBe('123');
-    expect(data[1]?.sku).toBe('sku456');
-    expect(data[1]?.categories[0]).toBe('456');
-  });
-
-  test('get all categories of a list of products fails', async () => {
-    apiRoot.execute = jest.fn(() => {
-      throw new Error('error');
+    it('should log error and return undefined on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
+      const result = await getCustomer('customerId');
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toBeUndefined();
     });
-    const data = await getBulkProductCategories(['sku123', 'sku456']);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
-    expect(data).toEqual([]);
   });
 
-  test('get all tax codes of a list of categories succeeds', async () => {
-    apiRoot.execute = jest.fn(() =>
-      bulkCategoryTaxCodeBody(['PS081282', 'PS080101'])
-    );
-    const data = await getBulkCategoryTaxCode(['123', '456']);
-    expect(apiRoot.categories).toBeCalledTimes(1);
-    expect(apiRoot.get).toBeCalledWith({
-      queryArgs: { where: `id in ("123", "456")`, limit: 500 },
+  describe('getCategories', () => {
+    it('should return categories data', async () => {
+      const mockResponse = { body: { results: [{ id: 'categoryId' }] } };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await getCategories(['categoryId']);
+      expect(result).toEqual(mockResponse.body.results);
     });
-    expect(apiRoot.execute).toBeCalledTimes(1);
 
-    expect(data).toBeDefined();
-    expect(data[0]?.id).toBe('123');
-    expect(data[0]?.avalaraTaxCode).toBe('PS081282');
-    expect(data[1]?.id).toBe('456');
-    expect(data[1]?.avalaraTaxCode).toBe('PS080101');
-  });
+    it('should log error and return empty array on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
 
-  test('get all tax codes of a list of categories fails', async () => {
-    apiRoot.execute = jest.fn(() => {
-      throw new Error('error');
+      const result = await getCategories(['categoryId']);
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toEqual([]);
     });
-    const data = await getBulkCategoryTaxCode(['123', '456']);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
-    expect(data).toEqual([]);
   });
 
-  test('get order succeeds', async () => {
-    apiRoot.execute = jest.fn(() => orderRequest('123', 'US'));
-    const data = await getOrder('123');
-    expect(apiRoot.orders).toBeCalledTimes(1);
-    expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-
-    expect(data).toBeDefined();
-    expect(data?.id).toBe('123');
-    expect(data?.shippingAddress?.country).toBe('US');
-  });
-
-  test('get order fails', async () => {
-    apiRoot.execute = jest.fn(() => {
-      throw new Error('error');
+  describe('getProductProjections', () => {
+    it('should return product projections data', async () => {
+      const mockResponse = { body: { results: [{ id: 'productId' }] } };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await getProductProjections(['productId']);
+      expect(result).toEqual(mockResponse.body.results);
     });
-    const data = await getOrder('123');
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
-    expect(data).toEqual({});
+
+    it('should log error and return empty array on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
+      const result = await getProductProjections(['productId']);
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toEqual([]);
+    });
+  });
+
+  describe('getOrder', () => {
+    it('should return order data', async () => {
+      const mockResponse = { body: { id: 'orderId' } };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await getOrder('orderId');
+      expect(result).toEqual(mockResponse.body);
+    });
+
+    it('should log error and return empty order object on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
+      const result = await getOrder('orderId');
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toEqual({} as Order);
+    });
   });
 });

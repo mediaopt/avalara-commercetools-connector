@@ -1,5 +1,7 @@
 // set up avatax client configuration to be used in all calls to avalara
 import * as http from 'node:https';
+import { AddressInfo } from 'avatax/lib/models/AddressInfo';
+import { AvataxMerchantConfig } from '../types/index.types';
 
 export function avaTaxConfig(env: string, enabled?: boolean, level?: string) {
   return {
@@ -16,3 +18,17 @@ export function avaTaxConfig(env: string, enabled?: boolean, level?: string) {
     },
   };
 }
+
+export const extractOriginAddress = (settings: AvataxMerchantConfig) => {
+  const originAddress = {
+    line1: settings?.line1,
+    line2: settings?.line2,
+    line3: settings?.line3,
+    city: settings?.city,
+    postalCode: settings?.postalCode,
+    region: settings?.region,
+    country: settings?.country,
+  };
+
+  return originAddress as AddressInfo;
+};

@@ -1,32 +1,27 @@
 import { CustomFields, ShippingInfo } from '@commercetools/platform-sdk';
 import { LineItemModel } from 'avatax/lib/models/LineItemModel';
-import { getShipTaxCode } from '../../client/data.client';
+import { extractShippingMethodTaxCode } from '../../helpers/tax.code.helpers';
 
 // Mapping CT LineItem Model to Avalara LineItem Model
-export async function shipItem(
-  type: string,
+export async function convertShippingInfoModel(
   item: ShippingInfo,
   shippingCustomFields: CustomFields | undefined
 ) {
   const lineItem = new LineItemModel();
 
-  const taxCode = shippingCustomFields
-    ? (shippingCustomFields.fields?.avalaraTaxCode as string)
-    : item.shippingMethod?.id
-      ? await getShipTaxCode(item.shippingMethod?.id as string)
-      : undefined;
-
   lineItem.quantity = 1;
 
   lineItem.amount =
-    ((type === 'refund' ? -1 : 1) *
-      (item.discountedPrice?.value?.centAmount ?? item.price.centAmount)) /
-    100;
+    (item.discountedPrice?.value?.centAmount ?? item?.price?.centAmount) / 100;
 
   lineItem.description = item.shippingMethodName;
   lineItem.itemCode = 'Shipping';
   lineItem.taxIncluded = item.taxRate?.includedInPrice;
-  lineItem.taxCode = taxCode || 'FR010000';
+  lineItem.taxCode =
+    (await extractShippingMethodTaxCode(
+      item?.shippingMethod?.id,
+      shippingCustomFields
+    )) || 'FR010000';
 
   return lineItem;
 }

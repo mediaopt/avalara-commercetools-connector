@@ -1,13 +1,12 @@
 import { CustomLineItem } from '@commercetools/platform-sdk';
 import { LineItemModel } from 'avatax/lib/models/LineItemModel';
 
-export function customLineItem(type: string, item: CustomLineItem) {
+export function convertCustomLineItemModel(item: CustomLineItem) {
   const lineItem = new LineItemModel();
 
   lineItem.quantity = item?.quantity;
 
-  lineItem.amount =
-    ((type === 'refund' ? -1 : 1) * item?.totalPrice?.centAmount) / 100;
+  lineItem.amount = item?.totalPrice?.centAmount / 100;
 
   lineItem.itemCode = item?.key ?? item?.id;
 

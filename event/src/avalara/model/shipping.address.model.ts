@@ -2,7 +2,7 @@ import { Address } from '@commercetools/platform-sdk';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 
 // Mapping CT Address Model to Avalara Address Model
-export function shippingAddress(address: Address) {
+export function convertShippingAddressModel(address: Address) {
   const shipTo = new AddressInfo();
   shipTo.line1 = address?.streetName as string;
   shipTo.line2 = address?.streetNumber as string;
