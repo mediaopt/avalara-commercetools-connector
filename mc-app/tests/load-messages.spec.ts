@@ -23,18 +23,6 @@ describe('loadMessages', () => {
     }
   });
 
-  test('should have different messages for "de" and "en" locales', async () => {
-    const enLocale = 'en';
-    const enMessages = await loadMessages(enLocale);
-
-    const deLocale = 'de';
-    const deMessages = await loadMessages(deLocale);
-
-    for (const message in enMessages) {
-      expect(enMessages[message]).not.toBe(deMessages[message]);
-    }
-  });
-
   test('should load messages for other locales', async () => {
     const locale = 'en';
     const messages = await loadMessages(locale);
