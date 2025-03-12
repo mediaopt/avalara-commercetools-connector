@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@apollo/client": "3.11.8",
-    "@babel/core": "7.25.2",
-    "@babel/runtime-corejs3": "7.25.6",
+    "@babel/core": "^7.26.10",
+    "@babel/runtime-corejs3": "^7.26.10",
     "@commercetools-frontend/actions-global": "22.37.0",
     "@commercetools-frontend/application-components": "^22.37.0",
     "@commercetools-frontend/application-config": "22.37.0",
@@ -127,6 +127,9 @@
     "@sentry/browser": "^7.119.1",
     "cross-spawn": "^7.0.6",
     "nanoid": "^3.3.8",
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "@babel/runtime": "^7.26.10",
+    "@babel/helpers": "^7.26.10",
+    "@babel/runtime-corejs3": "^7.26.10"
   }
 }

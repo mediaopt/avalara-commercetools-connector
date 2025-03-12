@@ -1,5 +1,4 @@
 // convert TransactionModel to CreateTransactionModel
-import { DocumentType } from 'avatax/lib/enums/DocumentType';
 import { AddressesModel } from 'avatax/lib/models/AddressesModel';
 import { AddressLocationInfo } from 'avatax/lib/models/AddressLocationInfo';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
@@ -105,7 +104,7 @@ export function extractUnlockedReturnTransactionAndCount(
 ) {
   const returnTransactions = transactions.filter(
     (transaction: any) =>
-      transaction.type === "ReturnInvoice" &&
+      transaction.type === 'ReturnInvoice' &&
       transaction.code?.includes(orderId + '-R')
   );
   const unlockedReturnTransaction = returnTransactions.find(
