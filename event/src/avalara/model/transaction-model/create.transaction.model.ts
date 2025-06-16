@@ -1,6 +1,5 @@
 import { Order } from '@commercetools/platform-sdk';
 import { extractTaxCodesFromCategories } from '../../helpers/tax.code.helpers';
-import { CreateOrAdjustTransactionModel } from 'avatax/lib/models/CreateOrAdjustTransactionModel';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { AvataxTransactionManager } from '../..';
 import { DocumentType } from 'avatax/lib/enums/DocumentType';
@@ -11,11 +10,12 @@ import { convertCustomLineItemModel } from '../line-item-model/custom.line.item.
 import { convertShippingInfoModel } from '../line-item-model/shipping.info.model';
 
 // initialize and specify the tax document model of Avalara
-export async function commitTransactionModel(
+export async function createTransactionModel(
   order: Order,
-  transactionManager: AvataxTransactionManager
-): Promise<CreateOrAdjustTransactionModel> {
-  let transaction = new CreateOrAdjustTransactionModel();
+  transactionManager: AvataxTransactionManager,
+  params: { [key: string]: any } = {}
+): Promise<CreateTransactionModel> {
+  let transaction = new CreateTransactionModel();
 
   if (order?.shippingAddress && order?.shippingInfo) {
     const shipFrom = transactionManager.originAddress;
@@ -45,32 +45,27 @@ export async function commitTransactionModel(
 
     lines.push(shipppingLineItem);
 
-    transaction.createTransactionModel = new CreateTransactionModel();
+    transaction.date = new Date();
 
-    transaction.createTransactionModel.date = new Date();
+    transaction.code = order?.orderNumber || order.id;
 
-    transaction.createTransactionModel.code = order?.orderNumber || order.id;
+    transaction.commit = params?.commit ?? false;
 
-    transaction.createTransactionModel.commit = true;
+    transaction.companyCode = transactionManager.companyCode;
 
-    transaction.createTransactionModel.companyCode =
-      transactionManager.companyCode;
+    transaction.type = DocumentType.SalesInvoice;
 
-    transaction.createTransactionModel.type = DocumentType.SalesInvoice;
+    transaction.currencyCode = order?.totalPrice?.currencyCode;
 
-    transaction.createTransactionModel.currencyCode =
-      order?.totalPrice?.currencyCode;
-
-    transaction.createTransactionModel.customerCode =
+    transaction.customerCode =
       customerWithEntityUseCode?.customerNumber as string;
 
-    transaction.createTransactionModel.addresses = {
+    transaction.addresses = {
       shipFrom: shipFrom,
       shipTo: shipTo,
     };
-    transaction.createTransactionModel.entityUseCode =
-      customerWithEntityUseCode?.entityUseCode;
-    transaction.createTransactionModel.lines = lines;
+    transaction.entityUseCode = customerWithEntityUseCode?.entityUseCode;
+    transaction.lines = lines;
   }
 
   return transaction;

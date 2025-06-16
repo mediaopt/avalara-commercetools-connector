@@ -5,9 +5,10 @@ import {
   getCategories,
   getProductProjections,
   getOrder,
-} from '../src/client/data.client';
+} from '../src/client/get.client';
+import { applyOrderEdit, createOrderEdit } from '../src/client/post.client';
 import { logger } from '../src/utils/logger.utils';
-import { Order } from '@commercetools/platform-sdk';
+import { Order, OrderEdit } from '@commercetools/platform-sdk';
 import { describe, expect, jest, beforeEach, it } from '@jest/globals';
 
 const mockCreateApiRoot: any = {
@@ -17,10 +18,13 @@ const mockCreateApiRoot: any = {
   productProjections: jest.fn(() => mockCreateApiRoot),
   categories: jest.fn(() => mockCreateApiRoot),
   orders: jest.fn(() => mockCreateApiRoot),
+  edits: jest.fn(() => mockCreateApiRoot),
+  apply: jest.fn(() => mockCreateApiRoot),
   search: jest.fn(() => mockCreateApiRoot),
   withId: jest.fn(() => mockCreateApiRoot),
   withContainer: jest.fn(() => mockCreateApiRoot),
   get: jest.fn(() => mockCreateApiRoot),
+  post: jest.fn(() => mockCreateApiRoot),
   execute: jest.fn(() => ({ body: { results: [] } })),
 };
 jest.mock('../src/client/create.client', () => {
@@ -31,7 +35,7 @@ jest.mock('../src/client/create.client', () => {
 
 jest.mock('../src/utils/logger.utils');
 
-describe('data.client', () => {
+describe('get.client', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -149,6 +153,56 @@ describe('data.client', () => {
       const result = await getOrder('orderId');
       expect(logger.error).toHaveBeenCalledWith(new Error('error'));
       expect(result).toEqual({} as Order);
+    });
+  });
+});
+
+describe('post.client', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  describe('createOrderEdit', () => {
+    it('should create an order edit', async () => {
+      const mockResponse = { body: { id: 'editId' } };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await createOrderEdit('orderId', []);
+      expect(result).toEqual(mockResponse.body);
+    });
+
+    it('should log error and return undefined on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
+      const result = await createOrderEdit('orderId', []);
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toBeUndefined();
+    });
+  });
+  describe('applyOrderEdit', () => {
+    it('should apply an order edit', async () => {
+      const mockResponse = {
+        body: { id: 'editId' },
+      };
+      mockCreateApiRoot.execute = jest.fn(() => mockResponse);
+      const result = await applyOrderEdit({
+        id: 'editId',
+        version: 1,
+        resource: { obj: { version: 1 } },
+      } as OrderEdit);
+      expect(result).toEqual(mockResponse.body);
+    });
+
+    it('should log error and return undefined on failure', async () => {
+      mockCreateApiRoot.execute = jest.fn(() => {
+        throw new Error('error');
+      });
+      const result = await applyOrderEdit({
+        id: 'editId',
+        version: 1,
+        resource: { obj: { version: 1 } },
+      } as OrderEdit);
+      expect(logger.error).toHaveBeenCalledWith(new Error('error'));
+      expect(result).toBeUndefined();
     });
   });
 });

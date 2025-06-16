@@ -1,9 +1,9 @@
-import { getCustomer } from '../../src/client/data.client';
+import { getCustomer } from '../../src/client/get.client';
 import { extractEntityUseCode } from '../../src/avalara/helpers/entity.use.code.helpers';
 import { CustomerWithEntityUseCode } from '../../src/avalara/types/index.types';
 import { describe, expect, jest, it, afterEach } from '@jest/globals';
 
-jest.mock('../../src/client/data.client');
+jest.mock('../../src/client/get.client');
 
 const mockGetCustomer = getCustomer as jest.MockedFunction<typeof getCustomer>;
 

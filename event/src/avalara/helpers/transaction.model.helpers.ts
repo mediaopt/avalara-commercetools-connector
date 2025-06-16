@@ -98,7 +98,7 @@ export function extractSalesInvoiceTransaction(
   );
 }
 
-export function extractUnlockedReturnTransactionAndCount(
+export function extractReturnTransactionCount(
   transactions: TransactionModel[],
   orderId: string
 ) {
@@ -107,11 +107,5 @@ export function extractUnlockedReturnTransactionAndCount(
       transaction.type === 'ReturnInvoice' &&
       transaction.code?.includes(orderId + '-R')
   );
-  const unlockedReturnTransaction = returnTransactions.find(
-    (transaction) => !transaction.locked
-  );
-  return {
-    returnTransactionsCount: returnTransactions.length,
-    unlockedReturnTransaction,
-  };
+  return returnTransactions.length;
 }

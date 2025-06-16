@@ -7,7 +7,7 @@ import {
   extractAddressesFromTransactionModel,
   convertTransactionAddressModelToAddressLocationInfo,
   extractSalesInvoiceTransaction,
-  extractUnlockedReturnTransactionAndCount,
+  extractReturnTransactionCount,
 } from '../../src/avalara/helpers/transaction.model.helpers';
 import { describe, expect, it } from '@jest/globals';
 
@@ -263,8 +263,8 @@ describe('transaction.model.helpers', () => {
     });
   });
 
-  describe('extractUnlockedReturnTransactionAndCount', () => {
-    it('should extract unlocked return transaction and count', () => {
+  describe('extractReturnTransactionCount', () => {
+    it('should extract return transaction count', () => {
       const transactions: TransactionModel[] = [
         {
           type: 'SalesInvoice',
@@ -282,19 +282,9 @@ describe('transaction.model.helpers', () => {
         },
       ] as any;
 
-      const result = extractUnlockedReturnTransactionAndCount(
-        transactions,
-        'order-id'
-      );
+      const result = extractReturnTransactionCount(transactions, 'order-id');
 
-      expect(result).toEqual({
-        returnTransactionsCount: 2,
-        unlockedReturnTransaction: {
-          type: 'ReturnInvoice',
-          code: 'order-id-R2',
-          locked: false,
-        },
-      });
+      expect(result).toEqual(2);
     });
   });
 });

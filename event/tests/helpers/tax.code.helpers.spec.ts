@@ -5,14 +5,14 @@ import {
   getCategories,
   getProductProjections,
   getShippingMethod,
-} from '../../src/client/data.client';
+} from '../../src/client/get.client';
 import {
   extractItemTaxCode,
   extractShippingMethodTaxCode,
   extractTaxCodesFromCategories,
 } from '../../src/avalara/helpers/tax.code.helpers';
 
-jest.mock('../../src/client/data.client');
+jest.mock('../../src/client/get.client');
 
 const mockGetCategories = getCategories as jest.MockedFunction<
   typeof getCategories

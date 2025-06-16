@@ -1,4 +1,3 @@
-import { CreateOrAdjustTransactionModel } from 'avatax/lib/models/CreateOrAdjustTransactionModel';
 import { CreateTransactionModel } from 'avatax/lib/models/CreateTransactionModel';
 import { DocumentType } from 'avatax/lib/enums/DocumentType';
 import { AvataxTransactionManager } from '../../src/avalara';
@@ -8,7 +7,7 @@ import { convertShippingAddressModel } from '../../src/avalara/model/shipping.ad
 import { convertLineItemModel } from '../../src/avalara/model/line-item-model/line.item.model';
 import { convertCustomLineItemModel } from '../../src/avalara/model/line-item-model/custom.line.item.model';
 import { convertShippingInfoModel } from '../../src/avalara/model/line-item-model/shipping.info.model';
-import { commitTransactionModel } from '../../src/avalara/model/transaction-model/commit.transaction.model';
+import { createTransactionModel as createTransactionModelLocal } from '../../src/avalara/model/transaction-model/create.transaction.model';
 import {
   describe,
   expect,
@@ -48,7 +47,7 @@ const mockConvertShippingInfoModel =
     typeof convertShippingInfoModel
   >;
 
-describe('commitTransactionModel', () => {
+describe('createTransactionModel', () => {
   let order: any;
   let transactionManager: AvataxTransactionManager;
 
@@ -156,21 +155,21 @@ describe('commitTransactionModel', () => {
     jest.clearAllMocks();
   });
 
-  it('should create a CreateOrAdjustTransactionModel from an Order', async () => {
-    const result = await commitTransactionModel(order, transactionManager);
-
-    expect(result).toBeInstanceOf(CreateOrAdjustTransactionModel);
-    expect(result.createTransactionModel).toBeInstanceOf(
-      CreateTransactionModel
+  it('should create a CreateTransactionModel from an Order', async () => {
+    const result = await createTransactionModelLocal(
+      order,
+      transactionManager,
+      { commit: true }
     );
-    expect(result.createTransactionModel.date).toBeInstanceOf(Date);
-    expect(result.createTransactionModel.code).toBe('order-number');
-    expect(result.createTransactionModel.commit).toBe(true);
-    expect(result.createTransactionModel.companyCode).toBe('company-code');
-    expect(result.createTransactionModel.type).toBe(DocumentType.SalesInvoice);
-    expect(result.createTransactionModel.currencyCode).toBe('USD');
-    expect(result.createTransactionModel.customerCode).toBe('customer-number');
-    expect(result.createTransactionModel.addresses).toEqual({
+    expect(result).toBeInstanceOf(CreateTransactionModel);
+    expect(result.date).toBeInstanceOf(Date);
+    expect(result.code).toBe('order-number');
+    expect(result.commit).toBe(true);
+    expect(result.companyCode).toBe('company-code');
+    expect(result.type).toBe(DocumentType.SalesInvoice);
+    expect(result.currencyCode).toBe('USD');
+    expect(result.customerCode).toBe('customer-number');
+    expect(result.addresses).toEqual({
       shipFrom: transactionManager.originAddress,
       shipTo: {
         line1: 'Main St',
@@ -182,8 +181,8 @@ describe('commitTransactionModel', () => {
         country: 'US',
       },
     });
-    expect(result.createTransactionModel.entityUseCode).toBe('entity-use-code');
-    expect(result.createTransactionModel.lines).toEqual([
+    expect(result.entityUseCode).toBe('entity-use-code');
+    expect(result.lines).toEqual([
       {
         quantity: 2,
         amount: 20,
@@ -215,9 +214,9 @@ describe('commitTransactionModel', () => {
     order.shippingAddress = undefined;
     order.shippingInfo = undefined;
 
-    const result = await commitTransactionModel(order, transactionManager);
+    const result = await createTransactionModelLocal(order, transactionManager);
 
-    expect(result).toBeInstanceOf(CreateOrAdjustTransactionModel);
-    expect(result.createTransactionModel).toBeUndefined();
+    expect(result).toBeInstanceOf(CreateTransactionModel);
+    expect(result.code).toBeUndefined();
   });
 });

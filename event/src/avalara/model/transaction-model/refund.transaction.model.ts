@@ -2,7 +2,6 @@ import { TaxOverrideModel } from 'avatax/lib/models/TaxOverrideModel';
 import { DocumentType } from 'avatax/lib/enums/DocumentType';
 import { TaxOverrideType } from 'avatax/lib/enums/TaxOverrideType';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
-import { CreateOrAdjustTransactionModel } from 'avatax/lib/models/CreateOrAdjustTransactionModel';
 import {
   convertTransactionLineItemModeltoLineItemModel,
   convertTransactionModelToCreateTransactionModel,
@@ -13,18 +12,18 @@ export function refundTransactionModel(
   transaction: TransactionModel,
   companyCode: string
 ) {
-  const taxDocument = new CreateOrAdjustTransactionModel();
+  const taxDocument = convertTransactionModelToCreateTransactionModel(
+    transaction,
+    companyCode
+  );
 
-  taxDocument.createTransactionModel =
-    convertTransactionModelToCreateTransactionModel(transaction, companyCode);
+  taxDocument.referenceCode = 'Refund';
 
-  taxDocument.createTransactionModel.referenceCode = 'Refund';
+  taxDocument.type = DocumentType.ReturnInvoice;
 
-  taxDocument.createTransactionModel.type = DocumentType.ReturnInvoice;
+  taxDocument.code = transaction.code + '-R';
 
-  taxDocument.createTransactionModel.code = transaction.code + '-R';
-
-  taxDocument.createTransactionModel.lines = transaction.lines
+  taxDocument.lines = transaction.lines
     ?.map(convertTransactionLineItemModeltoLineItemModel)
     .map((x) => {
       x.amount = -x.amount;
@@ -37,7 +36,7 @@ export function refundTransactionModel(
   taxModel.taxDate = transaction.taxDate;
   taxModel.type = TaxOverrideType.TaxDate;
   taxModel.reason = 'Refund';
-  taxDocument.createTransactionModel.taxOverride = taxModel;
+  taxDocument.taxOverride = taxModel;
 
   return taxDocument;
 }

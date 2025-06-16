@@ -118,7 +118,6 @@
     "dompurify": "^3.2.4",
     "path-to-regexp": "^3.3.0",
     "rollup": "^3.29.5",
-    "vite": "^4.5.6",
     "dset": "^3.1.4",
     "express": "^4.20.0",
     "webpack": "^5.94.0",
@@ -130,6 +129,9 @@
     "esbuild": "^0.25.0",
     "@babel/runtime": "^7.26.10",
     "@babel/helpers": "^7.26.10",
-    "@babel/runtime-corejs3": "^7.26.10"
+    "@babel/runtime-corejs3": "^7.26.10",
+    "webpack-dev-server": "^5.2.1",
+    "brace-expansion": "^1.1.12",
+    "vite": "^4.5.12"
   }
 }

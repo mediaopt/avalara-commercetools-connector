@@ -1,7 +1,6 @@
 import { DocumentType } from 'avatax/lib/enums/DocumentType';
 import { TaxOverrideType } from 'avatax/lib/enums/TaxOverrideType';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
-import { CreateOrAdjustTransactionModel } from 'avatax/lib/models/CreateOrAdjustTransactionModel';
 import { describe, expect, it, jest, afterEach } from '@jest/globals';
 import {
   convertTransactionLineItemModeltoLineItemModel,
@@ -25,7 +24,7 @@ describe('refundTransactionModel', () => {
     jest.clearAllMocks();
   });
 
-  it('should create a CreateOrAdjustTransactionModel for a refund', () => {
+  it('should create a CreateTransactionModel for a refund', () => {
     const transaction: TransactionModel = {
       code: 'transaction-code',
       taxDate: new Date(),
@@ -140,11 +139,10 @@ describe('refundTransactionModel', () => {
 
     const result = refundTransactionModel(transaction, companyCode);
 
-    expect(result).toBeInstanceOf(CreateOrAdjustTransactionModel);
-    expect(result.createTransactionModel.referenceCode).toBe('Refund');
-    expect(result.createTransactionModel.type).toBe(DocumentType.ReturnInvoice);
-    expect(result.createTransactionModel.code).toBe('transaction-code-R');
-    expect(result.createTransactionModel.lines).toEqual([
+    expect(result.referenceCode).toBe('Refund');
+    expect(result.type).toBe(DocumentType.ReturnInvoice);
+    expect(result.code).toBe('transaction-code-R');
+    expect(result.lines).toEqual([
       {
         number: '1',
         quantity: 2,
@@ -157,7 +155,7 @@ describe('refundTransactionModel', () => {
         businessIdentificationNo: 'business-id',
       },
     ]);
-    expect(result.createTransactionModel.taxOverride).toEqual({
+    expect(result.taxOverride).toEqual({
       taxDate: transaction.taxDate,
       type: TaxOverrideType.TaxDate,
       reason: 'Refund',

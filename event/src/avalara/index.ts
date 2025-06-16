@@ -5,18 +5,18 @@ import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { Order } from '@commercetools/platform-sdk';
 import { logger } from '../utils/logger.utils';
 import {
-  commitTransactionModel,
+  createTransactionModel,
   voidTransactionModel,
   refundTransactionModel,
-  adjustTransactionLinesModel,
   refundTransactionLinesModel,
 } from './model';
 
 import {
   extractSalesInvoiceTransaction,
-  extractUnlockedReturnTransactionAndCount,
+  extractReturnTransactionCount,
 } from './helpers/transaction.model.helpers';
 import { ReturnItemHelper } from './types/index.types';
+import { createAndApplyOrderEdit } from './helpers/order.edit.helpers';
 
 export class AvataxTransactionManager {
   client: AvaTaxClient;
@@ -45,8 +45,10 @@ export class AvataxTransactionManager {
   }
 
   async commitTransaction(order: Order) {
-    return await this.client.createOrAdjustTransaction({
-      model: await commitTransactionModel(order, this),
+    return await this.client.createTransaction({
+      model: await createTransactionModel(order, this, {
+        commit: true,
+      }),
     });
   }
 
@@ -57,36 +59,21 @@ export class AvataxTransactionManager {
   }
 
   async refundTransaction(transaction: TransactionModel) {
-    return await this.client.createOrAdjustTransaction({
+    return await this.client.createTransaction({
       model: refundTransactionModel(transaction, this.companyCode),
-    });
-  }
-
-  async adjustTransactionLines(
-    returnItems: ReturnItemHelper[],
-    transaction: TransactionModel
-  ) {
-    return await this.client.createOrAdjustTransaction({
-      model: adjustTransactionLinesModel(
-        returnItems,
-        transaction,
-        this.companyCode
-      ),
     });
   }
 
   async refundTransactionLines(
     returnItems: ReturnItemHelper[],
     salesInvoiceTransaction: TransactionModel,
-    returnTransactionsCount: number,
-    unlockedReturnTransaction: TransactionModel | undefined
+    returnTransactionsCount: number
   ) {
-    return await this.client.createOrAdjustTransaction({
+    return await this.client.createTransaction({
       model: refundTransactionLinesModel(
         returnItems,
         salesInvoiceTransaction,
         returnTransactionsCount,
-        unlockedReturnTransaction,
         this.companyCode
       ),
     });
@@ -112,8 +99,10 @@ export class AvataxTransactionManager {
     if (!salesInvoiceTransaction?.locked) {
       await this.voidTransaction(orderId);
     } else {
-      const { returnTransactionsCount } =
-        extractUnlockedReturnTransactionAndCount(relatedTransactions, orderId);
+      const returnTransactionsCount = extractReturnTransactionCount(
+        relatedTransactions,
+        orderId
+      );
       if (!returnTransactionsCount) {
         await this.refundTransaction(salesInvoiceTransaction);
       } else {
@@ -124,7 +113,7 @@ export class AvataxTransactionManager {
     }
   }
 
-  async adjustOrRefundTransactionLines(returnItemId: string, order: Order) {
+  async partiallyRefundTransaction(returnItemId: string, order: Order) {
     const orderId = order.orderNumber || order.id;
 
     const returnItems = extractReturnItems(order, returnItemId);
@@ -148,18 +137,24 @@ export class AvataxTransactionManager {
       return;
     }
 
-    const { returnTransactionsCount, unlockedReturnTransaction } =
-      extractUnlockedReturnTransactionAndCount(relatedTransactions, orderId);
+    const returnTransactionsCount = extractReturnTransactionCount(
+      relatedTransactions,
+      orderId
+    );
 
-    if (!salesInvoiceTransaction?.locked) {
-      await this.adjustTransactionLines(returnItems, salesInvoiceTransaction);
-    } else {
-      await this.refundTransactionLines(
-        returnItems,
-        salesInvoiceTransaction,
-        returnTransactionsCount,
-        unlockedReturnTransaction
-      );
-    }
+    await this.refundTransactionLines(
+      returnItems,
+      salesInvoiceTransaction,
+      returnTransactionsCount
+    );
+  }
+  async recalculateTransaction(order: Order): Promise<void> {
+    const recalculatedTransaction = await this.client.createTransaction({
+      model: await createTransactionModel(order, this, {
+        commit: false,
+      }),
+    });
+
+    await createAndApplyOrderEdit(recalculatedTransaction, order);
   }
 }

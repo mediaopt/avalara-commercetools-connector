@@ -3,7 +3,7 @@ import {
   getCategories,
   getProductProjections,
   getShippingMethod,
-} from '../../client/data.client';
+} from '../../client/get.client';
 import {
   CategoryWithTaxCode,
   ProductWithCategories,

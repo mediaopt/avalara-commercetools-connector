@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { getCustomObject, getOrder } from '../client/data.client';
+import { getCustomObject, getOrder } from '../client/get.client';
 import CustomError from '../errors/custom.error';
 import {
   Message,
   OrderCreatedMessage,
+  OrderEditAppliedMessage,
   OrderReturnShipmentStateChangedMessage,
   OrderStateChangedMessage,
   OrderStateTransitionMessage,
@@ -105,7 +106,8 @@ const handleMessagePayload = async (
     | OrderCreatedMessage
     | OrderStateChangedMessage
     | OrderStateTransitionMessage
-    | OrderReturnShipmentStateChangedMessage,
+    | OrderReturnShipmentStateChangedMessage
+    | OrderEditAppliedMessage,
   settings: any,
   transactionManager: AvataxTransactionManager
 ) => {
@@ -153,6 +155,8 @@ const handleMessagePayload = async (
         transactionManager
       );
       break;
+    case 'OrderEditApplied':
+      await handleOrderEditApplied(order, transactionManager);
     default:
   }
 };
@@ -232,10 +236,23 @@ const handleReturnShipmentStateChanged = async (
 ) => {
   try {
     if (settings?.activateReturns) {
-      await transactionManager.adjustOrRefundTransactionLines(
+      await transactionManager.partiallyRefundTransaction(
         messagePayload.returnItemId,
         order
       );
+    }
+  } catch (error) {
+    logger.error(error);
+  }
+};
+
+const handleOrderEditApplied = async (
+  order: Order,
+  transactionManager: AvataxTransactionManager
+) => {
+  try {
+    if (!order.taxedPrice) {
+      await transactionManager.recalculateTransaction(order);
     }
   } catch (error) {
     logger.error(error);

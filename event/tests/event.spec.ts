@@ -8,7 +8,7 @@ import {
 } from '@jest/globals';
 import { Request, Response, NextFunction } from 'express';
 import { post } from '../src/controllers/event.controller';
-import { getCustomObject, getOrder } from '../src/client/data.client';
+import { getCustomObject, getOrder } from '../src/client/get.client';
 import { AvataxTransactionManager } from '../src/avalara';
 import {
   OrderCreatedMessage,
@@ -20,7 +20,7 @@ import CustomError from '../src/errors/custom.error';
 import { Order } from '@commercetools/platform-sdk';
 import { order } from './order.test.data';
 
-jest.mock('../src/client/data.client');
+jest.mock('../src/client/get.client');
 jest.mock('../src/avalara');
 jest.mock('../src/utils/logger.utils');
 
@@ -40,7 +40,7 @@ describe('event.controller', () => {
   let next: NextFunction;
   let mockCommitTransaction: any;
   let mockVoidOrRefundTransaction: any;
-  let mockAdjustOrRefundTransactionLines: any;
+  let mockPartiallyRefundTransaction: any;
 
   beforeEach(() => {
     request = {
@@ -68,9 +68,9 @@ describe('event.controller', () => {
       AvataxTransactionManager.prototype,
       'voidOrRefundTransaction'
     );
-    mockAdjustOrRefundTransactionLines = jest.spyOn(
+    mockPartiallyRefundTransaction = jest.spyOn(
       AvataxTransactionManager.prototype,
-      'adjustOrRefundTransactionLines'
+      'partiallyRefundTransaction'
     );
   });
 
@@ -179,7 +179,7 @@ describe('event.controller', () => {
 
       await post(request as Request, response as Response, next);
 
-      expect(mockAdjustOrRefundTransactionLines).toHaveBeenCalled();
+      expect(mockPartiallyRefundTransaction).toHaveBeenCalled();
       expect(response.status).toHaveBeenCalledWith(200);
       expect(response.send).toHaveBeenCalled();
     });

@@ -16,7 +16,7 @@ import { logger } from '../src/utils/logger.utils';
 import * as model from '../src/avalara/model';
 import {
   extractSalesInvoiceTransaction,
-  extractUnlockedReturnTransactionAndCount,
+  extractReturnTransactionCount,
 } from '../src/avalara/helpers/transaction.model.helpers';
 import { extractReturnItems } from '../src/avalara/helpers/refund.lines.helpers';
 
@@ -30,9 +30,9 @@ const mockExtractSalesInvoiceTransaction =
     typeof extractSalesInvoiceTransaction
   >;
 
-const mockExtractUnlockedReturnTransactionAndCount =
-  extractUnlockedReturnTransactionAndCount as jest.MockedFunction<
-    typeof extractUnlockedReturnTransactionAndCount
+const mockExtractReturnTransactionCount =
+  extractReturnTransactionCount as jest.MockedFunction<
+    typeof extractReturnTransactionCount
   >;
 
 const mockExtractReturnItems = extractReturnItems as jest.MockedFunction<
@@ -90,23 +90,24 @@ describe('AvataxTransactionManager', () => {
       const order = { id: 'order-id' } as Order;
       const mockModel = { id: 'transaction-model-id' };
 
-      const mockCommitTransactionModel = jest.spyOn(
+      const mockCreateTransactionModel = jest.spyOn(
         model,
-        'commitTransactionModel'
+        'createTransactionModel'
       );
-      mockCommitTransactionModel.mockReturnValue(mockModel as any);
+      mockCreateTransactionModel.mockReturnValue(mockModel as any);
 
-      client.createOrAdjustTransaction = jest.fn(() =>
+      client.createTransaction = jest.fn(() =>
         Promise.resolve(mockModel as any)
       );
 
       const result = await avataxTransactionManager.commitTransaction(order);
 
-      expect(mockCommitTransactionModel).toHaveBeenCalledWith(
+      expect(mockCreateTransactionModel).toHaveBeenCalledWith(
         order,
-        avataxTransactionManager
+        avataxTransactionManager,
+        { commit: true }
       );
-      expect(client.createOrAdjustTransaction).toHaveBeenCalledWith({
+      expect(client.createTransaction).toHaveBeenCalledWith({
         model: mockModel,
       });
       expect(result).toEqual(mockModel);
@@ -145,7 +146,7 @@ describe('AvataxTransactionManager', () => {
         'refundTransactionModel'
       );
       mockRefundTransactionModel.mockReturnValue(mockModel as any);
-      client.createOrAdjustTransaction = jest.fn(() =>
+      client.createTransaction = jest.fn(() =>
         Promise.resolve(mockModel as any)
       );
 
@@ -156,42 +157,7 @@ describe('AvataxTransactionManager', () => {
         transaction,
         companyCode
       );
-      expect(client.createOrAdjustTransaction).toHaveBeenCalledWith({
-        model: mockModel,
-      });
-      expect(result).toEqual(mockModel);
-    });
-  });
-
-  describe('adjustTransactionLines', () => {
-    it('should adjust transaction lines', async () => {
-      const returnItems: ReturnItemHelper[] = [
-        { itemCode: 'item-code', quantity: 1 },
-      ];
-      const transaction = {
-        id: 'transaction-id',
-      } as unknown as TransactionModel;
-      const mockModel = { id: 'adjust-transaction-lines-model-id' };
-      const mockAdjustTransactionLinesModel = jest.spyOn(
-        model,
-        'adjustTransactionLinesModel'
-      );
-      mockAdjustTransactionLinesModel.mockReturnValue(mockModel as any);
-      client.createOrAdjustTransaction = jest.fn(() =>
-        Promise.resolve(mockModel as any)
-      );
-
-      const result = await avataxTransactionManager.adjustTransactionLines(
-        returnItems,
-        transaction
-      );
-
-      expect(mockAdjustTransactionLinesModel).toHaveBeenCalledWith(
-        returnItems,
-        transaction,
-        companyCode
-      );
-      expect(client.createOrAdjustTransaction).toHaveBeenCalledWith({
+      expect(client.createTransaction).toHaveBeenCalledWith({
         model: mockModel,
       });
       expect(result).toEqual(mockModel);
@@ -207,34 +173,29 @@ describe('AvataxTransactionManager', () => {
         id: 'sales-invoice-transaction-id',
       } as unknown as TransactionModel;
       const returnTransactionsCount = 1;
-      const unlockedReturnTransaction = {
-        id: 'unlocked-return-transaction-id',
-      } as unknown as TransactionModel;
       const mockModel = { id: 'refund-transaction-lines-model-id' };
       const mockRefundTransactionLinesModel = jest.spyOn(
         model,
         'refundTransactionLinesModel'
       );
       mockRefundTransactionLinesModel.mockReturnValue(mockModel as any);
-      client.createOrAdjustTransaction = jest.fn(() =>
+      client.createTransaction = jest.fn(() =>
         Promise.resolve(mockModel as any)
       );
 
       const result = await avataxTransactionManager.refundTransactionLines(
         returnItems,
         salesInvoiceTransaction,
-        returnTransactionsCount,
-        unlockedReturnTransaction
+        returnTransactionsCount
       );
 
       expect(mockRefundTransactionLinesModel).toHaveBeenCalledWith(
         returnItems,
         salesInvoiceTransaction,
         returnTransactionsCount,
-        unlockedReturnTransaction,
         companyCode
       );
-      expect(client.createOrAdjustTransaction).toHaveBeenCalledWith({
+      expect(client.createTransaction).toHaveBeenCalledWith({
         model: mockModel,
       });
       expect(result).toEqual(mockModel);
@@ -271,9 +232,7 @@ describe('AvataxTransactionManager', () => {
       mockExtractSalesInvoiceTransaction.mockReturnValue(
         relatedTransactions[0]
       );
-      mockExtractUnlockedReturnTransactionAndCount.mockReturnValue({
-        returnTransactionsCount: 0,
-      } as any);
+      mockExtractReturnTransactionCount.mockReturnValue(0);
 
       client.listTransactionsByCompany = jest.fn(() =>
         Promise.resolve({ value: relatedTransactions } as any)
@@ -285,11 +244,11 @@ describe('AvataxTransactionManager', () => {
         relatedTransactions,
         'order-number'
       );
-      expect(mockExtractUnlockedReturnTransactionAndCount).toHaveBeenCalledWith(
+      expect(mockExtractReturnTransactionCount).toHaveBeenCalledWith(
         relatedTransactions,
         'order-number'
       );
-      expect(client.createOrAdjustTransaction).toHaveBeenCalled();
+      expect(client.createTransaction).toHaveBeenCalled();
     });
 
     it('should log a message if the transaction is already refunded', async () => {
@@ -300,9 +259,7 @@ describe('AvataxTransactionManager', () => {
       mockExtractSalesInvoiceTransaction.mockReturnValue(
         relatedTransactions[0]
       );
-      mockExtractUnlockedReturnTransactionAndCount.mockReturnValue({
-        returnTransactionsCount: 1,
-      } as any);
+      mockExtractReturnTransactionCount.mockReturnValue(1);
       client.listTransactionsByCompany = jest.fn(() =>
         Promise.resolve({ value: relatedTransactions } as any)
       );
@@ -313,7 +270,7 @@ describe('AvataxTransactionManager', () => {
         relatedTransactions,
         'order-number'
       );
-      expect(mockExtractUnlockedReturnTransactionAndCount).toHaveBeenCalledWith(
+      expect(mockExtractReturnTransactionCount).toHaveBeenCalledWith(
         relatedTransactions,
         'order-number'
       );
@@ -323,13 +280,13 @@ describe('AvataxTransactionManager', () => {
     });
   });
 
-  describe('adjustOrRefundTransactionLines', () => {
-    it('should adjust transaction lines if the transaction is not locked', async () => {
+  describe('partiallyRefundTransaction', () => {
+    it('should refund selected line items', async () => {
       const order = { id: 'order-id', orderNumber: 'order-number' } as Order;
       const returnItemId = 'return-item-id';
       const returnItems = [{ itemCode: 'item-code', quantity: 1 }];
       const relatedTransactions = [
-        { id: 'transaction-id', locked: false },
+        { id: 'transaction-id' },
       ] as unknown as TransactionModel[];
       mockExtractReturnItems.mockReturnValue(returnItems);
       mockExtractSalesInvoiceTransaction.mockReturnValue(
@@ -338,7 +295,7 @@ describe('AvataxTransactionManager', () => {
       client.listTransactionsByCompany = jest.fn(() =>
         Promise.resolve({ value: relatedTransactions } as any)
       );
-      await avataxTransactionManager.adjustOrRefundTransactionLines(
+      await avataxTransactionManager.partiallyRefundTransaction(
         returnItemId,
         order
       );
@@ -348,42 +305,7 @@ describe('AvataxTransactionManager', () => {
         relatedTransactions,
         'order-number'
       );
-      expect(client.createOrAdjustTransaction).toHaveBeenCalled();
-    });
-
-    it('should refund transaction lines if the transaction is locked', async () => {
-      const order = { id: 'order-id', orderNumber: 'order-number' } as Order;
-      const returnItemId = 'return-item-id';
-      const returnItems = [{ itemCode: 'item-code', quantity: 1 }];
-      const relatedTransactions = [
-        { id: 'transaction-id', locked: true },
-      ] as unknown as TransactionModel[];
-      mockExtractReturnItems.mockReturnValue(returnItems);
-      mockExtractSalesInvoiceTransaction.mockReturnValue(
-        relatedTransactions[0]
-      );
-      mockExtractUnlockedReturnTransactionAndCount.mockReturnValue({
-        returnTransactionsCount: 0,
-        unlockedReturnTransaction: undefined,
-      });
-      client.listTransactionsByCompany = jest.fn(() =>
-        Promise.resolve({ value: relatedTransactions } as any)
-      );
-      await avataxTransactionManager.adjustOrRefundTransactionLines(
-        returnItemId,
-        order
-      );
-
-      expect(mockExtractReturnItems).toHaveBeenCalledWith(order, returnItemId);
-      expect(mockExtractSalesInvoiceTransaction).toHaveBeenCalledWith(
-        relatedTransactions,
-        'order-number'
-      );
-      expect(mockExtractUnlockedReturnTransactionAndCount).toHaveBeenCalledWith(
-        relatedTransactions,
-        'order-number'
-      );
-      expect(client.createOrAdjustTransaction).toHaveBeenCalled();
+      expect(client.createTransaction).toHaveBeenCalled();
     });
 
     it('should log a message if no return items are found', async () => {
@@ -391,7 +313,7 @@ describe('AvataxTransactionManager', () => {
       const returnItemId = 'return-item-id';
       mockExtractReturnItems.mockReturnValue([]);
 
-      await avataxTransactionManager.adjustOrRefundTransactionLines(
+      await avataxTransactionManager.partiallyRefundTransaction(
         returnItemId,
         order
       );

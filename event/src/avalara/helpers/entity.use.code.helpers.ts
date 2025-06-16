@@ -1,4 +1,4 @@
-import { getCustomer } from '../../client/data.client';
+import { getCustomer } from '../../client/get.client';
 import { CustomerWithEntityUseCode } from '../types/index.types';
 
 export async function extractEntityUseCode(customerId: string | undefined) {
