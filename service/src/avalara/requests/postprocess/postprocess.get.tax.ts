@@ -13,7 +13,7 @@ export function postProcessing(
   }
 
   const taxRate = taxResponse?.summary
-    ?.map((x) => x.rate)
+    ?.map((x) => x.taxCalculated as number > 0 ? x.rate : 0)
     .reduce((acc, curr) => (acc || 0) + (curr || 0), 0);
 
   let totalTax = 0;
