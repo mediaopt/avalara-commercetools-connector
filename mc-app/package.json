@@ -23,6 +23,8 @@
   "dependencies": {
     "@apollo/client": "3.11.8",
     "@babel/core": "^7.26.10",
+    "@babel/helpers": "^7.26.10",
+    "@babel/runtime": "^7.26.10",
     "@babel/runtime-corejs3": "^7.26.10",
     "@commercetools-frontend/actions-global": "22.37.0",
     "@commercetools-frontend/application-components": "^22.37.0",
@@ -70,18 +72,22 @@
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@jest/types": "29.5.0",
     "@manypkg/cli": "0.23.0",
+    "@sentry/browser": "^7.119.1",
     "@testing-library/dom": "9.3.3",
     "@testing-library/jest-dom": "5.17.0",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.1",
     "@types/jest": "^29.5.4",
-    "@types/react": "17.0.83",
-    "@types/react-dom": "17.0.25",
+    "@types/react": "<18",
+    "@types/react-dom": "<18",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
     "@types/testing-library__jest-dom": "^5.14.9",
+    "dompurify": "^3.2.4",
+    "esbuild": "^0.25.0",
     "eslint": "8.40.0",
     "eslint-formatter-pretty": "4.1.0",
+    "express": "^4.20.0",
     "follow-redirects": "1.15.6",
     "formik": "^2.4.5",
     "graphql": "16.9.0",
@@ -91,6 +97,7 @@
     "jest-watch-typeahead": "2.2.2",
     "moment": "^2.29.4",
     "msw": "2.0.4",
+    "nanoid": "^3.3.8",
     "omit-empty-es": "1.1.3",
     "postcss": "^8.4.31",
     "prettier": "2.8.8",
@@ -103,7 +110,8 @@
     "react-router-dom": "5.3.4",
     "redux": "4.2.1",
     "typescript": "5.0.4",
-    "ws": "8.17.1"
+    "webpack": "^5.94.0",
+    "ws": "^8.17.1"
   },
   "resolutions": {
     "@emotion/react": "11.11.4",
@@ -132,6 +140,7 @@
     "@babel/runtime-corejs3": "^7.26.10",
     "webpack-dev-server": "^5.2.1",
     "brace-expansion": "^1.1.12",
-    "vite": "^4.5.12"
+    "vite": "^5.4.21",
+    "jsondiffpatch": "^0.7.2"
   }
 }
