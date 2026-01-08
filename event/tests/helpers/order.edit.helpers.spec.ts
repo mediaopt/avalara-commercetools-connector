@@ -54,7 +54,7 @@ describe('order.edit.helpers', () => {
         {
           action: 'setLineItemTaxAmount',
           externalTaxAmount: {
-            taxRate: { amount: 0.0725, country: 'US', name: 'avaTaxRate' },
+            taxRate: { amount: 0, country: 'US', name: 'avaTaxRate' },
             totalGross: { centAmount: 13300, currencyCode: 'USD' },
           },
           lineItemId: '123',
@@ -63,14 +63,14 @@ describe('order.edit.helpers', () => {
           action: 'setCustomLineItemTaxAmount',
           customLineItemId: '641649e5-2337-4871-90ab-164fd3e919b3',
           externalTaxAmount: {
-            taxRate: { amount: 0.0725, country: 'US', name: 'avaTaxRate' },
+            taxRate: { amount: 0, country: 'US', name: 'avaTaxRate' },
             totalGross: { centAmount: 5200, currencyCode: 'USD' },
           },
         },
         {
           action: 'setShippingMethodTaxAmount',
           externalTaxAmount: {
-            taxRate: { amount: 0.0725, country: 'US', name: 'avaTaxRate' },
+            taxRate: { amount: 0, country: 'US', name: 'avaTaxRate' },
             totalGross: { centAmount: 1123, currencyCode: 'USD' },
           },
           shippingKey: undefined,
@@ -113,7 +113,7 @@ describe('order.edit.helpers', () => {
           action: 'setLineItemTaxAmount',
           externalTaxAmount: {
             taxRate: {
-              amount: 0.0725,
+              amount: 0,
               country: 'US',
               name: 'avaTaxRate',
             },
@@ -129,7 +129,7 @@ describe('order.edit.helpers', () => {
           customLineItemId: '641649e5-2337-4871-90ab-164fd3e919b3',
           externalTaxAmount: {
             taxRate: {
-              amount: 0.0725,
+              amount: 0,
               country: 'US',
               name: 'avaTaxRate',
             },
@@ -143,7 +143,7 @@ describe('order.edit.helpers', () => {
           action: 'setShippingMethodTaxAmount',
           externalTaxAmount: {
             taxRate: {
-              amount: 0.0725,
+              amount: 0,
               country: 'US',
               name: 'avaTaxRate',
             },
