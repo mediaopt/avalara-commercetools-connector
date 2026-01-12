@@ -1,4 +1,5 @@
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import tsParser from '@typescript-eslint/parser';
 
@@ -12,6 +13,7 @@ export default [
   {
     plugins: {
       '@typescript-eslint': typescriptEslint,
+      'unused-imports': unusedImports,
     },
 
     languageOptions: {
