@@ -10,14 +10,13 @@ import {
   OrderStateTransitionMessage,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/message';
 import { logger } from '../utils/logger.utils';
-import { AvataxTransactionManager } from '../avalara';
-import AvaTaxClient from 'avatax/lib/AvaTaxClient';
-import {
-  avaTaxConfig,
-  extractOriginAddress,
-} from '../avalara/helpers/config.helpers';
+import { AvataxTransactionManager } from '@mediaopt/avalara-commercetools-lib';
+import { extractOriginAddress } from '@mediaopt/avalara-commercetools-lib';
 import { Order } from '@commercetools/platform-sdk';
-import { AvataxMerchantConfig } from '../avalara/types/index.types';
+import { AvataxMerchantConfig } from '../service/types';
+import { createAndApplyOrderEdit } from '../service/order.edit.service';
+import { extractProductsWithTaxCodes } from '../service/tax.code.service';
+import { extractCustomerWithEntityUseCode } from '../service/entity.use.code.service';
 /**
  * Exposed event POST endpoint.
  * Receives the Pub/Sub message and works with it
@@ -74,17 +73,15 @@ export const post = async (
       return next();
     }
 
+    const environment =
+      process.env.AVALARA_ENV === 'production' ? 'production' : 'sandbox';
+
     const transactionManager = new AvataxTransactionManager(
-      new AvaTaxClient(
-        avaTaxConfig(
-          process.env.AVALARA_ENV || 'sandbox',
-          settings?.enableLogging,
-          settings?.logLevel
-        )
-      ).withSecurity({
-        username: process.env.AVALARA_USERNAME as string,
-        password: process.env.AVALARA_PASSWORD as string,
-      }),
+      process.env.AVALARA_USERNAME as string,
+      process.env.AVALARA_PASSWORD as string,
+      environment,
+      settings?.enableLogging,
+      settings?.logLevel,
       process.env.AVALARA_COMPANY_CODE as string,
       extractOriginAddress(settings)
     );
@@ -157,6 +154,7 @@ const handleMessagePayload = async (
       break;
     case 'OrderEditApplied':
       await handleOrderEditApplied(order, transactionManager);
+      break;
     default:
   }
 };
@@ -168,7 +166,9 @@ const handleOrderCreated = async (
 ) => {
   try {
     if (settings?.commitOnOrderCreation) {
-      await transactionManager.commitTransaction(order);
+      const products = await extractProductsWithTaxCodes(order.lineItems || []);
+      const customer = await extractCustomerWithEntityUseCode(order.customerId);
+      await transactionManager.commitTransaction(order, products, customer);
     }
   } catch (error) {
     logger.error(error);
@@ -252,7 +252,10 @@ const handleOrderEditApplied = async (
 ) => {
   try {
     if (!order.taxedPrice) {
-      await transactionManager.recalculateTransaction(order);
+      createAndApplyOrderEdit(
+        await transactionManager.recalculateTransaction(order),
+        order
+      );
     }
   } catch (error) {
     logger.error(error);

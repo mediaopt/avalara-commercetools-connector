@@ -1,7 +1,7 @@
 import { Order, StagedOrderUpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
-import { logger } from '../../utils/logger.utils';
-import { applyOrderEdit, createOrderEdit } from '../../client/post.client';
+import { logger } from '../utils/logger.utils';
+import { applyOrderEdit, createOrderEdit } from '../client/post.client';
 
 export async function createAndApplyOrderEdit(
   transactionModel: TransactionModel,
