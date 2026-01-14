@@ -2,6 +2,7 @@ import { Order, StagedOrderUpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { logger } from '../../utils/logger.utils';
 import { applyOrderEdit, createOrderEdit } from '../../client/post.client';
+import { TransactionSummary } from 'avatax/lib/models/TransactionSummary';
 
 export async function createAndApplyOrderEdit(
   transactionModel: TransactionModel,
@@ -48,8 +49,28 @@ export function buildOrderEditUpdateActions(
 
   const country = (order?.country || order?.shippingAddress?.country) as string;
 
+  const rate = (rateSummaryElement: TransactionSummary) => {
+    const taxable = rateSummaryElement.taxable as number;
+    const nonTaxable = rateSummaryElement.nonTaxable as number;
+    const taxCalculated = rateSummaryElement.taxCalculated as number;
+
+    // No taxable amount => tax rate is 0
+    if (taxable == 0) {
+      return 0;
+    }
+
+    // No non-taxable amount => tax rate is full rate
+    if (nonTaxable == 0) {
+      return rateSummaryElement.rate as number;
+    }
+
+    // Mixed taxable and non-taxable amounts => calculate effective tax rate
+    const totalAmount = taxable + nonTaxable;
+    return Math.round((10000 * taxCalculated) / totalAmount) / 10000;
+  };
+
   const taxRate = transactionModel.summary
-    ?.map((x) => x.taxCalculated as number > 0 ? x.rate : 0)
+    ?.map((x) => rate(x))
     .reduce((acc, curr) => (acc || 0) + (curr || 0), 0);
 
   let totalTax = 0;
