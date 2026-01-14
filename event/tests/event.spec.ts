@@ -9,7 +9,7 @@ import {
 import { Request, Response, NextFunction } from 'express';
 import { post } from '../src/controllers/event.controller';
 import { getCustomObject, getOrder } from '../src/client/get.client';
-import { AvataxTransactionManager } from '../src/avalara';
+import { AvataxTransactionManager } from '@mediaopt/avalara-commercetools-lib';
 import {
   OrderCreatedMessage,
   OrderStateChangedMessage,
@@ -21,7 +21,7 @@ import { Order } from '@commercetools/platform-sdk';
 import { order } from './order.test.data';
 
 jest.mock('../src/client/get.client');
-jest.mock('../src/avalara');
+jest.mock('@mediaopt/avalara-commercetools-lib');
 jest.mock('../src/utils/logger.utils');
 
 const mockGetCustomObject = getCustomObject as jest.MockedFunction<

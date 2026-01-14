@@ -1,19 +1,19 @@
 import { getCustomer } from '../../src/client/get.client';
-import { extractEntityUseCode } from '../../src/avalara/helpers/entity.use.code.helpers';
-import { CustomerWithEntityUseCode } from '../../src/avalara/types/index.types';
+import { extractCustomerWithEntityUseCode } from '../../src/service/entity.use.code.service';
+import { CustomerWithEntityUseCode } from '../../src/service/types';
 import { describe, expect, jest, it, afterEach } from '@jest/globals';
 
 jest.mock('../../src/client/get.client');
 
 const mockGetCustomer = getCustomer as jest.MockedFunction<typeof getCustomer>;
 
-describe('extractEntityUseCode', () => {
+describe('extractCustomerWithEntityUseCode', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('should return guest customer number if customerId is undefined', async () => {
-    const result = await extractEntityUseCode(undefined);
+    const result = await extractCustomerWithEntityUseCode(undefined);
     expect(result).toEqual({
       customerNumber: 'Guest',
     } as CustomerWithEntityUseCode);
@@ -31,7 +31,7 @@ describe('extractEntityUseCode', () => {
     };
     mockGetCustomer.mockResolvedValue(mockCustomer as any);
 
-    const result = await extractEntityUseCode(customerId);
+    const result = await extractCustomerWithEntityUseCode(customerId);
     expect(mockGetCustomer).toHaveBeenCalledWith(customerId);
     expect(result).toEqual({
       customerNumber: '12345',
@@ -43,7 +43,7 @@ describe('extractEntityUseCode', () => {
     const customerId = 'customer-id';
     mockGetCustomer.mockResolvedValue(undefined);
 
-    const result = await extractEntityUseCode(customerId);
+    const result = await extractCustomerWithEntityUseCode(customerId);
     expect(mockGetCustomer).toHaveBeenCalledWith(customerId);
     expect(result).toEqual({
       customerNumber: customerId,

@@ -9,8 +9,8 @@ import {
 import {
   extractItemTaxCode,
   extractShippingMethodTaxCode,
-  extractTaxCodesFromCategories,
-} from '../../src/avalara/helpers/tax.code.helpers';
+  extractProductsWithTaxCodes,
+} from '../../src/service/tax.code.service';
 
 jest.mock('../../src/client/get.client');
 
@@ -143,7 +143,7 @@ describe('tax.code.helpers', () => {
       ];
       mockGetCategories.mockResolvedValue(mockCategories as any);
 
-      const result = await extractTaxCodesFromCategories(items);
+      const result = await extractProductsWithTaxCodes(items);
 
       expect(mockGetProductProjections).toHaveBeenCalledWith(['sku1']);
       expect(mockGetCategories).toHaveBeenCalledWith(['category1']);
@@ -167,7 +167,7 @@ describe('tax.code.helpers', () => {
 
       process.env.AVATAX_PRODUCT_ATTRIBUTE_NAME = 'taxCode';
 
-      const result = await extractTaxCodesFromCategories(items);
+      const result = await extractProductsWithTaxCodes(items);
 
       expect(result).toEqual([]);
     });
