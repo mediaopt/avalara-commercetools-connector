@@ -1,6 +1,7 @@
 import { Cart, UpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { hashCart } from '../../../utils/hash.utils';
+import { TransactionSummary } from 'avatax/lib/models/TransactionSummary';
 
 export function postProcessing(
   cart: Cart,
@@ -12,8 +13,28 @@ export function postProcessing(
     actions.push({ action: 'changeTaxMode', taxMode: 'ExternalAmount' });
   }
 
-  const taxRate = taxResponse?.summary
-    ?.map((x) => x.rate)
+  const rate = (rateSummaryElement: TransactionSummary) => {
+    const taxable = rateSummaryElement.taxable as number;
+    const nonTaxable = rateSummaryElement.nonTaxable as number;
+    const taxCalculated = rateSummaryElement.taxCalculated as number;
+
+    // No taxable amount => tax rate is 0
+    if (taxable == 0) {
+      return 0;
+    }
+
+    // No non-taxable amount => tax rate is full rate
+    if (nonTaxable == 0) {
+      return rateSummaryElement.rate as number;
+    }
+
+    // Mixed taxable and non-taxable amounts => calculate effective tax rate
+    const totalAmount = taxable + nonTaxable;
+    return Math.round((10000 * taxCalculated) / totalAmount) / 10000;
+  };
+
+  const taxRate = taxResponse.summary
+    ?.map((x) => rate(x))
     .reduce((acc, curr) => (acc || 0) + (curr || 0), 0);
 
   let totalTax = 0;
