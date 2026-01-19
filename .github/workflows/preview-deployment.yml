@@ -1,0 +1,204 @@
+name: Preview Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-preview:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Commercetools Connect CLI
+        run: npm install -g @commercetools/cli
+
+      - name: Authorize Commercetools CLI
+        run: |
+          commercetools auth login --client-credentials \
+            --project-key ${{ secrets.CTP_PROJECT_KEY }} \
+            --client-id ${{ secrets.CTP_CLIENT_ID }} \
+            --client-secret ${{ secrets.CTP_CLIENT_SECRET }} \
+            --region ${{ secrets.CTP_REGION }}
+
+      - name: Query Connector Drafts
+        id: query-draft
+        run: |
+          echo "Querying connector drafts..."
+          DRAFT_RESPONSE=$(commercetools connect connectorstaged describe --key avalara-commercetools-connector | cat)
+          
+          # Extract version, and current tag from JSON
+          DRAFT_VERSION=$(echo "$DRAFT_RESPONSE" | jq -r '.version')
+          CURRENT_TAG=$(echo "$DRAFT_RESPONSE" | jq -r '.repository.tag // "none"')
+          
+          echo "Draft Version: $DRAFT_VERSION"
+          echo "Current Tag: $CURRENT_TAG"
+
+      - name: Determine Next Tag
+        id: next-tag
+        run: |
+          CURRENT_TAG="${{ steps.query-draft.outputs.current_tag }}"
+          
+          if [[ "$CURRENT_TAG" == "none" ]] || [[ ! "$CURRENT_TAG" =~ ^dev-[0-9]+$ ]]; then
+            NEXT_TAG="dev-1"
+          else
+            # Extract number from dev-* pattern
+            NUMBER=$(echo "$CURRENT_TAG" | sed 's/dev-//')
+            NEXT_NUMBER=$((NUMBER + 1))
+            NEXT_TAG="dev-$NEXT_NUMBER"
+          fi
+          
+          echo "next_tag=$NEXT_TAG" >> $GITHUB_OUTPUT
+          echo "Next Tag: $NEXT_TAG"
+
+      - name: Create Git Tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.next-tag.outputs.next_tag }}
+          git push origin ${{ steps.next-tag.outputs.next_tag }}
+
+      - name: Update Connector Draft
+        run: |
+          echo "Updating connector draft..."
+          
+          commercetools connect connectorstaged update \
+            --key avalara-commercetools-connector \
+            --version ${{ steps.query-draft.outputs.draft_version }} \
+            --repository-url git@github.com:mediaopt/avalara-commercetools-connector.git \
+            --repository-tag ${{ steps.next-tag.outputs.next_tag }}
+          
+          echo "Repository updated. Now updating previewable status..."
+          
+          # Get new version after first update
+          DRAFT_RESPONSE=$(commercetools connect connectorstaged describe --key avalara-commercetools-connector | cat)
+          DRAFT_JSON=$(echo "$DRAFT_RESPONSE" | node -e "const input = require('fs').readFileSync(0, 'utf-8'); const lines = input.split('\\n').slice(1).join('\\n'); eval('const obj = ' + lines); console.log(JSON.stringify(obj));")
+          NEW_VERSION=$(echo "$DRAFT_JSON" | jq -r '.version')
+          
+          commercetools connect connectorstaged preview \
+            --key avalara-commercetools-connector \
+            --version $NEW_VERSION
+
+      - name: Wait for Previewable Status
+        id: wait-previewable
+        run: |
+          echo "Waiting for draft to become previewable..."
+          MAX_ATTEMPTS=30
+          ATTEMPT=0
+          
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "Attempt $ATTEMPT of $MAX_ATTEMPTS"
+            
+            DRAFT_RESPONSE=$(commercetools connect connectorstaged describe --key avalara-commercetools-connector | cat)
+            DRAFT_JSON=$(echo "$DRAFT_RESPONSE" | node -e "const input = require('fs').readFileSync(0, 'utf-8'); const lines = input.split('\\n').slice(1).join('\\n'); eval('const obj = ' + lines); console.log(JSON.stringify(obj));")
+            IS_PREVIEWABLE=$(echo "$DRAFT_JSON" | jq -r '.isPreviewable')
+            
+            echo "Previewable status: $IS_PREVIEWABLE"
+            
+            if [ "$IS_PREVIEWABLE" == "true" ]; then
+              echo "✅ Draft is now previewable!"
+              break
+            elif [ "$IS_PREVIEWABLE" == "false" ]; then
+              # Check if there's an error report
+              echo "Current status is false. Checking previewableReport..."
+              HAS_ERRORS=$(echo "$DRAFT_JSON" | jq '[.previewableReport.entries[] | select(.type == "Error")] | length')
+              
+              if [ "$HAS_ERRORS" -gt 0 ]; then
+                echo "❌ Draft previewable status is false with $HAS_ERRORS error(s). Deployment failed."
+                echo "$DRAFT_JSON" | jq '.previewableReport.entries[] | select(.type == "Error")'
+                exit 1
+              else
+                echo "⏳ Status is false but may be processing. Waiting 60 seconds..."
+                sleep 60
+              fi
+            else
+              echo "⏳ Status is $IS_PREVIEWABLE. Waiting 60 seconds..."
+              sleep 60
+            fi
+          done
+          
+          if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+            echo "❌ Timeout: Draft did not become previewable after 30 attempts"
+            exit 1
+          fi
+
+      - name: Query Existing Deployments
+        id: query-deployments
+        run: |
+          echo "Querying existing deployments..."
+          DEPLOYMENTS=$(commercetools connect deployment list --key avalara-commercetools-connector || echo "[]")
+          echo "$DEPLOYMENTS"
+          
+          # Check if deployments exist
+          if [ -z "$DEPLOYMENTS" ] || [ "$DEPLOYMENTS" == "[]" ] || [ "$DEPLOYMENTS" == "null" ]; then
+            DEPLOYMENT_COUNT=0
+          else
+            DEPLOYMENT_COUNT=$(echo "$DEPLOYMENTS" | jq 'if type == "array" then length else 1 end')
+          fi
+          
+          echo "deployment_count=$DEPLOYMENT_COUNT" >> $GITHUB_OUTPUT
+          echo "Found $DEPLOYMENT_COUNT deployment(s)"
+
+      - name: Delete Existing Deployments
+        if: steps.query-deployments.outputs.deployment_count > 0
+        run: |
+          echo "Deleting existing deployments..."
+          
+          commercetools connect deployment delete \
+            --key avalara-commercetools-connector \
+            --force
+
+      - name: Wait for Deployments to be Deleted
+        if: steps.query-deployments.outputs.deployment_count > 0
+        run: |
+          echo "Waiting for all deployments to be deleted..."
+          MAX_ATTEMPTS=10
+          ATTEMPT=0
+          
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            echo "Attempt $ATTEMPT of $MAX_ATTEMPTS"
+            
+            # Check if deployment exists
+            if commercetools connect deployment describe --key avalara-commercetools-connector 2>&1 | grep -q "not found\|does not exist"; then
+              echo "✅ Deployment deleted!"
+              break
+            else
+              echo "⏳ Deployment still exists. Waiting 60 seconds..."
+              sleep 60
+            fi
+          done
+          
+          if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+            echo "❌ Timeout: Deployment was not fully deleted after 10 attempts"
+            exit 1
+          fi
+
+      - name: Create New Deployment
+        run: |
+          echo "Creating new deployment from previewable connector draft..."
+          commercetools connect deployment create \
+            --key avalara-commercetools-connector \
+            --region ${{ secrets.CTP_REGION }}
+          
+          echo "✅ Preview deployment created successfully!"
+
+      - name: Deployment Summary
+        run: |
+          echo "## 🚀 Preview Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Connector Key:** ${{ steps.query-draft.outputs.draft_key }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Git Tag:** ${{ steps.next-tag.outputs.next_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Previous Tag:** ${{ steps.query-draft.outputs.current_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Deployed successfully" >> $GITHUB_STEP_SUMMARY
