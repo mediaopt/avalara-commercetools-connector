@@ -67,7 +67,7 @@
     "@commercetools-uikit/text-input": "19.12.0",
     "@commercetools-uikit/toggle-input": "19.12.0",
     "@commercetools/sync-actions": "5.19.2",
-    "@emotion/react": "11.11.0",
+    "@emotion/react": "11.14.0",
     "@formatjs/cli": "6.1.1",
     "@graphql-eslint/eslint-plugin": "^3.20.1",
     "@jest/types": "29.5.0",
@@ -114,8 +114,8 @@
     "ws": "^8.17.1"
   },
   "resolutions": {
-    "@emotion/react": "11.11.4",
-    "@emotion/styled": "11.11.0",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
     "@types/eslint": "<9",
     "@types/react": "<18",
     "@types/react-dom": "<18",
