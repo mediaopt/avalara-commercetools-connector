@@ -17,6 +17,7 @@ import {
 } from './helpers/transaction.model.helpers';
 import { ReturnItemHelper } from './types/index.types';
 import { createAndApplyOrderEdit } from './helpers/order.edit.helpers';
+import { getYearAgoDate } from './helpers/utility.helpers';
 
 export class AvataxTransactionManager {
   client: AvaTaxClient;
@@ -33,11 +34,13 @@ export class AvataxTransactionManager {
     this.originAddress = originAddress;
   }
 
-  async getRelatedTransactions(orderId: string): Promise<TransactionModel[]> {
+  async getRelatedTransactions(
+    transactionCode: string
+  ): Promise<TransactionModel[]> {
     const listTransactionsResponse =
       await this.client.listTransactionsByCompany({
         companyCode: this.companyCode,
-        filter: `code startsWith ${orderId}`,
+        filter: `code startsWith '${transactionCode}' AND date ge '${getYearAgoDate()}'`,
         include: 'lines, addresses, details, summary',
       });
 
@@ -52,9 +55,9 @@ export class AvataxTransactionManager {
     });
   }
 
-  async voidTransaction(orderId: string) {
+  async voidTransaction(transactionCode: string) {
     return await this.client.voidTransaction(
-      voidTransactionModel(orderId, this.companyCode)
+      voidTransactionModel(transactionCode, this.companyCode)
     );
   }
 
@@ -80,41 +83,42 @@ export class AvataxTransactionManager {
   }
 
   async voidOrRefundTransaction(order: Order) {
-    const orderId = order.orderNumber || order.id;
+    const transactionCode = order.orderNumber ?? order.id;
 
-    const relatedTransactions = await this.getRelatedTransactions(orderId);
+    const relatedTransactions =
+      await this.getRelatedTransactions(transactionCode);
 
     const salesInvoiceTransaction = extractSalesInvoiceTransaction(
       relatedTransactions,
-      orderId
+      transactionCode
     );
 
     if (!salesInvoiceTransaction) {
       logger.info(
-        `No sales invoice transaction for order number: ${orderId} found, no refund is possible`
+        `No sales invoice transaction for order number: ${transactionCode} found, no refund is possible`
       );
       return;
     }
 
     if (!salesInvoiceTransaction?.locked) {
-      await this.voidTransaction(orderId);
+      await this.voidTransaction(transactionCode);
     } else {
       const returnTransactionsCount = extractReturnTransactionCount(
         relatedTransactions,
-        orderId
+        transactionCode
       );
       if (!returnTransactionsCount) {
         await this.refundTransaction(salesInvoiceTransaction);
       } else {
         logger.info(
-          `The transaction ${orderId} has already been completely or partially refunded.`
+          `The transaction ${transactionCode} has already been completely or partially refunded.`
         );
       }
     }
   }
 
   async partiallyRefundTransaction(returnItemId: string, order: Order) {
-    const orderId = order.orderNumber || order.id;
+    const transactionCode = order.orderNumber ?? order.id;
 
     const returnItems = extractReturnItems(order, returnItemId);
 
@@ -123,23 +127,24 @@ export class AvataxTransactionManager {
       return;
     }
 
-    const relatedTransactions = await this.getRelatedTransactions(orderId);
+    const relatedTransactions =
+      await this.getRelatedTransactions(transactionCode);
 
     const salesInvoiceTransaction = extractSalesInvoiceTransaction(
       relatedTransactions,
-      orderId
+      transactionCode
     );
 
     if (!salesInvoiceTransaction) {
       logger.info(
-        `No sales invoice transaction for order number: ${orderId} found, no refund is possible`
+        `No sales invoice transaction for order number: ${transactionCode} found, no refund is possible`
       );
       return;
     }
 
     const returnTransactionsCount = extractReturnTransactionCount(
       relatedTransactions,
-      orderId
+      transactionCode
     );
 
     await this.refundTransactionLines(
