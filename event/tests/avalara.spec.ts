@@ -7,6 +7,7 @@ import {
   it,
 } from '@jest/globals';
 import { AvataxTransactionManager } from '../src/avalara/index';
+import { getYearAgoDate } from '../src/avalara/helpers/utility.helpers';
 import AvaTaxClient from 'avatax/lib/AvaTaxClient';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { Order } from '@commercetools/platform-sdk';
@@ -24,6 +25,7 @@ jest.mock('avatax/lib/AvaTaxClient');
 jest.mock('../src/utils/logger.utils');
 jest.mock('../src/avalara/helpers/transaction.model.helpers');
 jest.mock('../src/avalara/helpers/refund.lines.helpers');
+jest.mock('../src/avalara/helpers/utility.helpers');
 
 const mockExtractSalesInvoiceTransaction =
   extractSalesInvoiceTransaction as jest.MockedFunction<
@@ -37,6 +39,10 @@ const mockExtractReturnTransactionCount =
 
 const mockExtractReturnItems = extractReturnItems as jest.MockedFunction<
   typeof extractReturnItems
+>;
+
+const mockGetYearAgoDate = getYearAgoDate as jest.MockedFunction<
+  typeof getYearAgoDate
 >;
 
 describe('AvataxTransactionManager', () => {
@@ -69,6 +75,10 @@ describe('AvataxTransactionManager', () => {
   describe('getRelatedTransactions', () => {
     it('should return related transactions', async () => {
       const mockResponse = { value: [{ id: 'transaction-id' }] };
+      const mockDate = '2025-01-21';
+
+      mockGetYearAgoDate.mockReturnValue(mockDate);
+
       client.listTransactionsByCompany = jest.fn(() =>
         Promise.resolve(mockResponse as any)
       );
@@ -76,9 +86,10 @@ describe('AvataxTransactionManager', () => {
       const result =
         await avataxTransactionManager.getRelatedTransactions('order-id');
 
+      expect(mockGetYearAgoDate).toHaveBeenCalled();
       expect(client.listTransactionsByCompany).toHaveBeenCalledWith({
         companyCode,
-        filter: 'code startsWith order-id',
+        filter: `code startsWith 'order-id' AND date ge '${mockDate}'`,
         include: 'lines, addresses, details, summary',
       });
       expect(result).toEqual(mockResponse.value);
