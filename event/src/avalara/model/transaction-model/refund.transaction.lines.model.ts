@@ -4,6 +4,7 @@ import { convertTransactionModelToCreateTransactionModel } from '../../helpers/t
 import { TaxOverrideType } from 'avatax/lib/enums/TaxOverrideType';
 import { extractRefundLines } from '../../helpers/refund.lines.helpers';
 import { ReturnItemHelper } from '../../types/index.types';
+import { DocumentType } from 'avatax/lib/enums/DocumentType';
 
 export function refundTransactionLinesModel(
   returnItems: ReturnItemHelper[],
@@ -20,6 +21,7 @@ export function refundTransactionLinesModel(
     returnTransactionsCount + 1
   }`;
 
+  taxDocument.type = DocumentType.ReturnInvoice;
   taxDocument.referenceCode = 'Refund';
   const taxModel = new TaxOverrideModel();
   taxModel.taxDate = salesInvoiceTransaction.taxDate;
