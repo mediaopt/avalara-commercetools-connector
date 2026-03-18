@@ -7,7 +7,7 @@ import {
   extractAddressesFromTransactionModel,
   convertTransactionAddressModelToAddressLocationInfo,
   extractSalesInvoiceTransaction,
-  extractReturnTransactionCount,
+  extractReturnTransactions,
 } from '../../src/avalara/helpers/transaction.model.helpers';
 import { describe, expect, it } from '@jest/globals';
 
@@ -247,10 +247,12 @@ describe('transaction.model.helpers', () => {
         {
           type: 'SalesInvoice',
           code: 'order-id',
+          status: 'Committed',
         },
         {
           type: 'ReturnInvoice',
           code: 'order-id-R1',
+          status: 'Committed',
         },
       ] as any;
 
@@ -259,6 +261,7 @@ describe('transaction.model.helpers', () => {
       expect(result).toEqual({
         type: 'SalesInvoice',
         code: 'order-id',
+        status: 'Committed',
       });
     });
   });
@@ -269,22 +272,25 @@ describe('transaction.model.helpers', () => {
         {
           type: 'SalesInvoice',
           code: 'order-id',
+          status: 'Committed',
         },
         {
           type: 'ReturnInvoice',
           code: 'order-id-R1',
+          status: 'Committed',
           locked: true,
         },
         {
           type: 'ReturnInvoice',
           code: 'order-id-R2',
+          status: 'Committed',
           locked: false,
         },
       ] as any;
 
-      const result = extractReturnTransactionCount(transactions, 'order-id');
+      const result = extractReturnTransactions(transactions, 'order-id');
 
-      expect(result).toEqual(2);
+      expect(result.length).toEqual(2);
     });
   });
 });
