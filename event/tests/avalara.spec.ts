@@ -17,7 +17,7 @@ import { logger } from '../src/utils/logger.utils';
 import * as model from '../src/avalara/model';
 import {
   extractSalesInvoiceTransaction,
-  extractReturnTransactionCount,
+  extractReturnTransactions,
 } from '../src/avalara/helpers/transaction.model.helpers';
 import { extractReturnItems } from '../src/avalara/helpers/refund.lines.helpers';
 
@@ -32,9 +32,9 @@ const mockExtractSalesInvoiceTransaction =
     typeof extractSalesInvoiceTransaction
   >;
 
-const mockExtractReturnTransactionCount =
-  extractReturnTransactionCount as jest.MockedFunction<
-    typeof extractReturnTransactionCount
+const mockExtractReturnTransactions =
+  extractReturnTransactions as jest.MockedFunction<
+    typeof extractReturnTransactions
   >;
 
 const mockExtractReturnItems = extractReturnItems as jest.MockedFunction<
@@ -243,7 +243,8 @@ describe('AvataxTransactionManager', () => {
       mockExtractSalesInvoiceTransaction.mockReturnValue(
         relatedTransactions[0]
       );
-      mockExtractReturnTransactionCount.mockReturnValue(0);
+
+      mockExtractReturnTransactions.mockReturnValue([]);
 
       client.listTransactionsByCompany = jest.fn(() =>
         Promise.resolve({ value: relatedTransactions } as any)
@@ -255,7 +256,7 @@ describe('AvataxTransactionManager', () => {
         relatedTransactions,
         'order-number'
       );
-      expect(mockExtractReturnTransactionCount).toHaveBeenCalledWith(
+      expect(mockExtractReturnTransactions).toHaveBeenCalledWith(
         relatedTransactions,
         'order-number'
       );
@@ -270,7 +271,7 @@ describe('AvataxTransactionManager', () => {
       mockExtractSalesInvoiceTransaction.mockReturnValue(
         relatedTransactions[0]
       );
-      mockExtractReturnTransactionCount.mockReturnValue(1);
+      mockExtractReturnTransactions.mockReturnValue([{} as TransactionModel]);
       client.listTransactionsByCompany = jest.fn(() =>
         Promise.resolve({ value: relatedTransactions } as any)
       );
@@ -281,12 +282,12 @@ describe('AvataxTransactionManager', () => {
         relatedTransactions,
         'order-number'
       );
-      expect(mockExtractReturnTransactionCount).toHaveBeenCalledWith(
+      expect(mockExtractReturnTransactions).toHaveBeenCalledWith(
         relatedTransactions,
         'order-number'
       );
       expect(logger.info).toHaveBeenCalledWith(
-        'The transaction order-number has already been completely or partially refunded.'
+        'The transaction order-number has already been completely or partially refunded. No complete void or refund are possible.'
       );
     });
   });
@@ -297,12 +298,13 @@ describe('AvataxTransactionManager', () => {
       const returnItemId = 'return-item-id';
       const returnItems = [{ itemCode: 'item-code', quantity: 1 }];
       const relatedTransactions = [
-        { id: 'transaction-id' },
+        { id: 'transaction-id', status: 'Committed' },
       ] as unknown as TransactionModel[];
       mockExtractReturnItems.mockReturnValue(returnItems);
       mockExtractSalesInvoiceTransaction.mockReturnValue(
         relatedTransactions[0]
       );
+      mockExtractReturnTransactions.mockReturnValue([]);
       client.listTransactionsByCompany = jest.fn(() =>
         Promise.resolve({ value: relatedTransactions } as any)
       );

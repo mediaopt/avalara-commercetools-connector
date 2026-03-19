@@ -13,7 +13,7 @@ import {
 
 import {
   extractSalesInvoiceTransaction,
-  extractReturnTransactionCount,
+  extractReturnTransactions,
 } from './helpers/transaction.model.helpers';
 import { ReturnItemHelper } from './types/index.types';
 import { createAndApplyOrderEdit } from './helpers/order.edit.helpers';
@@ -95,7 +95,19 @@ export class AvataxTransactionManager {
 
     if (!salesInvoiceTransaction) {
       logger.info(
-        `No sales invoice transaction for order number: ${transactionCode} found, no refund is possible`
+        `No valid sales invoice transaction for order number: ${transactionCode} found, no refund is possible`
+      );
+      return;
+    }
+
+    const returnTransactions = extractReturnTransactions(
+      relatedTransactions,
+      transactionCode
+    );
+
+    if (returnTransactions && returnTransactions.length > 0) {
+      logger.info(
+        `The transaction ${transactionCode} has already been completely or partially refunded. No complete void or refund are possible.`
       );
       return;
     }
@@ -103,17 +115,7 @@ export class AvataxTransactionManager {
     if (!salesInvoiceTransaction?.locked) {
       await this.voidTransaction(transactionCode);
     } else {
-      const returnTransactionsCount = extractReturnTransactionCount(
-        relatedTransactions,
-        transactionCode
-      );
-      if (!returnTransactionsCount) {
-        await this.refundTransaction(salesInvoiceTransaction);
-      } else {
-        logger.info(
-          `The transaction ${transactionCode} has already been completely or partially refunded.`
-        );
-      }
+      await this.refundTransaction(salesInvoiceTransaction);
     }
   }
 
@@ -137,20 +139,30 @@ export class AvataxTransactionManager {
 
     if (!salesInvoiceTransaction) {
       logger.info(
-        `No sales invoice transaction for order number: ${transactionCode} found, no refund is possible`
+        `No valid sales invoice transaction for order number: ${transactionCode} found, no refund is possible`
       );
       return;
     }
 
-    const returnTransactionsCount = extractReturnTransactionCount(
+    const returnTransactions = extractReturnTransactions(
       relatedTransactions,
       transactionCode
     );
 
+    if (
+      returnTransactions.length == 1 &&
+      !returnTransactions[0].code?.includes(transactionCode + '-R1')
+    ) {
+      logger.info(
+        `The transaction ${transactionCode} has already been completely refunded once, no further refunds are possible.`
+      );
+      return;
+    }
+
     await this.refundTransactionLines(
       returnItems,
       salesInvoiceTransaction,
-      returnTransactionsCount
+      returnTransactions.length
     );
   }
   async recalculateTransaction(order: Order): Promise<void> {

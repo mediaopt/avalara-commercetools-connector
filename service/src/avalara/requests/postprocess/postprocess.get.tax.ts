@@ -1,7 +1,7 @@
 import { Cart, UpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { hashCart } from '../../../utils/hash.utils';
-import { TransactionSummary } from 'avatax/lib/models/TransactionSummary';
+import { TransactionLineDetailModel } from 'avatax/lib/models/TransactionLineDetailModel';
 
 export function postProcessing(
   cart: Cart,
@@ -13,37 +13,45 @@ export function postProcessing(
     actions.push({ action: 'changeTaxMode', taxMode: 'ExternalAmount' });
   }
 
-  const rate = (rateSummaryElement: TransactionSummary) => {
-    const taxable = rateSummaryElement.taxable as number;
-    const nonTaxable = rateSummaryElement.nonTaxable as number;
-    const taxCalculated = rateSummaryElement.taxCalculated as number;
+  const rate = (
+    rateSummaryElements: TransactionLineDetailModel[] | undefined
+  ) => {
+    let rate = 0;
 
-    // No taxable amount => tax rate is 0
-    if (taxable == 0) {
-      return 0;
-    }
+    rateSummaryElements?.forEach((element) => {
+      const taxable = element.taxableAmount as number;
+      const nonTaxable = element.nonTaxableAmount as number;
+      const taxCalculated = element.taxCalculated as number;
 
-    // No non-taxable amount => tax rate is full rate
-    if (nonTaxable == 0) {
-      return rateSummaryElement.rate as number;
-    }
+      // No taxable amount => tax rate is 0
+      if (taxable == 0) {
+        return;
+      }
 
-    // Mixed taxable and non-taxable amounts => calculate effective tax rate
-    const totalAmount = taxable + nonTaxable;
-    return Math.round((10000 * taxCalculated) / totalAmount) / 10000;
+      // No non-taxable amount => tax rate is full rate
+      if (nonTaxable == 0) {
+        rate += element.rate as number;
+        return;
+      }
+
+      // Mixed taxable and non-taxable amounts => calculate effective tax rate
+      const totalAmount = taxable + nonTaxable;
+      rate += Math.round((10000 * taxCalculated) / totalAmount) / 10000;
+      return;
+    });
+    return rate;
   };
-
-  const taxRate = taxResponse.summary
-    ?.map((x) => rate(x))
-    .reduce((acc, curr) => (acc || 0) + (curr || 0), 0);
 
   let totalTax = 0;
 
-  const lines: any = taxResponse?.lines;
+  const lines = taxResponse?.lines;
 
   for (const item of cart?.lineItems || []) {
-    const taxCentAmount =
-      lines.find((x: any) => x.itemCode === item?.variant?.sku)?.tax * 100;
+    const avalaraLineItem = lines?.find(
+      (x) => x.itemCode === item?.variant?.sku
+    );
+
+    const taxCentAmount = (avalaraLineItem?.tax as number) * 100;
 
     totalTax += taxCentAmount;
 
@@ -57,7 +65,7 @@ export function postProcessing(
         },
         taxRate: {
           name: 'avaTaxRate',
-          amount: taxCentAmount ? taxRate : 0,
+          amount: taxCentAmount ? rate(avalaraLineItem?.details) : 0,
           country: cart?.country || cart?.shippingAddress?.country,
         },
       },
@@ -65,8 +73,8 @@ export function postProcessing(
   }
 
   for (const item of cart?.customLineItems || []) {
-    const taxCentAmount =
-      lines.find((x: any) => x.itemCode === item?.key)?.tax * 100;
+    const avalaraLineItem = lines?.find((x) => x.itemCode === item?.key);
+    const taxCentAmount = (avalaraLineItem?.tax as number) * 100;
 
     totalTax += taxCentAmount;
 
@@ -80,15 +88,15 @@ export function postProcessing(
         },
         taxRate: {
           name: 'avaTaxRate',
-          amount: taxCentAmount ? taxRate : 0,
+          amount: taxCentAmount ? rate(avalaraLineItem?.details) : 0,
           country: cart?.country || cart?.shippingAddress?.country,
         },
       },
     });
   }
 
-  const shipTaxCentAmount =
-    lines.find((x: any) => x.itemCode === 'Shipping')?.tax * 100;
+  const avalaraShippingLine = lines?.find((x) => x.itemCode === 'Shipping');
+  const shipTaxCentAmount = (avalaraShippingLine?.tax as number) * 100;
 
   const shipPrice =
     cart?.shippingInfo?.discountedPrice?.value?.centAmount ??
@@ -105,7 +113,7 @@ export function postProcessing(
       },
       taxRate: {
         name: 'avaTaxRate',
-        amount: shipTaxCentAmount ? taxRate : 0,
+        amount: shipTaxCentAmount ? rate(avalaraShippingLine?.details) : 0,
         country: cart?.country || cart?.shippingAddress?.country,
       },
     },

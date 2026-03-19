@@ -94,18 +94,20 @@ export function extractSalesInvoiceTransaction(
 ) {
   return transactions.find(
     (transaction: any) =>
-      transaction.type === 'SalesInvoice' && transaction.code === orderId
+      transaction.type === 'SalesInvoice' &&
+      transaction.code === orderId &&
+      transaction.status === 'Committed'
   );
 }
 
-export function extractReturnTransactionCount(
+export function extractReturnTransactions(
   transactions: TransactionModel[],
   orderId: string
 ) {
-  const returnTransactions = transactions.filter(
+  return transactions.filter(
     (transaction: any) =>
       transaction.type === 'ReturnInvoice' &&
-      transaction.code?.includes(orderId + '-R')
+      transaction.code?.includes(orderId + '-R') &&
+      transaction.status === 'Committed'
   );
-  return returnTransactions.length;
 }
