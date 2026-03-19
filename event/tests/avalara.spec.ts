@@ -243,7 +243,7 @@ describe('AvataxTransactionManager', () => {
       mockExtractSalesInvoiceTransaction.mockReturnValue(
         relatedTransactions[0]
       );
-      
+
       mockExtractReturnTransactions.mockReturnValue([]);
 
       client.listTransactionsByCompany = jest.fn(() =>
@@ -287,7 +287,7 @@ describe('AvataxTransactionManager', () => {
         'order-number'
       );
       expect(logger.info).toHaveBeenCalledWith(
-        'The transaction order-number has already been completely or partially refunded.'
+        'The transaction order-number has already been completely or partially refunded. No complete void or refund are possible.'
       );
     });
   });

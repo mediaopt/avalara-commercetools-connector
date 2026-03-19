@@ -100,20 +100,22 @@ export class AvataxTransactionManager {
       return;
     }
 
+    const returnTransactions = extractReturnTransactions(
+      relatedTransactions,
+      transactionCode
+    );
+
+    if (returnTransactions && returnTransactions.length > 0) {
+      logger.info(
+        `The transaction ${transactionCode} has already been completely or partially refunded. No complete void or refund are possible.`
+      );
+      return;
+    }
+
     if (!salesInvoiceTransaction?.locked) {
       await this.voidTransaction(transactionCode);
     } else {
-      const returnTransactionsCount = extractReturnTransactions(
-        relatedTransactions,
-        transactionCode
-      ).length;
-      if (!returnTransactionsCount) {
-        await this.refundTransaction(salesInvoiceTransaction);
-      } else {
-        logger.info(
-          `The transaction ${transactionCode} has already been completely or partially refunded.`
-        );
-      }
+      await this.refundTransaction(salesInvoiceTransaction);
     }
   }
 
@@ -147,7 +149,10 @@ export class AvataxTransactionManager {
       transactionCode
     );
 
-    if (returnTransactions.length == 1 && !returnTransactions[0].code?.includes(transactionCode + '-R1')) {
+    if (
+      returnTransactions.length == 1 &&
+      !returnTransactions[0].code?.includes(transactionCode + '-R1')
+    ) {
       logger.info(
         `The transaction ${transactionCode} has already been completely refunded once, no further refunds are possible.`
       );
