@@ -8,6 +8,6 @@ export async function extractEntityUseCode(customerId: string | undefined) {
   const customer = await getCustomer(customerId);
   return {
     customerNumber: customer?.customerNumber || customerId,
-    exemptCode: customer?.custom?.fields?.avalaraEntityUseCode as string,
+    entityUseCode: customer?.custom?.fields?.avalaraEntityUseCode as string,
   } as CustomerWithEntityUseCode;
 }

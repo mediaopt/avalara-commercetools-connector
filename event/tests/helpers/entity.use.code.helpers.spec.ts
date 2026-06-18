@@ -35,7 +35,7 @@ describe('extractEntityUseCode', () => {
     expect(mockGetCustomer).toHaveBeenCalledWith(customerId);
     expect(result).toEqual({
       customerNumber: '12345',
-      exemptCode: 'exempt-code',
+      entityUseCode: 'exempt-code',
     } as CustomerWithEntityUseCode);
   });
 
@@ -47,7 +47,7 @@ describe('extractEntityUseCode', () => {
     expect(mockGetCustomer).toHaveBeenCalledWith(customerId);
     expect(result).toEqual({
       customerNumber: customerId,
-      exemptCode: undefined,
+      entityUseCode: undefined,
     } as CustomerWithEntityUseCode);
   });
 });
