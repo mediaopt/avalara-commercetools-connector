@@ -3,7 +3,9 @@
   "compilerOptions": {
     "typeRoots": ["@types", "@types-extensions", "node_modules/@types"],
     // Allow tsc to resolve dependencies of `@types` packages in the way pnpm sets up the `node_modules`.
-    "preserveSymlinks": false
+    "preserveSymlinks": false,
+    // Dependency type definitions are not ours to fix; only check our own sources.
+    "skipLibCheck": true
   },
   "include": ["src", "./**/*.graphql", "tests/*.spec.ts"]
 }

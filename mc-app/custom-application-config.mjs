@@ -1,4 +1,4 @@
-import {PERMISSIONS} from './src/constants';
+import { PERMISSIONS } from './src/constants';
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptions}
@@ -18,10 +18,10 @@ const config = {
     },
   },
   headers: {
-      "csp": {
-        "connect-src": ["*"],      
-      }
+    csp: {
+      'connect-src': ['*'],
     },
+  },
   oAuthScopes: {
     view: ['view_key_value_documents', 'view_states'],
     manage: ['manage_key_value_documents', 'manage_extensions'],
