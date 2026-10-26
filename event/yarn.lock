@@ -3242,10 +3242,10 @@ node-releases@^2.0.36:
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.48.tgz#4da73d040ada751fc9959d993f27de48792e3b7d"
   integrity sha512-1uz8041X6LoI6ZSdZacM9lVY28vuzDlSKitnpbSNK0RfKoIJkX29NBPVEFXhnuSuEOA9Ww0xnPJ+ILWbGAv8DA==
 
-node@^22.0.0:
-  version "22.22.3"
-  resolved "https://registry.yarnpkg.com/node/-/node-22.22.3.tgz#ca1aee4a0308adbb24c461442d26d9fee5d2a9c0"
-  integrity sha512-KVPJ8f/BUnbMgSIAn0gr6dYyN/02jKtZNGxjZjZbm8pYdHRE1OiMzFctuxO3WVYmIaWqOGmHiTIkbc8EIT6okA==
+node@^24.22.1:
+  version "24.22.1"
+  resolved "https://registry.npmjs.org/node/-/node-24.22.1.tgz"
+  integrity sha512-/afvvA22SKaLX/7u8R0VvbWOtu4Bg/hs7OVnnRi7fTHGcdPtURfQcvEakiA23qG0EfqS/6T30Z0vzztTMerKeQ==
   dependencies:
     node-bin-setup "^1.0.0"
 
