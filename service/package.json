@@ -6,6 +6,9 @@
   "private": true,
   "author": "Mediaopt GmbH",
   "license": "SEE LICENSE IN ../LICENSE",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "start": "node build/index.js",
     "gcp-build": "tsc",
