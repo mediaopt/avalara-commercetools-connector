@@ -5,4 +5,8 @@ module.exports = {
   testMatch: ['**/?(*.)+(spec|test).[tj]s?(x)'],
   preset: 'ts-jest',
   testEnvironment: 'node',
+  // The Connect build container reports the host's CPU count but is capped to far
+  // less memory, so an unbounded worker pool gets OOM-killed. Cap it explicitly.
+  maxWorkers: 1,
+  workerIdleMemoryLimit: '512MB',
 };
