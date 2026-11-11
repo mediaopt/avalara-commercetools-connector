@@ -28,24 +28,24 @@ describe('Testing actions', () => {
       post: jest.fn(() => apiRequest),
     };
     await createCartUpdateExtension(apiRoot, 'https://lorem.ipsum');
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.delete).toBeCalledTimes(1);
-    expect(apiRoot.post).toBeCalledTimes(1);
-    expect(apiRequest.execute).toBeCalledTimes(3);
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.delete).toHaveBeenCalledTimes(1);
+    expect(apiRoot.post).toHaveBeenCalledTimes(1);
+    expect(apiRequest.execute).toHaveBeenCalledTimes(3);
 
-    expect(apiRoot.get).toBeCalledWith({
+    expect(apiRoot.get).toHaveBeenCalledWith({
       queryArgs: {
         where: `key = "${CART_UPDATE_EXTENSION_KEY}"`,
       },
     });
 
-    expect(apiRoot.delete).toBeCalledWith({
+    expect(apiRoot.delete).toHaveBeenCalledWith({
       queryArgs: {
         version: 1,
       },
     });
 
-    expect(apiRoot.post).toBeCalledWith({
+    expect(apiRoot.post).toHaveBeenCalledWith({
       body: {
         key: CART_UPDATE_EXTENSION_KEY,
         destination: {
@@ -75,17 +75,17 @@ describe('Testing actions', () => {
       get: jest.fn(() => apiRequest),
     };
     await deleteCartUpdateExtension(apiRoot);
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.delete).toBeCalledTimes(1);
-    expect(apiRequest.execute).toBeCalledTimes(2);
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.delete).toHaveBeenCalledTimes(1);
+    expect(apiRequest.execute).toHaveBeenCalledTimes(2);
 
-    expect(apiRoot.get).toBeCalledWith({
+    expect(apiRoot.get).toHaveBeenCalledWith({
       queryArgs: {
         where: `key = "${CART_UPDATE_EXTENSION_KEY}"`,
       },
     });
 
-    expect(apiRoot.delete).toBeCalledWith({
+    expect(apiRoot.delete).toHaveBeenCalledWith({
       queryArgs: {
         version: 1,
       },
@@ -223,16 +223,16 @@ describe('Testing actions', () => {
       get: jest.fn(() => apiRequest),
     };
     await method(apiRoot);
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.post).toBeCalledTimes(1);
-    expect(apiRequest.execute).toBeCalledTimes(2);
-    expect(apiRoot.get).toBeCalledWith({
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.post).toHaveBeenCalledTimes(1);
+    expect(apiRequest.execute).toHaveBeenCalledTimes(2);
+    expect(apiRoot.get).toHaveBeenCalledWith({
       queryArgs: {
         where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
       },
     });
 
-    expect(apiRoot.post).toBeCalledWith({
+    expect(apiRoot.post).toHaveBeenCalledWith({
       body: {
         version: 1,
         actions: [
@@ -328,16 +328,16 @@ describe('Testing actions', () => {
       post: jest.fn(() => apiRequest),
     };
     await method(apiRoot);
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRequest.execute).toBeCalledTimes(2);
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRequest.execute).toHaveBeenCalledTimes(2);
 
-    expect(apiRoot.get).toBeCalledWith({
+    expect(apiRoot.get).toHaveBeenCalledWith({
       queryArgs: {
         where: `resourceTypeIds contains any ("${customType.resourceTypeIds[0]}")`,
       },
     });
-    expect(apiRoot.withKey).toBeCalledWith({ key: customType.key });
-    expect(apiRoot.delete).toBeCalledWith({
+    expect(apiRoot.withKey).toHaveBeenCalledWith({ key: customType.key });
+    expect(apiRoot.delete).toHaveBeenCalledWith({
       queryArgs: {
         version: 1,
       },

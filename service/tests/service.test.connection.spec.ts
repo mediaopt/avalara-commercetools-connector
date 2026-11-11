@@ -36,8 +36,8 @@ describe('test test connection controller', () => {
   ])('bad requests throw an error', async (request) => {
     const next = jest.fn() as NextFunction;
     await postTestConnection(request, response, next);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(
       new CustomError(400, 'Bad request: missing required data.')
     );
   });
@@ -77,18 +77,18 @@ describe('test test connection controller', () => {
       response,
       next
     );
-    expect(spyCreds).toBeCalledWith({
+    expect(spyCreds).toHaveBeenCalledWith({
       username: process.env.AVALARA_USERNAME,
       password: process.env.AVALARA_PASSWORD,
     });
-    expect(spyPing).toBeCalledTimes(1);
+    expect(spyPing).toHaveBeenCalledTimes(1);
     const getPingresult = (): Promise<PingResultModel> =>
       spyPing.mock.results[0].value as Promise<PingResultModel>;
     const pingResult = await getPingresult();
     expect(pingResult.authenticated).toBe(true);
-    expect(response.json).toBeCalledWith(pingResult);
-    expect(response.status).toBeCalledWith(200);
-    expect(next).toBeCalledTimes(0);
+    expect(response.json).toHaveBeenCalledWith(pingResult);
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(next).toHaveBeenCalledTimes(0);
   });
 
   test('invalid credentials are unauthorized', async () => {
@@ -109,17 +109,17 @@ describe('test test connection controller', () => {
       response,
       next
     );
-    expect(spyCreds).toBeCalledWith({
+    expect(spyCreds).toHaveBeenCalledWith({
       username: 'test',
       password: 'test',
     });
-    expect(spyPing).toBeCalledTimes(1);
+    expect(spyPing).toHaveBeenCalledTimes(1);
     const getPingresult = (): Promise<PingResultModel> =>
       spyPing.mock.results[0].value as Promise<PingResultModel>;
     const pingResult = await getPingresult();
     expect(pingResult.authenticated).toBe(false);
-    expect(response.json).toBeCalledWith(pingResult);
-    expect(response.status).toBeCalledWith(200);
-    expect(next).toBeCalledTimes(0);
+    expect(response.json).toHaveBeenCalledWith(pingResult);
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(next).toHaveBeenCalledTimes(0);
   });
 });

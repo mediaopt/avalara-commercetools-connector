@@ -102,8 +102,8 @@ describe('test service/cart controller', () => {
       const next = jest.fn() as NextFunction;
       apiRoot.execute = jest.fn(() => ({ body: { results: [] } }));
       await post(request, response, next);
-      expect(next).toBeCalledTimes(1);
-      expect(next).toBeCalledWith(new CustomError(400, error));
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledWith(new CustomError(400, error));
     }
   );
 
@@ -111,8 +111,8 @@ describe('test service/cart controller', () => {
     const next = jest.fn() as NextFunction;
     apiRoot.execute = jest.fn(() => ({ body: { results: [] } }));
     await post(cartRequest(emptyCart), response, next);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(
       new CustomError(400, 'No Avalara merchant configuration found.')
     );
   });
@@ -155,11 +155,11 @@ describe('test service/cart controller', () => {
         'createTransaction'
       );
       await post(request, response, next);
-      expect(spyGetTax).toBeCalledTimes(0);
-      expect(next).toBeCalledTimes(0);
-      expect(response.status).toBeCalledWith(200);
-      expect(response.json).toBeCalledTimes(1);
-      expect(response.json).toBeCalledWith();
+      expect(spyGetTax).toHaveBeenCalledTimes(0);
+      expect(next).toHaveBeenCalledTimes(0);
+      expect(response.status).toHaveBeenCalledWith(200);
+      expect(response.json).toHaveBeenCalledTimes(1);
+      expect(response.json).toHaveBeenCalledWith();
     }
   );
 
@@ -190,19 +190,19 @@ describe('test service/cart controller', () => {
       response,
       next
     );
-    expect(spyGetTax).toBeCalledTimes(1);
-    expect(spyCreds).toBeCalledWith({
+    expect(spyGetTax).toHaveBeenCalledTimes(1);
+    expect(spyCreds).toHaveBeenCalledWith({
       username: process.env.AVALARA_USERNAME,
       password: process.env.AVALARA_PASSWORD,
       companyCode: process.env.AVALARA_COMPANY_CODE,
-    });
+    } as any);
     const getTaxResult = (): Promise<TransactionModel> =>
       spyGetTax.mock.results[0].value as Promise<TransactionModel>;
     expectAvaTaxReturn(await getTaxResult());
-    expect(next).toBeCalledTimes(0);
-    expect(response.status).toBeCalledWith(200);
-    expect(response.json).toBeCalledTimes(1);
-    expect(response.json).toBeCalledWith(actions);
+    expect(next).toHaveBeenCalledTimes(0);
+    expect(response.status).toHaveBeenCalledWith(200);
+    expect(response.json).toHaveBeenCalledTimes(1);
+    expect(response.json).toHaveBeenCalledWith(actions);
   });
 
   test('valid cart request is made with an expected AvaTax configuration', async () => {
@@ -259,14 +259,14 @@ describe('test service/cart controller', () => {
       response,
       next
     );
-    expect(spyGetTax).toBeCalledTimes(1);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(
+    expect(spyGetTax).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(
       new CustomError(
         400,
         'Invalid or missing State/Province. Address is incomplete or invalid.'
       )
     );
-    expect(response.json).toBeCalledTimes(0);
+    expect(response.json).toHaveBeenCalledTimes(0);
   });
 });

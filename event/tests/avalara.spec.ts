@@ -119,7 +119,7 @@ describe('AvataxTransactionManager', () => {
         { commit: true }
       );
       expect(client.createTransaction).toHaveBeenCalledWith({
-        model: mockModel,
+        model: mockModel as any,
       });
       expect(result).toEqual(mockModel);
     });
@@ -141,7 +141,7 @@ describe('AvataxTransactionManager', () => {
         'order-id',
         companyCode
       );
-      expect(client.voidTransaction).toHaveBeenCalledWith(mockModel);
+      expect(client.voidTransaction).toHaveBeenCalledWith(mockModel as any);
       expect(result).toEqual(mockModel);
     });
   });
@@ -169,7 +169,7 @@ describe('AvataxTransactionManager', () => {
         companyCode
       );
       expect(client.createTransaction).toHaveBeenCalledWith({
-        model: mockModel,
+        model: mockModel as any,
       });
       expect(result).toEqual(mockModel);
     });
@@ -207,7 +207,7 @@ describe('AvataxTransactionManager', () => {
         companyCode
       );
       expect(client.createTransaction).toHaveBeenCalledWith({
-        model: mockModel,
+        model: mockModel as any,
       });
       expect(result).toEqual(mockModel);
     });
