@@ -23,25 +23,25 @@ describe('test connector actions', () => {
 
     await createOrderSubscription(apiRoot, topicName, projectId);
 
-    expect(apiRoot.subscriptions).toBeCalledTimes(3);
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.delete).toBeCalledTimes(1);
-    expect(apiRoot.post).toBeCalledTimes(1);
-    expect(apiRequest.execute).toBeCalledTimes(3);
+    expect(apiRoot.subscriptions).toHaveBeenCalledTimes(3);
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.delete).toHaveBeenCalledTimes(1);
+    expect(apiRoot.post).toHaveBeenCalledTimes(1);
+    expect(apiRequest.execute).toHaveBeenCalledTimes(3);
 
-    expect(apiRoot.get).toBeCalledWith({
+    expect(apiRoot.get).toHaveBeenCalledWith({
       queryArgs: {
         where: `key = "${ORDER_SUBSCRIPTION_KEY}"`,
       },
     });
 
-    expect(apiRoot.delete).toBeCalledWith({
+    expect(apiRoot.delete).toHaveBeenCalledWith({
       queryArgs: {
         version: 1,
       },
     });
 
-    expect(apiRoot.post).toBeCalledWith({
+    expect(apiRoot.post).toHaveBeenCalledWith({
       body: {
         key: ORDER_SUBSCRIPTION_KEY,
         destination: {
@@ -78,13 +78,13 @@ describe('test connector actions', () => {
 
     await deleteOrderSubscription(apiRoot);
 
-    expect(apiRoot.subscriptions).toBeCalledTimes(2);
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.delete).toBeCalledTimes(1);
-    expect(apiRoot.post).toBeCalledTimes(0);
-    expect(apiRequest.execute).toBeCalledTimes(2);
+    expect(apiRoot.subscriptions).toHaveBeenCalledTimes(2);
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.delete).toHaveBeenCalledTimes(1);
+    expect(apiRoot.post).toHaveBeenCalledTimes(0);
+    expect(apiRequest.execute).toHaveBeenCalledTimes(2);
 
-    expect(apiRoot.delete).toBeCalledWith({
+    expect(apiRoot.delete).toHaveBeenCalledWith({
       queryArgs: {
         version: 1,
       },

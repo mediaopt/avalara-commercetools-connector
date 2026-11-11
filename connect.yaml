@@ -3,8 +3,8 @@ deployAs:
     applicationType: service
     endpoint: /service
     scripts:
-      postDeploy: npm install && npm run build && npm run connector:post-deploy
-      preUndeploy: npm install && npm run build && npm run connector:pre-undeploy
+      postDeploy: "if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile --production=false; else npm install --include=dev; fi && npm run build && npm run connector:post-deploy"
+      preUndeploy: "if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile --production=false; else npm install --include=dev; fi && npm run build && npm run connector:pre-undeploy"
     configuration:
       standardConfiguration:
         - key: CTP_REGION
@@ -94,8 +94,8 @@ deployAs:
     applicationType: event
     endpoint: /event
     scripts:
-      postDeploy: npm install && npm run build && npm run connector:post-deploy
-      preUndeploy: npm install && npm run build && npm run connector:pre-undeploy
+      postDeploy: "if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile --production=false; else npm install --include=dev; fi && npm run build && npm run connector:post-deploy"
+      preUndeploy: "if command -v yarn >/dev/null 2>&1; then yarn install --frozen-lockfile --production=false; else npm install --include=dev; fi && npm run build && npm run connector:pre-undeploy"
     configuration:
       standardConfiguration:
         - key: CTP_REGION

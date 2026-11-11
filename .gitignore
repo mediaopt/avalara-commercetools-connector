@@ -8,4 +8,5 @@ coverage
 .vscode
 build/
 .env
+.connect/
 avalara_installation_guide.md

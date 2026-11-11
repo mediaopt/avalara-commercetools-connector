@@ -44,5 +44,16 @@ jobs:
         working-directory: ${{ matrix.directory }}
 
       - name: Run audit
-        run: yarn audit
         working-directory: ${{ matrix.directory }}
+        run: |
+          set +e
+          yarn audit
+          code=$?
+          set -e
+          # yarn audit exits with a bitmask: 1=info 2=low 4=moderate 8=high 16=critical.
+          # Fail on moderate or worse; tolerate info/low.
+          if [ $((code & 28)) -ne 0 ]; then
+            echo "::error::Moderate or higher vulnerabilities found (yarn audit exit $code)"
+            exit 1
+          fi
+          echo "No moderate or higher vulnerabilities (yarn audit exit $code)"

@@ -39,12 +39,12 @@ describe('test coco api client', () => {
   test('get avalara merchant data method succeeds', async () => {
     apiRoot.execute = jest.fn(() => avalaraMerchantDataBody);
     const data = await getData('avalara-connector-settings');
-    expect(apiRoot.customObjects).toBeCalledTimes(1);
-    expect(apiRoot.withContainer).toBeCalledWith({
+    expect(apiRoot.customObjects).toHaveBeenCalledTimes(1);
+    expect(apiRoot.withContainer).toHaveBeenCalledWith({
       container: 'avalara-connector-settings',
     });
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
 
     expect(data).toBeDefined();
     expect(Object.keys(data?.settings).length).toBe(12);
@@ -55,18 +55,18 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getData('avalara-connector-settings');
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toThrow();
     expect(data).toBeUndefined();
   });
 
   test('get shipping tax code method succeeds', async () => {
     apiRoot.execute = jest.fn(() => shipTaxCodeBody);
     const data = await getShipTaxCode('123');
-    expect(apiRoot.shippingMethods).toBeCalledTimes(1);
-    expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.shippingMethods).toHaveBeenCalledTimes(1);
+    expect(apiRoot.withId).toHaveBeenCalledWith({ ID: '123' });
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
 
     expect(data).toBe('PC030000');
   });
@@ -76,8 +76,8 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getShipTaxCode('123');
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toThrow();
 
     expect(data).toBeUndefined();
   });
@@ -85,10 +85,10 @@ describe('test coco api client', () => {
   test('get customer entity use code method succeeds', async () => {
     apiRoot.execute = jest.fn(() => entityUseCodeBody);
     const data = await getCustomerEntityUseCode('123');
-    expect(apiRoot.customers).toBeCalledTimes(1);
-    expect(apiRoot.withId).toBeCalledWith({ ID: '123' });
-    expect(apiRoot.get).toBeCalledTimes(1);
-    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.customers).toHaveBeenCalledTimes(1);
+    expect(apiRoot.withId).toHaveBeenCalledWith({ ID: '123' });
+    expect(apiRoot.get).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
 
     expect(data).toBe('B');
   });
@@ -98,8 +98,8 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getCustomerEntityUseCode('123');
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toThrow();
 
     expect(data).toBeUndefined();
   });
@@ -107,12 +107,12 @@ describe('test coco api client', () => {
   test('get all categories of a list of products succeeds', async () => {
     apiRoot.execute = jest.fn(() => bulkProductCategoriesBody);
     const data = await getBulkProductCategories(['sku123', 'sku456']);
-    expect(apiRoot.productProjections).toBeCalledTimes(1);
-    expect(apiRoot.search).toBeCalledTimes(1);
-    expect(apiRoot.get).toBeCalledWith({
+    expect(apiRoot.productProjections).toHaveBeenCalledTimes(1);
+    expect(apiRoot.search).toHaveBeenCalledTimes(1);
+    expect(apiRoot.get).toHaveBeenCalledWith({
       queryArgs: { filter: `variants.sku:"sku123","sku456"`, limit: 500 },
     });
-    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
 
     expect(data).toBeDefined();
     expect(data[0]?.sku).toBe('sku123');
@@ -126,8 +126,8 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getBulkProductCategories(['sku123', 'sku456']);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toThrow();
 
     expect(data).toEqual([]);
   });
@@ -135,11 +135,11 @@ describe('test coco api client', () => {
   test('get all tax codes of a list of categories succeeds', async () => {
     apiRoot.execute = jest.fn(() => bulkCategoryTaxCodeBody);
     const data = await getBulkCategoryTaxCode(['123', '456']);
-    expect(apiRoot.categories).toBeCalledTimes(1);
-    expect(apiRoot.get).toBeCalledWith({
+    expect(apiRoot.categories).toHaveBeenCalledTimes(1);
+    expect(apiRoot.get).toHaveBeenCalledWith({
       queryArgs: { where: `id in ("123", "456")`, limit: 500 },
     });
-    expect(apiRoot.execute).toBeCalledTimes(1);
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
 
     expect(data).toBeDefined();
     expect(data[0]?.id).toBe('123');
@@ -153,8 +153,8 @@ describe('test coco api client', () => {
       throw new Error('error');
     });
     const data = await getBulkCategoryTaxCode(['123', '456']);
-    expect(apiRoot.execute).toBeCalledTimes(1);
-    expect(apiRoot.execute).toThrowError();
+    expect(apiRoot.execute).toHaveBeenCalledTimes(1);
+    expect(apiRoot.execute).toThrow();
 
     expect(data).toEqual([]);
   });

@@ -90,9 +90,9 @@ describe('test check address controller', () => {
     async ({ request, errorMessage }) => {
       const next = jest.fn() as NextFunction;
       await postCheckAddress(request, response, next);
-      expect(apiRoot.execute).toBeCalledTimes(0);
-      expect(next).toBeCalledTimes(1);
-      expect(next).toBeCalledWith(new CustomError(400, errorMessage));
+      expect(apiRoot.execute).toHaveBeenCalledTimes(0);
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next).toHaveBeenCalledWith(new CustomError(400, errorMessage));
     }
   );
 
@@ -102,9 +102,9 @@ describe('test check address controller', () => {
       const SpyAvatax = jest.spyOn(moduleAvaTax, 'default');
       await postCheckAddress(request, response, jest.fn());
       if (!request.body?.creds || !request.body?.env) {
-        expect(apiRoot.execute).toBeCalledTimes(1);
+        expect(apiRoot.execute).toHaveBeenCalledTimes(1);
       } else {
-        expect(apiRoot.execute).toBeCalledTimes(0);
+        expect(apiRoot.execute).toHaveBeenCalledTimes(0);
       }
       expect(SpyAvatax).toHaveBeenCalledWith(config);
     }
@@ -123,8 +123,8 @@ describe('test check address controller', () => {
         'withSecurity'
       );
       await postCheckAddress(request, response, next);
-      expect(spyValidate).toBeCalledWith(request.body.address);
-      expect(spyCreds).toBeCalledWith({
+      expect(spyValidate).toHaveBeenCalledWith(request.body.address);
+      expect(spyCreds).toHaveBeenCalledWith({
         username: process.env.AVALARA_USERNAME,
         password: process.env.AVALARA_PASSWORD,
       });
@@ -134,12 +134,12 @@ describe('test check address controller', () => {
       expect(
         validation?.messages?.find((message) => message.severity === 'Error')
       ).toBeUndefined();
-      expect(response.json).toBeCalledWith({
+      expect(response.json).toHaveBeenCalledWith({
         valid: true,
         address: validation?.validatedAddresses,
       });
-      expect(response.status).toBeCalledWith(200);
-      expect(next).toBeCalledTimes(0);
+      expect(response.status).toHaveBeenCalledWith(200);
+      expect(next).toHaveBeenCalledTimes(0);
     }
   );
 
@@ -156,8 +156,8 @@ describe('test check address controller', () => {
         'withSecurity'
       );
       await postCheckAddress(request, response, next);
-      expect(spyValidate).toBeCalledWith(request.body.address);
-      expect(spyCreds).toBeCalledWith({
+      expect(spyValidate).toHaveBeenCalledWith(request.body.address);
+      expect(spyCreds).toHaveBeenCalledWith({
         username: process.env.AVALARA_USERNAME,
         password: process.env.AVALARA_PASSWORD,
       });
@@ -167,14 +167,14 @@ describe('test check address controller', () => {
       expect(
         validation?.messages?.find((message) => message.severity === 'Error')
       ).toBeDefined();
-      expect(response.json).toBeCalledWith({
+      expect(response.json).toHaveBeenCalledWith({
         valid: false,
         errorMessages: validation?.messages?.filter(
           (message) => message.severity === 'Error'
         ),
       });
-      expect(response.status).toBeCalledWith(200);
-      expect(next).toBeCalledTimes(0);
+      expect(response.status).toHaveBeenCalledWith(200);
+      expect(next).toHaveBeenCalledTimes(0);
     }
   );
   test('invalid credentials throw an error', async () => {
@@ -196,7 +196,7 @@ describe('test check address controller', () => {
       response,
       next
     );
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(new CustomError(401, 'BadRequest'));
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(new CustomError(401, 'BadRequest'));
   });
 });
