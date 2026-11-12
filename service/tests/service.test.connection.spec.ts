@@ -22,6 +22,11 @@ const response = {
 describe('test test connection controller', () => {
   beforeEach(() => {
     jest.spyOn(moduleAvataxConfig, 'avaTaxConfig').mockReturnValue(config);
+    jest.spyOn(moduleAvaTax.default.prototype, 'ping').mockImplementation(
+      async () => ({
+        authenticated: process.env.AVALARA_USERNAME !== 'test',
+      }) as PingResultModel
+    );
   });
   afterEach(() => {
     jest.clearAllMocks();

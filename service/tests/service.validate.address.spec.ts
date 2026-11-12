@@ -79,6 +79,20 @@ const validRequests = (isValidAddress: boolean) => {
 describe('test check address controller', () => {
   beforeEach(() => {
     jest.spyOn(moduleAvataxConfig, 'avaTaxConfig').mockReturnValue(config);
+    jest
+      .spyOn(moduleAvaTax.default.prototype, 'resolveAddress')
+      .mockImplementation(async (address) => {
+        if (process.env.AVALARA_USERNAME === 'test') {
+          throw new Error('BadRequest');
+        }
+        const invalid = address.line1?.startsWith('200043');
+        return {
+          validatedAddresses: invalid ? [] : [address],
+          messages: invalid
+            ? [{ severity: 'Error', summary: 'Invalid address' }]
+            : [],
+        } as AddressResolutionModel;
+      });
   });
   afterEach(() => {
     jest.clearAllMocks();
