@@ -121,6 +121,33 @@ Customize type keys/names for seamless multi-connector integration:
 - `CUSTOMER_CUSTOM_TYPE_KEY` / `CUSTOMER_CUSTOM_TYPE_NAME`
 - `ORDER_CUSTOM_TYPE_KEY` / `ORDER_CUSTOM_TYPE_NAME`
 - `CUSTOM_LINE_ITEM_CUSTOM_TYPE_KEY` / `CUSTOM_LINE_ITEM_CUSTOM_TYPE_NAME`
+- `CUSTOM_SHIPPING_CUSTOM_TYPE_KEY` / `CUSTOM_SHIPPING_CUSTOM_TYPE_NAME`
+
+### Custom shipping methods
+
+Carts that use `setCustomShippingMethod` (or `addCustomShippingMethod`) do not
+reference a Shipping Method, so the connector cannot read a tax code from one.
+It reads the code from the cart's shipping custom fields instead.
+
+To have your own tax code applied, the custom shipping method must carry a Type
+that:
+
+- has `resourceTypeIds: ["shipping"]`, and
+- defines a `String` field named **`avalaraTaxCode`**.
+
+You do not have to create this field yourself. At post-deploy the connector
+adds `avalaraTaxCode` to **every** Type already registered for `shipping` in
+your project, and creates its own Type (keyed by
+`CUSTOM_SHIPPING_CUSTOM_TYPE_KEY`) only if none exists. So a pre-existing
+shipping Type of your own simply gains the field.
+
+The field name itself is fixed. The connector adds it by name at post-deploy
+and removes it by the same name at pre-undeploy, so it cannot safely differ
+between deployments. If your integration stores the code in a field of its own,
+copy the value into `avalaraTaxCode`.
+
+When no tax code can be resolved, the connector falls back to Avalara's generic
+freight code `FR010000` and logs a warning naming the field it looked for.
 
 ---
 

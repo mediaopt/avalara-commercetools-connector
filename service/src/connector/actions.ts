@@ -5,6 +5,7 @@ import {
   TypeDraft,
   TypeRemoveFieldDefinitionAction,
 } from '@commercetools/platform-sdk';
+import { CUSTOM_SHIPPING_TAX_CODE_FIELD } from '../utils/consts.utils';
 
 export const CART_UPDATE_EXTENSION_KEY =
   'avalara-connector-cartUpdateExtension';
@@ -131,7 +132,7 @@ export async function createCustomShippingTaxCodeFields(
     resourceTypeIds: ['shipping'],
     fieldDefinitions: [
       {
-        name: 'avalaraTaxCode',
+        name: CUSTOM_SHIPPING_TAX_CODE_FIELD,
         label: {
           en: 'Avalara Tax code',
         },
@@ -154,7 +155,7 @@ export async function deleteCustomShippingTaxCodeFields(
     resourceTypeIds: ['shipping'],
     fieldDefinitions: [
       {
-        name: 'avalaraTaxCode',
+        name: CUSTOM_SHIPPING_TAX_CODE_FIELD,
       },
     ],
   } as unknown as TypeDraft;

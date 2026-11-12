@@ -1,5 +1,6 @@
 import { Cart } from '@commercetools/platform-sdk';
 import crypto from 'crypto';
+import { CUSTOM_SHIPPING_TAX_CODE_FIELD } from './consts.utils';
 
 // make Object invariant under key ordering
 
@@ -69,6 +70,11 @@ export function hashCart(cart: Cart) {
       id: cart?.shippingInfo?.shippingMethod?.id,
       price: cart?.shippingInfo?.price,
       includedInPrice: cart?.shippingInfo?.taxRate?.includedInPrice,
+      // Custom shipping methods carry their tax code here. Without it a change
+      // of shipping tax code leaves the digest untouched and the connector
+      // serves a stale tax result.
+      avalaraTaxCode:
+        cart?.shippingCustomFields?.fields?.[CUSTOM_SHIPPING_TAX_CODE_FIELD],
     },
   };
   return hashInvariantObject(data);

@@ -13,6 +13,8 @@ Commercetools custom application (mc-app) provides a configuration window for va
 
 The Software automatically creates category, shipping method and customer custom fields upon connector installation. These custom fields can be utilized by the merchant for configuring correct Avalara tax codes and customer entity use codes for a compliant tax calculation. Avalara also provides an option of loading a mapping list of item codes to tax codes directly to the Avalara Backoffice, so the usage of the above custom fields is optional. 
 
+*Custom shipping methods.* A cart that uses `setCustomShippingMethod` (or `addCustomShippingMethod`) does not reference a Shipping Method, so no shipping method custom field can be read. For these carts the connector takes the tax code from the cart's shipping custom fields. The custom shipping method must therefore carry a Type with `resourceTypeIds: ["shipping"]` that defines a `String` field named exactly `avalaraTaxCode`. You do not have to add this field yourself: at post-deploy the connector adds `avalaraTaxCode` to every Type already registered for `shipping` in your project, and creates its own Type under `CUSTOM_SHIPPING_CUSTOM_TYPE_KEY` only if none exists. The field name is fixed, because the connector adds and later removes it by that name. If your integration keeps the code in a field of its own, copy the value into `avalaraTaxCode`. When no tax code is resolved the connector applies Avalara's generic freight code `FR010000` and logs a warning naming the field it looked for.
+
 3. Checkout Tax Calculation 
 
 On each creation or update of a commercetools cart, a validation process will be triggered, and if a cart is eligible for a (new) tax calculation, an Avalara tax calculation quotes will be applied
@@ -59,6 +61,8 @@ scope template. You will need:
     - CUSTOMER_CUSTOM_TYPE_NAME
     - ORDER_CUSTOM_TYPE_KEY
     - ORDER_CUSTOM_TYPE_NAME
+    - CUSTOM_SHIPPING_CUSTOM_TYPE_KEY
+    - CUSTOM_SHIPPING_CUSTOM_TYPE_NAME
     - CUSTOM_LINE_ITEM_CUSTOM_TYPE_KEY
     - CUSTOM_LINE_ITEM_CUSTOM_TYPE_NAME
     
