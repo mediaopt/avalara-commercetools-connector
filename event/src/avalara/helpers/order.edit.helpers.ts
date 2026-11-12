@@ -1,6 +1,7 @@
 import { Order, StagedOrderUpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { logger } from '../../utils/logger.utils';
+import { externalTotalGrossCentAmount } from '../../utils/total.gross.utils';
 import { applyOrderEdit, createOrderEdit } from '../../client/post.client';
 import { TransactionSummary } from 'avatax/lib/models/TransactionSummary';
 
@@ -151,7 +152,11 @@ export function buildOrderEditUpdateActions(
     action: 'setOrderTotalTax',
     externalTotalGross: {
       currencyCode: order?.totalPrice?.currencyCode,
-      centAmount: order?.totalPrice?.centAmount + totalTax, // minus total order discount gross
+      centAmount: externalTotalGrossCentAmount(
+        order?.totalPrice?.centAmount,
+        totalTax,
+        order?.discountOnTotalPrice?.discountedAmount?.centAmount
+      ),
     },
   });
 
