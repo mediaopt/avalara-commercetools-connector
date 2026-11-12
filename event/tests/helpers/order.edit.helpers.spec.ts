@@ -85,6 +85,52 @@ describe('order.edit.helpers', () => {
     });
   });
   describe('buildOrderEditUpdateActions', () => {
+    it('scales setOrderTotalTax up for a totalPrice discount', () => {
+      // Regression for the negative-tax bug: commercetools re-applies a
+      // totalPrice discount to externalTotalGross, so the value sent must be
+      // scaled by (totalPrice + discountedAmount) / totalPrice.
+      const transactionModel: any = {
+        summary: [{ rate: 0.0725 }],
+        lines: [
+          { itemCode: 'sku123', tax: 10 },
+          { itemCode: '12345678909', tax: 10 },
+          { itemCode: 'Shipping', tax: 10 },
+        ],
+      };
+      const discounted = {
+        ...(order({ orderNumber: '12345', country: 'US' }) as any),
+        discountOnTotalPrice: {
+          discountedAmount: { centAmount: 3000, currencyCode: 'USD' },
+        },
+      } as unknown as Order;
+
+      const undiscounted = order({
+        orderNumber: '12345',
+        country: 'US',
+      }) as unknown as Order;
+
+      const find = (actions: any[]) =>
+        actions.find((a) => a.action === 'setOrderTotalTax');
+
+      const withDiscount = find(
+        buildOrderEditUpdateActions(transactionModel, discounted)
+      );
+      const without = find(
+        buildOrderEditUpdateActions(transactionModel, undiscounted)
+      );
+
+      const totalPrice = (undiscounted as any).totalPrice.centAmount;
+      const expected = Math.round(
+        (without.externalTotalGross.centAmount * (totalPrice + 3000)) /
+          totalPrice
+      );
+
+      expect(withDiscount.externalTotalGross.centAmount).toBe(expected);
+      expect(withDiscount.externalTotalGross.centAmount).toBeGreaterThan(
+        without.externalTotalGross.centAmount
+      );
+    });
+
     it('should build update actions for order edit', () => {
       const transactionModel: any = {
         summary: [{ rate: 0.0725 }],

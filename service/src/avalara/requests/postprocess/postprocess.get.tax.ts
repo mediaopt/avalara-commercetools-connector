@@ -1,6 +1,7 @@
 import { Cart, UpdateAction } from '@commercetools/platform-sdk';
 import { TransactionModel } from 'avatax/lib/models/TransactionModel';
 import { hashCart } from '../../../utils/hash.utils';
+import { externalTotalGrossCentAmount } from '../../../utils/total.gross.utils';
 import { TransactionLineDetailModel } from 'avatax/lib/models/TransactionLineDetailModel';
 
 export function postProcessing(
@@ -123,7 +124,11 @@ export function postProcessing(
     action: 'setCartTotalTax',
     externalTotalGross: {
       currencyCode: cart?.totalPrice?.currencyCode,
-      centAmount: cart?.totalPrice?.centAmount + totalTax, // minus total cart discount gross
+      centAmount: externalTotalGrossCentAmount(
+        cart?.totalPrice?.centAmount,
+        totalTax,
+        cart?.discountOnTotalPrice?.discountedAmount?.centAmount
+      ),
     },
   });
 
