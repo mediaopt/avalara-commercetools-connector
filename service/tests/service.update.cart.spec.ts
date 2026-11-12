@@ -90,6 +90,52 @@ const serviceThrowCases = [
 describe('test service/cart controller', () => {
   beforeEach(() => {
     jest.spyOn(moduleAvataxConfig, 'avaTaxConfig').mockReturnValue(config);
+    jest
+      .spyOn(moduleAvaTax.default.prototype, 'createTransaction')
+      .mockImplementation(async ({ model }: any) => {
+        if (JSON.stringify(model).includes('Wrong St')) {
+          throw new Error(
+            'Invalid or missing State/Province. Address is incomplete or invalid.'
+          );
+        }
+        return {
+          code: '0',
+          date: new Date().toISOString().substring(0, 10),
+          status: 'Temporary',
+          type: 'SalesOrder',
+          currencyCode: 'USD',
+          entityUseCode: 'B',
+          customerCode: '0',
+          totalAmount: 707,
+          totalTax: 51.27,
+          lines: [
+            {
+              itemCode: 'sku123',
+              quantity: 2,
+              lineAmount: 655,
+              taxCode: 'PS081282',
+              tax: 47.49,
+              taxIncluded: false,
+              details: [{ taxableAmount: 655, nonTaxableAmount: 0, rate: 0.0725 }],
+            },
+            {
+              itemCode: 'Shipping',
+              quantity: 1,
+              lineAmount: 10,
+              taxCode: 'PC030000',
+              tax: 0.73,
+              taxIncluded: false,
+              details: [{ taxableAmount: 10, nonTaxableAmount: 0, rate: 0.0725 }],
+            },
+            {
+              itemCode: '12345678909',
+              tax: 3.05,
+              details: [{ taxableAmount: 42, nonTaxableAmount: 0, rate: 0.0725 }],
+            },
+          ],
+          addresses: [{ line1: '505 Beasley St' }, { line1: '2000 Main St' }],
+        } as unknown as TransactionModel;
+      });
   });
   afterEach(() => {
     jest.clearAllMocks();
