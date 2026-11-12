@@ -4,6 +4,7 @@ import {
   getProductProjections,
   getShippingMethod,
 } from '../../client/get.client';
+import { CUSTOM_SHIPPING_TAX_CODE_FIELD } from '../../utils/consts.utils';
 import {
   CategoryWithTaxCode,
   ProductWithCategories,
@@ -24,7 +25,9 @@ export async function extractShippingMethodTaxCode(
   shippingCustomFields: CustomFields | undefined
 ) {
   if (shippingCustomFields) {
-    return shippingCustomFields.fields?.avalaraTaxCode as string;
+    return shippingCustomFields.fields?.[
+      CUSTOM_SHIPPING_TAX_CODE_FIELD
+    ] as string;
   }
 
   if (shippingMethodId) {
