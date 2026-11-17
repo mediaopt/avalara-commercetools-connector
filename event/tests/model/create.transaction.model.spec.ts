@@ -219,4 +219,22 @@ describe('createTransactionModel', () => {
     expect(result).toBeInstanceOf(CreateTransactionModel);
     expect(result.code).toBeUndefined();
   });
+
+  it('passes a totalPrice discount on as document discount', async () => {
+    order.discountOnTotalPrice = {
+      discountedAmount: { centAmount: 1500, currencyCode: 'USD' },
+    };
+
+    const result = await createTransactionModelLocal(order, transactionManager);
+
+    expect(result.discount).toBe(15);
+    expect(result.lines.every((line) => line.discounted)).toBe(true);
+  });
+
+  it('sends no document discount without a totalPrice discount', async () => {
+    const result = await createTransactionModelLocal(order, transactionManager);
+
+    expect(result.discount).toBeUndefined();
+    expect(result.lines.some((line) => line.discounted)).toBe(false);
+  });
 });

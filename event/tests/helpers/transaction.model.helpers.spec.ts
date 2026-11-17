@@ -158,6 +158,23 @@ describe('transaction.model.helpers', () => {
         businessIdentificationNo: 'business-id',
       });
     });
+    it('deducts the document discount allocated to the line', () => {
+      // A committed SalesInvoice with a $15 totalPrice discount: Avalara put
+      // 12.33 of it on this line. A refund must give back only the tax that
+      // was charged, i.e. on 610.34, not on the undiscounted 622.67.
+      const transactionLine = {
+        lineNumber: '1',
+        quantity: 2,
+        lineAmount: 622.67,
+        discountAmount: 12.33,
+        itemCode: 'SKU-1',
+      } as any;
+
+      const result =
+        convertTransactionLineItemModeltoLineItemModel(transactionLine);
+
+      expect(result.amount).toBe(610.34);
+    });
   });
 
   describe('extractAddressesFromTransactionModel', () => {

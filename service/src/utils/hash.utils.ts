@@ -69,6 +69,9 @@ export function hashCart(cart: Cart) {
     shippingInfo: {
       id: cart?.shippingInfo?.shippingMethod?.id,
       price: cart?.shippingInfo?.price,
+      // The amount sent to Avalara is the discounted shipping price, so a
+      // shipping discount has to change the digest as well.
+      discountedPrice: cart?.shippingInfo?.discountedPrice?.value,
       includedInPrice: cart?.shippingInfo?.taxRate?.includedInPrice,
       // Custom shipping methods carry their tax code here. Without it a change
       // of shipping tax code leaves the digest untouched and the connector
@@ -76,6 +79,9 @@ export function hashCart(cart: Cart) {
       avalaraTaxCode:
         cart?.shippingCustomFields?.fields?.[CUSTOM_SHIPPING_TAX_CODE_FIELD],
     },
+    // A totalPrice discount leaves the line totals untouched but changes the
+    // tax, so it has to change the digest too.
+    discountOnTotalPrice: cart?.discountOnTotalPrice?.discountedAmount,
   };
   return hashInvariantObject(data);
 }
