@@ -7,6 +7,7 @@ import { shippingAddress } from '../../utils/shipping.address';
 import { shipItem } from '../../utils/shipping.info';
 import { AddressInfo } from 'avatax/lib/models/AddressInfo';
 import { getCategoryTaxCodes } from './get.categories';
+import { applyTotalPriceDiscount } from '../../../utils/total.price.discount.utils';
 
 // initialize and specify the tax document model of Avalara
 export async function processCart(
@@ -63,6 +64,8 @@ export async function processCart(
       ? await getCustomerEntityUseCode(cart?.customerId as string)
       : '';
     taxDocument.lines = lines;
+
+    applyTotalPriceDiscount(taxDocument, cart?.discountOnTotalPrice);
   }
 
   return taxDocument;

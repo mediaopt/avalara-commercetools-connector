@@ -45,7 +45,15 @@ export function convertTransactionLineItemModeltoLineItemModel(
   return {
     number: transactionLine.lineNumber,
     quantity: transactionLine.quantity,
-    amount: transactionLine.lineAmount as number,
+    // Refunds are built from the committed document. Deduct the share of a
+    // document discount Avalara allocated to the line, so only the tax that
+    // was actually charged is refunded.
+    amount:
+      Math.round(
+        ((transactionLine.lineAmount as number) -
+          (transactionLine.discountAmount ?? 0)) *
+          100
+      ) / 100,
     taxCode: transactionLine.taxCode,
     itemCode: transactionLine.itemCode,
     taxIncluded: transactionLine.taxIncluded,

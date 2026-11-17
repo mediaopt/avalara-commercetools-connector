@@ -8,6 +8,7 @@ import { convertShippingAddressModel } from '../shipping.address.model';
 import { convertLineItemModel } from '../line-item-model/line.item.model';
 import { convertCustomLineItemModel } from '../line-item-model/custom.line.item.model';
 import { convertShippingInfoModel } from '../line-item-model/shipping.info.model';
+import { applyTotalPriceDiscount } from '../../../utils/total.price.discount.utils';
 
 // initialize and specify the tax document model of Avalara
 export async function createTransactionModel(
@@ -66,6 +67,8 @@ export async function createTransactionModel(
     };
     transaction.entityUseCode = customerWithEntityUseCode?.entityUseCode;
     transaction.lines = lines;
+
+    applyTotalPriceDiscount(transaction, order?.discountOnTotalPrice);
   }
 
   return transaction;
